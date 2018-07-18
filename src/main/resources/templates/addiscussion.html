@@ -1,0 +1,198 @@
+
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="adlayout :: head"></head>
+<body>
+	<div th:replace="adlayout :: header"></div>
+	<div th:replace="homelayout::modal"></div>
+	<!--Content-->
+	<main class="container-fluid" id="mainad"> <!--./ code here -->
+	<div class="modal-content">
+		<div class="modal-body" style="margin-top: 54px">
+			<div id="wrapper">
+				<div th:replace="adlayout :: sidebar"></div>
+				<div id="page-content-wrapper">
+					<h1 id="home" class="text-center font-bold mt-1"
+						th:text="#{m.discussionmanagement}">Quản lý Thảo luận</h1>
+					<!--Grid column-->
+					<div class="mb-r container-fluid">
+						<br />
+						<div class="md-form form-sm">
+							<label for="tenkh" th:text="#{m.selectcourse}">Chọn khóa
+								học</label> <select th:field="*{khoahoc.makh}" id="mySelect"
+								onchange="myFunction()"
+								class="mdb-select colorful-select dropdown-primary"
+								searchable="Search here..">
+								<option class="form-control" th:each="kh,i : ${listkh}"
+									th:value="${kh.makh}" th:text="${kh.tenkh}">Option 1</option>
+							</select>
+						</div>
+						<div class="rowbtn">
+							<button disabled="disabled" class="btn btn-sm btn-primary"
+								data-target=".modal" data-toggle="modal" id="viewtl">
+								<i class="fa fa-sticky-note-o mr-1"></i>View
+							</button>
+							<!-- <button class="btn btn-sm btn-success" data-target=".modal"
+								data-toggle="modal" href="thaoluan/create">
+								<i class="fa fa-plus mr-1"></i>Add
+							</button>
+							<button disabled="disabled" class="btn btn-sm btn-warning"
+								data-target=".modal" data-toggle="modal" id="edittl">
+								<i class="fa fa-magic mr-1"></i>Edit
+							</button>
+							<button disabled="disabled" class="btn btn-sm btn-danger"
+								data-target=".modal" data-toggle="modal" id="deletetl">
+								<i class="fa fa-trash mr-1"></i>Delete
+							</button> -->
+						</div>
+						<table width="100%" cellspacing="0"
+							class="table table-hover responsive nowrap" id="tbtl">
+							<thead>
+								<tr>
+									<th class="rgba-teal-strong">Mã Người đăng</th>
+									<th class="rgba-teal-strong">Người đăng</th>
+									<th class="rgba-teal-strong">Thời gian đăng</th>
+									<th class="rgba-teal-strong">Tên khóa học</th>
+									<th class="rgba-teal-strong">Tiêu đề</th>
+									<th class="rgba-teal-strong">Nội dung</th>
+									<th class="rgba-teal-strong">Mã trả lời</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr th:each="tl,i : ${dstl}" class="odd gradeX">
+									<td th:text="${tl.thaoluanid.nguoidung.mand}">Mã người
+										đăng</td>
+									<td th:text="${tl.thaoluanid.nguoidung.hovaten}">Người
+										đăng</td>
+									<td th:text="${tl.thaoluanid.tgdang}">Thời gian đăng</td>
+									<td><a style="color: blue; text-decoration: underline;"
+										th:text="${tl.khoahoc.tenkh}" target='_blank'
+										th:href="@{/forum/}+*{tl.khoahoc.makh}"></a></td>
+									<td th:text="${tl.tieude}">Tiêu đề</td>
+									<td th:text="${tl.noidung}">Nội dung</td>
+									<td th:text="${tl.matl}">Mã trả lời</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+					<!--Grid column-->
+				</div>
+			</div>
+		</div>
+	</div>
+	</main>
+	<footer th:replace="adlayout :: footer"></footer>
+	<script>
+		function myFunction() {
+			var x = document.getElementById("mySelect");
+			$('#tbtl_filter input').val(x.options[x.selectedIndex].text);
+			e = $.Event('keyup');
+			e.keyCode = 13; // enter
+			$('#tbtl_filter input').trigger(e);
+		}
+	</script>
+	<script>
+		$(function() {
+			//active label
+			$('label').each(function() {
+				$(this).addClass('active');
+			});
+		});
+		// Material Select Initialization		
+		$(document).ready(
+				function() {
+					//Table
+					var tbtl = $('#tbtl').DataTable(
+							{
+								"columnDefs" : [ {
+									"targets" : [ 0, 5, 6 ],
+									"visible" : false,
+									"searchable" : false
+								} ],
+								dom : 'Bfrtip',
+								select : {
+									style : 'single' //'multi',
+								// selector : 'td:first-child'
+								},
+								lengthMenu : [
+										[ 10, 25, 50, -1 ],
+										[ '10 rows', '25 rows', '50 rows',
+												'Show all' ] ],
+								buttons : [ 'pageLength', {
+									text : 'Select All',
+									className : '',
+									counter : true,
+									action : function(e, dt, node, config) {
+										if (config.counter) {
+											this.text('Select None');
+											tbtl.rows({
+												page : 'current'
+											}).select();
+											config.counter = false;
+										} else {
+											this.text('Select All');
+											tbtl.rows({
+												page : 'current'
+											}).deselect();
+											config.counter = true;
+										}
+									}
+								}, {
+									extend : 'colvis',
+									collectionLayout : 'fixed two-column'
+								} ]
+							});
+
+					var idtl, dt;
+					$('#tbtl tbody').on('click', 'tr', function() {
+						if ($(this).hasClass('selected')) { //da chon roi thi ko chon nua
+							$('#viewtl').removeAttr("disabled");
+							/* $('#edittl').removeAttr("disabled");
+							$('#deletetl').removeAttr("disabled"); */
+							$(this).removeClass('selected');
+							idtl = tbtl.row($(this)).data();
+						} else {
+							$('#viewtl').attr('disabled', 'disabled');
+							/* $('#edittl').attr('disabled', 'disabled');
+							$('#deletetl').attr('disabled', 'disabled'); */
+							table.$('tr.selected').removeClass('selected');
+							$(this).addClass('selected');
+						}
+					});
+					$('#viewtl').click(
+							function() {
+								dt = idtl[2].replace(" ", "z");
+								$(this).attr(
+										'href',
+										'thaoluan/' + idtl[0] + 'z' + dt
+												+ '/view');
+							});
+					/* $('#edittl').click(
+							function() {
+								dt = idtl[2].replace(" ", "z");
+								$(this).attr(
+										'href',
+										'thaoluan/' + idtl[0] + 'z' + dt
+												+ '/edit');
+							});
+					$('#deletetl').click(
+							function() {
+								dt = idtl[2].replace(" ", "z");
+								$(this).attr('href', 'isdelete');
+								setTimeout(
+								//waiting
+								function() {
+									$('#titledelete').html(
+											'Are you sure delete ' + idtl[0]
+													+ " " + idtl[2]);
+
+									$('#yesdelete').attr(
+											'href',
+											'thaoluan/a/' + idtl[0] + 'z' + dt
+													+ '/delete');
+								}, 100);
+							}); */
+
+				});
+	</script>
+</body>
+</html>

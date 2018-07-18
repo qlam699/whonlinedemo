@@ -1,0 +1,454 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="adlayout :: head"></head>
+<body>
+	<div th:replace="adlayout :: header"></div>
+	<div th:replace="homelayout::modal"></div>
+	<div th:replace="homelayout :: modalfull"></div>
+	<!--Content-->
+	<main class="container-fluid" id="mainad"> <!--./ code here -->
+	<div class="modal-content">
+		<div class="modal-body" style="margin-top: 54px">
+			<div id="wrapper">
+				<div th:replace="adlayout :: sidebar"></div>
+				<div id="page-content-wrapper">
+					<h1 id="home" class="text-center font-bold mt-1"
+						th:text="#{m.lessonmanagement}">Lesson manager</h1>
+
+					<div id="bc" class="light-font">
+						<ol class="breadcrumb cyan lighten-4">
+							<li id="bcgt" class="breadcrumb-item d-none">Giáo trình</li>
+							<li id="bcchuong" class="breadcrumb-item d-none">Chương</li>
+						</ol>
+					</div>
+
+					<!-- <input type="hidden" id="makh" th:value="${makh}" /> -->
+					<input type="hidden" id="magt" th:value="${magt}" />
+					<!-- Nav tabs -->
+					<ul class="nav nav-tabs nav-justified" id="myTab">
+						<li class="nav-item "><a class="nav-link active"
+							data-toggle="tab" href="#panel1" role="tab"> <th:block
+									th:text="#{m.curriculum}"></th:block></a></li>
+						<li class="nav-item "><a class="nav-link disabled"
+							data-toggle="tab" href="#panel2" role="tab"> <th:block
+									th:text="#{m.chapter}"></th:block></a></li>
+						<li class="nav-item "><a class="nav-link disabled"
+							data-toggle="tab" href="#panel3" role="tab"> <th:block
+									th:text="#{m.lesson}"></th:block></a></li>
+					</ul>
+					<!-- Tab panels -->
+
+					<div class="tab-content">
+						<!--Panel 1-->
+						<div class="tab-pane fade in show active" id="panel1"
+							role="tabpanel">
+							<div th:fragment="fgt" class="mb-r container-fluid">
+								<br />
+								<div class="rowbtn">
+									<button class="btn btn-sm btn-success" data-target=".modal"
+										data-toggle="modal" href="giaotrinh/create">
+										<i class="fa fa-plus mr-1"></i>Add
+									</button>
+									<button disabled="disabled" class="btn btn-sm btn-warning"
+										data-target=".modal" data-toggle="modal" id="editgt">
+										<i class="fa fa-magic mr-1"></i>Edit
+									</button>
+									<button disabled="disabled" class="btn btn-sm btn-danger"
+										data-target=".modal" data-toggle="modal" id="deletegt">
+										<i class="fa fa-trash mr-1"></i>Delete
+									</button>
+									<button disabled="disabled" class="btn btn-sm btn-primary"
+										onclick="chaytab(2)" href="#panel2" id="btnnextchuong">Next
+										tab</button>
+								</div>
+								
+								<table width="100%" cellspacing="0"
+							class="table table-hover responsive nowrap" id="tbgt">
+							<thead>
+								<tr>
+									<th class="rgba-teal-strong">Mã GT</th>
+									<th class="rgba-teal-strong">Tên GT</th>
+									<th class="rgba-teal-strong">TG cập nhật</th>
+									<th class="rgba-teal-strong">Mã GV</th>
+									<th class="rgba-teal-strong">Isdeleted</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr th:each="g,i : ${dsgt}" class="odd gradeX">
+									<td th:text="${g.magt}">Người GT</td>
+									<td th:text="${g.tengt}">Tên GT</td>
+									<td th:text="${g.tgcapnhat}">TG cập nhật</td>
+									<td th:text="${g.nguoidung.mand}">Mã GV</td>
+									<td th:text="${g.isdeleted}">Isdeleted</td>
+								</tr>
+							</tbody>
+						</table>
+							</div>
+						</div>
+						<!--/.Panel 1-->
+						
+						<!--Panel 2-->
+						<div class="tab-pane fade" id="panel2" role="tabpanel">
+							<br />
+							<a class="btn btn-primary" onclick="chaytab('panel3')"
+								href="#panel3">Next tab</a>
+						</div>
+						<!--/.Panel 2-->
+						
+						<!--Panel 3-->
+						<div class="tab-pane fade" id="panel3" role="tabpanel">
+							<br />
+							<a class="btn btn-xs btn-success btnchap" data-toggle="modal"
+								href="detailpost" data-target=".modal">Next tab</a>
+						</div>
+						<!--/.Panel 3-->
+					</div>
+					<br />
+				</div>
+			</div>
+		</div>
+	</div>
+	</main>
+	
+	<footer th:replace="adlayout :: footer"></footer>
+	<script>
+		// <![CDATA[
+		if (typeof (Storage) !== "undefined") {
+			sessionStorage.magt = "";
+			sessionStorage.tengt = "";
+			sessionStorage.machuong = "";
+			sessionStorage.tenchuong = "";
+			sessionStorage.mabai = "";
+		} else {
+			console.log("no html5");
+		}
+		
+		if (sessionStorage.magt != "") {
+			chaytab(2);
+		}
+
+		function chaytab(tab) {
+			var $active = $('#myTab li ');
+			if (tab == 2) {
+				$active.next(":first").children(":first").removeClass(
+						'disabled');
+				goChuong(sessionStorage.magt);
+			} else if (tab == 3) {
+				$active.next().next().children(":first")
+						.removeClass("disabled");
+				goBai(sessionStorage.machuong);
+			}
+		};
+
+		//Giao Trinh
+		var tbgt = $('#tbgt').DataTable(
+				{
+					dom : 'Bfrtip',
+					"columnDefs" : [ {
+						"targets" : [ 4 ],
+						"visible" : false,
+						"searchable" : false
+					} ],
+					select : {
+						style : 'single' //'multi',
+					// selector : 'td:first-child'
+					},
+					lengthMenu : [ [ 10, 25, 50, -1 ],
+							[ '10 rows', '25 rows', '50 rows', 'Show all' ] ],
+					buttons : [ 'pageLength', {
+						text : 'Select All',
+						className : '',
+						counter : true,
+						action : function(e, dt, node, config) {
+							if (config.counter) {
+								this.text('Select None');
+								tbgt.rows({
+									page : 'current'
+								}).select();
+								config.counter = false;
+							} else {
+								this.text('Select All');
+								tbgt.rows({
+									page : 'current'
+								}).deselect();
+								config.counter = true;
+							}
+						}
+					}, {
+						extend : 'colvis',
+						collectionLayout : 'fixed two-column'
+					} ]
+				});
+
+		$('#tbgt tbody').on('click', 'tr', function() {
+			if (!$(this).hasClass('selected')) { //da chon roi thi ko chon nua
+				console.log('selected');
+				$('#editgt').removeAttr("disabled");
+				$('#deletegt').removeAttr("disabled");
+				$('#btnnextchuong').removeAttr("disabled");
+				$(this).removeClass('selected');
+				var idgt = tbgt.row($(this)).data();
+				sessionStorage.magt = idgt[0];
+				sessionStorage.tengt = idgt[1];
+				$("#bcgt").removeClass("d-none");
+				$("#bcgt").html(sessionStorage.tengt);
+			} else {
+				console.log('un selected');
+				$('#editgt').attr('disabled', 'disabled');
+				$('#deletegt').attr('disabled', 'disabled');
+				$('#btnnextchuong').attr('disabled', 'disabled');
+				$(this).addClass('selected');
+			}
+		});
+		$('#editgt').click(function() {
+			$(this).attr('href', 'giaotrinh/' + sessionStorage.magt + '/edit');
+		});
+		$('#deletegt').click(
+				function() {
+					$(this).attr('href', 'isdelete');
+					setTimeout(
+							//waiting
+							function() {
+								$('#titledelete').html(
+										'Are you sure delete '
+												+ sessionStorage.magt);
+
+								$('#yesdelete').attr(
+										'href',
+										'giaotrinh/' + sessionStorage.magt
+												+ '/delete');
+							}, 100);
+				});
+		
+		tbgt.rows().every(function(rowIdx, tableLoop, rowLoop) {
+			var data = this.data();
+			if (data[4] == 'true') { //isdeleted column
+				this.node().remove();
+			}
+		});
+		
+		/* Chuong */
+		function goChuong(magt) {
+			var url = '/adlesson/chuong/';
+			url = url + magt;
+			console.log('url ' + url);
+			$("#panel2").load(
+					url,
+					function(responseTxt, statusTxt, xhr) {
+						if (statusTxt == "success") {
+							chuong();
+							toastr["success"]("Load OK!");
+							$('#myTab a[href="#panel2"]').tab('show');
+						}
+						if (statusTxt == "error")
+							toastr["danger"]("Error: " + xhr.status + ": "
+									+ xhr.statusText);
+					});
+		};
+		function chuong() {
+			//Table
+			var tbchuong = $('#tbchuong')
+					.DataTable(
+							{
+								dom : 'Bfrtip',
+								"columnDefs" : [ {
+									"targets" : [ 3 ],
+									"visible" : false,
+									"searchable" : false
+								} ],
+								select : {
+									style : 'single' //'multi',
+								// selector : 'td:first-child'
+								},
+								lengthMenu : [
+										[ 10, 25, 50, -1 ],
+										[ '10 rows', '25 rows', '50 rows',
+												'Show all' ] ],
+								buttons : [ 'pageLength', {
+									text : 'Select All',
+									className : '',
+									counter : true,
+									action : function(e, dt, node, config) {
+										if (config.counter) {
+											this.text('Select None');
+											tbchuong.rows({
+												page : 'current'
+											}).select();
+											config.counter = false;
+										} else {
+											this.text('Select All');
+											tbchuong.rows({
+												page : 'current'
+											}).deselect();
+											config.counter = true;
+										}
+									}
+								}, {
+									extend : 'colvis',
+									collectionLayout : 'fixed two-column'
+								} ]
+							});
+
+			$('#tbchuong tbody').on('click', 'tr', function() {
+				if (!$(this).hasClass('selected')) { //da chon roi thi ko chon nua
+					console.log('selected');
+					$('#editchuong').removeAttr("disabled");
+					$('#deletechuong').removeAttr("disabled");
+					$('#btnnextbai').removeAttr("disabled");
+					$(this).removeClass('selected');
+					var id = tbchuong.row($(this)).data();
+					sessionStorage.machuong = id[0];
+					sessionStorage.tenchuong = id[1];
+					$("#bcchuong").removeClass("d-none");
+					$("#bcchuong").html(sessionStorage.tenchuong);
+				} else {
+					console.log('un selected');
+					$('#editchuong').attr('disabled', 'disabled');
+					$('#deletechuong').attr('disabled', 'disabled');
+					$('#btnnextbai').attr('disabled', 'disabled');
+					$(this).addClass('selected');
+				}
+			});
+			$('#editchuong').click(
+					function() {
+						$(this).attr('href',
+								'chuong/' + sessionStorage.machuong + '/edit');
+					});
+			$('#deletechuong').click(
+					function() {
+						$(this).attr('href', 'isdelete');
+						setTimeout(
+						//waiting
+						function() {
+							$('#titledelete').html(
+									'Are you sure delete '
+											+ sessionStorage.machuong);
+
+							$('#yesdelete').attr(
+									'href',
+									'chuong/' + sessionStorage.machuong
+											+ '/delete');
+						}, 100);
+					});
+			
+			tbchuong.rows().every(function(rowIdx, tableLoop, rowLoop) {
+				var data = this.data();
+				if (data[3] == 'true') { //isdeleted column
+					this.node().remove();
+				}
+			});
+		};
+		/* Chuong */
+
+		/* Bai */
+		function goBai(machuong) {
+			var url = '/adlesson/bai/';
+			url = url + machuong;
+			console.log('url ' + url);
+			$("#panel3").load(
+					url,
+					function(responseTxt, statusTxt, xhr) {
+						if (statusTxt == "success") {
+							bai();
+							toastr["success"]("Load OK!");
+							$('#myTab a[href="#panel3"]').tab('show');
+						}
+						if (statusTxt == "error")
+							toastr["danger"]("Error: " + xhr.status + ": "
+									+ xhr.statusText);
+					});
+		};
+		function bai() {
+			$('#btnstream').attr('href','/stream/'+sessionStorage.magt+'/'+sessionStorage.machuong )
+			$('.btnchap').click(function() {
+				$(".modal").attr("id", "modalfullscreen");
+				$(".modal-dialog").removeClass("cascading-modal");
+			});
+			//Table
+			var tbbai = $('#tbbai')
+					.DataTable(
+							{
+								dom : 'Bfrtip',
+								"columnDefs" : [ {
+									"targets" : [ 4 ],
+									"visible" : false,
+									"searchable" : false
+								} ],
+								select : {
+									style : 'single' //'multi',
+								// selector : 'td:first-child'
+								},
+								lengthMenu : [
+										[ 10, 25, 50, -1 ],
+										[ '10 rows', '25 rows', '50 rows',
+												'Show all' ] ],
+								buttons : [ 'pageLength', {
+									text : 'Select All',
+									className : '',
+									counter : true,
+									action : function(e, dt, node, config) {
+										if (config.counter) {
+											this.text('Select None');
+											tbbai.rows({
+												page : 'current'
+											}).select();
+											config.counter = false;
+										} else {
+											this.text('Select All');
+											tbbai.rows({
+												page : 'current'
+											}).deselect();
+											config.counter = true;
+										}
+									}
+								}, {
+									extend : 'colvis',
+									collectionLayout : 'fixed two-column'
+								} ]
+							});
+
+			$('#tbbai tbody').on('click', 'tr', function() {
+				if (!$(this).hasClass('selected')) { //da chon roi thi ko chon nua
+					console.log('selected');
+					$('#editbai').removeAttr("disabled");
+					$('#deletebai').removeAttr("disabled");
+					$(this).removeClass('selected');
+					var id = tbbai.row($(this)).data();
+					sessionStorage.mabai = id[0];
+				} else {
+					console.log('un selected');
+					$('#editbai').attr('disabled', 'disabled');
+					$('#deletebai').attr('disabled', 'disabled');
+					$(this).addClass('selected');
+				}
+			});
+			$('#editbai').click(function() {
+				$(this).attr('href', 'bai/' + sessionStorage.mabai + '/edit');
+			});
+			$('#deletebai').click(
+					function() {
+						$(this).attr('href', 'isdelete');
+						setTimeout(
+						//waiting
+						function() {
+							$('#titledelete').html(
+									'Are you sure delete '
+											+ sessionStorage.mabai);
+
+							$('#yesdelete').attr('href',
+									'bai/' + sessionStorage.mabai + '/delete');
+						}, 100);
+					});
+			
+			tbbai.rows().every(function(rowIdx, tableLoop, rowLoop) {
+				var data = this.data();
+				if (data[4] == 'true') { //isdeleted column
+					this.node().remove();
+				}
+			});
+		};
+		/* Bai */
+
+		// ]]>
+	</script>
+</body>
+</html>

@@ -1,0 +1,78 @@
+<meta charset="utf-8" />
+<div class="modal-content">
+	<!--Header-->
+	<div class="modal-header light-blue darken-3 white-text">
+		<h4 class="title">
+			<i class="fa fa-pencil"></i>
+			<th:block th:text="#{m.messages}"></th:block>
+		</h4>
+		<button type="button" class="close waves-effect waves-light"
+			data-dismiss="modal" aria-label="Close">
+			<span aria-hidden="true" class="fa fa-remove"></span>
+		</button>
+	</div>
+	<!--Body-->
+	<div class="modal-body mb-0">
+		<form class="form-inline pull-right" th:object="${ndtn}"
+			th:action="@{/ndtn/save}" method="POST">
+			<div class="container">
+				<label>Gửi tới</label>
+				<div class="md-form form-sm">
+					<select th:field="*{ndtnid.nguoinhan.mand}" id="selectmaloaikh"
+						class="mdb-select colorful-select dropdown-primary"
+						searchable="Search here..">
+						<option class="form-control" th:each="nd,i : ${listnd}"
+							th:value="${nd.mand}" th:text="${nd.hovaten} + ' - ' + ${nd.email}">Option 1</option>
+					</select>
+				</div>
+
+
+				<div class="md-form form-sm">
+					<i class="fa fa-tag prefix"></i> <input type="text" id="tieude"
+						th:field="*{ndtnid.tinnhan.tieude}"
+						class="form-control required name" data-placement="right"
+						data-trigger="manual" th:attr="data-content=#{m.namevalid}" /> <label
+						for="tieude" th:text="#{m.title}" >Tiêu đề</label>
+				</div>
+				<div class="md-form form-sm ">
+					<label class="pb-2">Mô tả</label>
+					<textarea type="text" id="mota" name="mota" class="form-control"
+						th:field="*{ndtnid.tinnhan.noidung}"></textarea>
+				</div>
+				<div class="text-center mt-1-half">
+					<button th:text="#{m.save}" class="btn btn-info mb-2 waves-effect waves-light">
+						Save <i class="fa fa-send ml-1"></i>
+					</button>
+				</div>
+			</div>
+		</form>
+	</div>
+</div>
+<script th:src="@{/js/cusvalidateform.js}"></script>
+<script th:src="@{/ckeditor/ckeditor.js}"></script>
+<script th:src="@{/ckfinder/ckfinder.js}"></script>
+<script>
+	CKEDITOR
+			.replace(
+					'mota',
+					{
+						filebrowserBrowseUrl : 'ckfinder/ckfinder.html',
+						filebrowserImageBrowseUrl : 'ckfinder/ckfinder.html?type=Images',
+						filebrowserFlashBrowseUrl : 'ckfinder/ckfinder.html?type=Flash',
+						filebrowserUploadUrl : 'ckfinder/core/connector/java/connector.java?command=QuickUpload&amp;type=Files',
+						filebrowserImageUploadUrl : 'ckfinder/core/connector/java/connector.java?command=QuickUpload&amp;type=Images',
+						filebrowserFlashUploadUrl : 'ckfinder/core/connector/java/connector.java?command=QuickUpload&amp;type=Flash'
+					});
+</script>
+<script>
+	$('.mdb-select').material_select();
+	$(function() { //active label
+		if ($('.form-inline input').val() != "") {
+			$('label').each(function() {
+				$(this).addClass('active');
+			});
+		}
+	});
+</script>
+
+<script th:src="@{/js/cusvalidateform.js}"></script>

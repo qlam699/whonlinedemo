@@ -1,0 +1,158 @@
+<meta charset="utf-8" />
+<div class="modal-content">
+	<!--Header-->
+	<div class="modal-header light-blue darken-3 white-text">
+		<h4 class="title">
+			<i class="fa fa-pencil"></i> <label>Detail</label>
+		</h4>
+		<button type="button" class="close waves-effect waves-light"
+			data-dismiss="modal" aria-label="Close">
+			<span aria-hidden="true" class="fa fa-remove"></span>
+		</button>
+	</div>
+	<!--Body-->
+	<div class="modal-body mb-0">
+		<div class="row">
+			<div class="col-md-6 mb-r">
+				<!--Card-->
+				<div class="card testimonial-card">
+					<!--Bacground color-->
+					<div class="card-up aqua-gradient"></div>
+					<!--Avatar-->
+
+					<div class="avatar">
+						<img th:if="${giangvien.hinh==''||giangvien.hinh==null}"
+							th:src="@{/img/noimage.png}" width="100%"
+							class="img-fluid" /> <img
+							th:unless="${giangvien.hinh==''||giangvien.hinh==null}"
+							th:src="${giangvien.hinh}" width="100%" class="img-fluid" />
+					</div>
+					<div class="card-body">
+						<!--Name-->
+						<h4 class="card-title" th:text="${giangvien.hovaten}">Your name</h4>
+					</div>
+				</div>
+			</div>
+
+			<div class="col-md-6 mb-r">
+				<form id="myform" th:object="${giangvien}">
+					<div class="md-form">
+						<i class="fa fa-address-card-o prefix"></i> <input type="text"
+							id="cmnd" class="form-control" readonly="readonly"
+							th:field="*{cmnd}" /> <label for="cmnd" th:text="#{m.cmnd}">Identity
+							card number</label>
+					</div>
+					<div class="md-form">
+						<i class="fa fa-address-book-o prefix"></i> <input type="text"
+							id="diachi" class="form-control" readonly="readonly"
+							th:field="*{diachi}" /> <label for="diachi"
+							th:text="#{m.address}">Address</label>
+					</div>
+					<div class="md-form">
+						<i class="fa fa-paper-plane-o prefix"></i> <input type="email"
+							readonly="readonly" id="email" class="form-control"
+							th:field="*{email}" /> <label for="email">Email</label>
+					</div>
+					<div class="md-form">
+						<i class="fa fa-align-justify prefix"></i> <input type="text"
+							id="mota" class="form-control" readonly="readonly"
+							th:field="*{mota}" /> <label for="mota"
+							th:text="#{m.description}">Description</label>
+					</div>
+				</form>
+			</div>
+
+			<br />
+			<div th:if="${listsize>0}" class="mb-r container-fluid">
+				<h2 id="home" class="text-center font-bold mt-1">Danh sách khóa
+					học theo dạy</h2>
+				<table width="100%" cellspacing="0"
+					class="table table-bordered responsive">
+					<thead>
+						<tr>
+							<th class="rgba-teal-strong font-weight-bold">No</th>
+							<th class="rgba-teal-strong font-weight-bold">Tên khóa học</th>
+							<th class="rgba-teal-strong font-weight-bold">Tên loại khóa
+								học</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr th:each="kh, i : ${gvkh}">
+							<td th:text="${i.index +1}"></td>
+							<td th:text="${kh.tenkh}"></td>
+							<td th:text="${kh.loaikhoahoc.tenloaikh}"></td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+
+			<div th:if="${listsize==0}" class="mb-r container-fluid">
+				<h2 id="home" class="text-center font-bold mt-1">Danh sách khóa
+					học theo dạy</h2>
+				<table width="100%" cellspacing="0"
+					class="table table-bordered responsive">
+					<thead>
+						<tr>
+							<th class="rgba-teal-strong font-weight-bold">No</th>
+							<th class="rgba-teal-strong font-weight-bold">Tên khóa học</th>
+							<th class="rgba-teal-strong font-weight-bold">Tên loại khóa
+								học</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td colspan="3" class="text-center">Không có dữ liệu</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+
+		</div>
+	</div>
+</div>
+
+<script>
+	$(function() { //active label
+		if ($('.form-inline input').val() != "") {
+			$('label').each(function() {
+				$(this).addClass('active');
+			});
+		}
+
+		var h = $('#hinh').val();
+		document.getElementById("imgpreview").src = h;
+	});
+	/*Avatar start*/
+	function BrowseServer(startupPath, functionData) {
+		// You can use the "CKFinder" class to render CKFinder in a page:
+		var finder = new CKFinder();
+
+		// The path for the installation of CKFinder (default = "/ckfinder/").
+		finder.basePath = '../';
+
+		//Startup path in a form: "Type:/path/to/directory/"
+		finder.startupPath = startupPath;
+
+		// Name of a function which is called when a file is selected in CKFinder.
+		finder.selectActionFunction = SetFileField;
+
+		// Additional data to be passed to the selectActionFunction in a second argument.
+		// We'll use this feature to pass the Id of a field that will be updated.
+		finder.selectActionData = functionData;
+
+		// Name of a function which is called when a thumbnail is selected in CKFinder. Preview img
+		// finder.selectThumbnailActionFunction = ShowThumbnails;
+
+		// Launch CKFinder
+		finder.popup();
+	}
+
+	// This is a sample function which is called when a file is selected in CKFinder.
+	function SetFileField(fileUrl, data) {
+		document.getElementById(data["selectActionData"]).innerHTML = this
+				.getSelectedFile().name;
+		document.getElementById("imgpreview").src = fileUrl;
+		document.getElementById("hinh").value = fileUrl;
+	}
+	/*Avatar end*/
+</script>

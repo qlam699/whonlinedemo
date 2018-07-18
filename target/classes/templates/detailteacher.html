@@ -1,0 +1,119 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="homelayout :: head"></head>
+<body>
+	<div th:replace="homelayout :: header"></div>
+	<div th:replace="homelayout :: modal"></div>
+	<div th:replace="homelayout :: modalright"></div>
+	<!--Content-->
+	<main class="container" style="min-height:500px"> <!--./ code here -->
+	<ol class="breadcrumb mt-2">
+		<li class="breadcrumb-item"><a href="/">Home</a></li>
+		<li class="breadcrumb-item"><a href="/teachers">Teachers</a></li>
+		<li class="breadcrumb-item active" th:text="${gv.hovaten}">Data</li>
+	</ol>
+	<section id="detailc">
+		<div class="row mt-3" id="maindetail">
+			<!--Author box-->
+			<div class="author-box w-100">
+				<!--Name-->
+				<h3 class="h3-responsive text-center">About author</h3>
+				<hr />
+				<div class="row">
+					<!--Avatar-->
+					<div class="col-12 col-sm-2">
+						<img th:if="${gv.hinh==''||gv.hinh==null}" width="200"
+							th:attr="avatar=${gv.hovaten}"
+							class="img-fluid rounded-circle z-depth-2" /> <img
+							th:unless="${gv.hinh==''||gv.hinh==null}" width="200"
+							th:src="${gv.hinh}" class="img-fluid rounded-circle z-depth-2" />
+					</div>
+					<!--Author Data-->
+					<div class=" col-12 col-sm-10">
+						<p>
+							<strong th:text="${gv.hovaten}">John Doe</strong>
+						</p>
+						<!-- <div class="personal-sm">
+							<a class="email-ic"><i class="fa fa-home"> </i></a> <a
+								class="fb-ic"><i class="fa fa-facebook"> </i></a> <a
+								class="tw-ic"><i class="fa fa-twitter"> </i></a> <a
+								class="gplus-ic"><i class="fa fa-google-plus"> </i></a> <a
+								class="li-ic"><i class="fa fa-linkedin"> </i></a> <a
+								class="email-ic"><i class="fa fa-envelope-o"> </i></a>
+						</div> -->
+						<p th:text="${gv.email}">Email</p>
+						<p th:text="${gv.mota}" class="hidden-md-down">Description</p>
+					</div>
+				</div>
+			</div>
+			<!--/.Author box-->
+			<h3 th:if="${ #lists.isEmpty(dsgvkh)}" >No course.</h3>
+			<div th:if="${not #lists.isEmpty(dsgvkh)}" class="jumbotron course w-100">
+				<br />
+				<h1 class="h1-responsive" th:text="#{m.course}">Courses</h1>
+				<div class="courselist m-2" th:each="gvkh,i : ${dsgvkh}">
+					<div class="row courselist">
+						<!--Image column-->
+						<div class="col-12 col-sm-2">
+							<a th:href="@{/detailcourse/}+*{gvkh.makh}"> <img
+								th:if="${gvkh.hinh==''}" class="img-fluid z-depth-2" width="200"
+								th:attr="avatar=${gvkh.tenkh}" /> <img
+								th:unless="${gvkh.hinh==''}" class="img-fluid z-depth-2"
+								width="200" th:src="${gvkh.hinh}" />
+							</a>
+						</div>
+						<!--/.Image column-->
+
+						<!--Content column-->
+						<div class="col-sm-10 col-12">
+							<a th:href="@{/detailcourse/}+*{gvkh.makh}">
+								<h3 th:text="${gvkh.tenkh}" class="user-name">Name Course</h3>
+							</a> <a th:href="@{/forum/}+*{gvkh.makh}">
+								<ul class="list-unstyled">
+									<li class="comment-date"><i class="fa fa-comments"></i> <span
+										th:text="#{m.forum}">Forum</span></li>
+								</ul>
+							</a>
+							<div class="card-data">
+								<ul class="list-unstyled">
+									<li class="comment-date"><i class="fa fa-clock-o"></i> <span
+										th:text="${gvkh.tgbdhoc}" th:remove="tag"> thoi gian bd
+											hoc</span></li>
+								</ul>
+								<!--Review-->
+								<span class="my-rating-1"></span> <span class="live-rating"
+									th:text="${gvkh.sodiem}"></span>
+								<script th:inline="javascript">
+								$(".my-rating-1").starRating(
+										{
+											initialRating : [[${ gvkh.sodiem }]] ,
+											disableAfterRate : false,
+											onHover : function(currentIndex,
+													currentRating, $el) {
+												$('.live-rating').text(
+														currentIndex);
+											},
+											onLeave : function(currentIndex,
+													currentRating, $el) {
+												$('.live-rating').text(
+														currentRating);
+											},
+											readOnly: true,
+											starSize: 25
+										});
+							</script>
+							</div>
+							<div th:utext="${gvkh.mota}" class="comment-text"></div>
+						</div>
+						<!--/.Content column-->
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<!--./ code here --> </main>
+	<!--/.Content-->
+	<footer th:replace="homelayout :: footer"></footer>
+	<script th:src="@{/js/cusvalidateform.js}"></script>
+</body>
+</html>

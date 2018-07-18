@@ -1,0 +1,633 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="adlayout :: head"></head>
+<body>
+	<div th:replace="adlayout :: header"></div>
+	<div th:replace="homelayout::modal"></div>
+	<!--Content-->
+	<main class="container-fluid" id="mainad"> <!--./ code here -->
+	<div class="modal-content">
+		<div class="modal-body" style="margin-top: 54px">
+			<div id="wrapper">
+				<div th:replace="adlayout :: sidebar"></div>
+				<div id="page-content-wrapper">
+					<h1 id="home" class="text-center font-bold mt-1"
+						th:text="#{m.facultymanagement}"></h1>
+					<!--Grid column-->
+					<div class="mb-r">
+						<!-- Nav tabs -->
+						<ul class="nav nav-tabs nav-justified" role="tablist">
+							<li class="nav-item"><a class="nav-link active"
+								data-toggle="tab" href="#panel5" role="tab"><i
+									class="fa fa-user"></i> <th:block th:text="#{m.faculty}"></th:block></a></li>
+							<li class="nav-item"><a class="nav-link" data-toggle="tab"
+								href="#panel6" role="tab"><i class="fa fa-heart"></i> <th:block
+										th:text="#{m.coursecategory}"></th:block></a></li>
+							<li class="nav-item"><a class="nav-link" data-toggle="tab"
+								href="#panel7" role="tab"><i class="fa fa-envelope"></i> <th:block
+										th:text="#{m.course}"></th:block></a></li>
+						</ul>
+						<!-- Tab panels -->
+						<div class="tab-content">
+							<!--Panel 1-->
+							<div class="tab-pane fade in show active" id="panel5"
+								role="tabpanel">
+								<br />
+								<div class="rowbtn" sec:authorize="hasRole('ROLE_STAFF')">
+									<button class="btn btn-sm btn-success" data-target=".modal"
+										data-toggle="modal" href="khoa/create">
+										<i class="fa fa-plus mr-1"></i>Add
+									</button>
+									<button disabled="disabled" class="btn btn-sm btn-warning"
+										data-target=".modal" data-toggle="modal" id="editkhoa">
+										<i class="fa fa-magic mr-1"></i>Edit
+									</button>
+									<button disabled="disabled" class="btn btn-sm btn-danger"
+										data-target=".modal" data-toggle="modal" id="deletekhoa">
+										<i class="fa fa-trash mr-1"></i>Delete
+									</button>
+								</div>
+								<table width="100%" cellspacing="0"
+									class="table table-hover responsive nowrap" id="tbkhoa">
+									<thead>
+										<tr>
+											<th class="rgba-teal-strong">Mã Khoa</th>
+											<th class="rgba-teal-strong">Tên Khoa</th>
+											<th class="rgba-teal-strong">Isdeleted</th>
+										</tr>
+									</thead>
+									<tbody>
+										<tr th:each="k,i : ${dskhoa}" class="odd gradeX">
+											<td th:text="${k.makhoa}">Mã khoa</td>
+											<td th:text="${k.tenkhoa}">Tên khoa</td>
+											<td th:text="${k.isdeleted}">Isdeleted</td>
+
+										</tr>
+									</tbody>
+								</table>
+							</div>
+							<!--/.Panel 1-->
+							<!--Panel 2-->
+							<div class="tab-pane fade" id="panel6" role="tabpanel">
+								<br />
+								<div class="rowbtn" sec:authorize="hasRole('ROLE_STAFF')">
+									<button class="btn btn-sm btn-success" data-target=".modal"
+										data-toggle="modal" href="loaikh/create">
+										<i class="fa fa-plus mr-1"></i>Add
+									</button>
+									<button disabled="disabled" class="btn btn-sm btn-warning"
+										data-target=".modal" data-toggle="modal" id="editloaikh">
+										<i class="fa fa-magic mr-1"></i>Edit
+									</button>
+									<button disabled="disabled" class="btn btn-sm btn-danger"
+										data-target=".modal" data-toggle="modal" id="deleteloaikh">
+										<i class="fa fa-trash mr-1"></i>Delete
+									</button>
+								</div>
+								<table width="100%" cellspacing="0"
+									class="table table-hover responsive nowrap" id="tbloaikh">
+									<thead>
+										<tr>
+											<th class="rgba-teal-strong">Mã Loại KH</th>
+											<th class="rgba-teal-strong">Mã Khoa</th>
+											<th class="rgba-teal-strong">Tên Loại KH</th>
+											<th class="rgba-teal-strong">Isdeleted</th>
+										</tr>
+									</thead>
+									<tbody>
+										<tr th:each="lkh,i : ${dsloaikh}" class="odd gradeX">
+											<td th:text="${lkh.maloaikh}">Mã Loại KH</td>
+											<td th:text="${lkh.khoa.makhoa}">Mã Khoa</td>
+											<td th:text="${lkh.tenloaikh}">Tên Loại KH</td>
+											<td th:text="${lkh.isdeleted}">Isdeleted</td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+							<!--/.Panel 2-->
+							<!--Panel 3-->
+							<div class="tab-pane fade" id="panel7" role="tabpanel">
+								<div>
+									<h1 id="home" class="text-center font-bold mt-1">Danh sách
+										khóa học đã duyệt</h1>
+									<br />
+									<div class="rowbtn">
+										<th:block sec:authorize="hasRole('ROLE_STAFF')">
+											<!-- <button class="btn btn-sm btn-success" data-target=".modal"
+												data-toggle="modal" href="khoahoc/create">
+												<i class="fa fa-plus mr-1"></i>Add
+											</button> -->
+											<button disabled="disabled" class="btn btn-sm btn-warning"
+												data-target=".modal" data-toggle="modal" id="editkhdaduyet">
+												<i class="fa fa-magic mr-1"></i>Edit
+											</button>
+											<button disabled="disabled" class="btn btn-sm btn-danger"
+												data-target=".modal" data-toggle="modal"
+												id="deletekhdaduyet">
+												<i class="fa fa-trash mr-1"></i>Delete
+											</button>
+										</th:block>
+									</div>
+									<table width="100%" cellspacing="0"
+										class="table table-hover responsive nowrap" id="tbkhdaduyet">
+										<thead>
+											<tr>
+												<th class="rgba-teal-strong">Mã KH</th>
+												<th class="rgba-teal-strong">Tên Khóa học</th>
+												<th class="rgba-teal-strong">Tên Loại KH</th>
+												<th class="rgba-teal-strong">TG BĐ học</th>
+												<th class="rgba-teal-strong">TG KT học</th>
+												<th class="rgba-teal-strong">TG BĐ ĐKí</th>
+												<th class="rgba-teal-strong">TG KT ĐKí</th>
+												<th class="rgba-teal-strong">Số lượng</th>
+												<th class="rgba-teal-strong">Số lượng hiện tại</th>
+												<th class="rgba-teal-strong">Học phí</th>
+												<th class="rgba-teal-strong">Mô tả</th>
+												<th class="rgba-teal-strong">Hình</th>
+												<th class="rgba-teal-strong">Đã duyệt</th>
+												<th class="rgba-teal-strong">Tên giáo trình</th>
+												<th class="rgba-teal-strong">Isdeleted</th>
+											</tr>
+										</thead>
+										<tbody>
+											<tr th:each="kh,i : ${dskhdaduyet}" class="odd gradeX">
+												<td th:text="${kh.makh}">Mã KH</td>
+												<td th:text="${kh.tenkh}">Tên KH</td>
+												<td th:text="${kh.loaikhoahoc.tenloaikh}">Tên Loại KH</td>
+												<td th:text="${kh.tgbdhoc}">TG BĐ học</td>
+												<td th:text="${kh.tgkthoc}">TG KT học</td>
+												<td th:text="${kh.tgbddk}">TG BĐ ĐKí</td>
+												<td th:text="${kh.tgktdk}">TG KT ĐKí</td>
+												<td
+													th:text="${#numbers.formatDecimal(kh.soluong, 0, 'COMMA', 0, 'POINT')}">Số
+													lượng</td>
+												<td
+													th:text="${#numbers.formatDecimal(kh.soluonght, 0, 'COMMA', 0, 'POINT')}">Số
+													lượng hiện tại</td>
+												<td
+													th:text="${#numbers.formatDecimal(kh.hocphi, 0, 'COMMA', 1, 'POINT')}">Học
+													phí</td>
+												<td th:text="${kh.mota}">Mô tả</td>
+												<td th:text="${kh.hinh}">Hình</td>
+												<td th:text="${kh.daduyet}">Đã duyệt</td>
+												<td th:text="${kh.giaotrinh.tengt}">Tên GT</td>
+												<td th:text="${kh.isdeleted}">Isdeleted</td>
+											</tr>
+										</tbody>
+									</table>
+								</div>
+
+								<hr />
+
+								<div>
+									<h1 id="home" class="text-center font-bold mt-1">Danh sách
+										khóa học chưa duyệt</h1>
+									<br />
+									<div class="rowbtn">
+										<th:block sec:authorize="hasRole('ROLE_TEACHER')">
+											<button class="btn btn-sm btn-success" data-target=".modal"
+												data-toggle="modal" href="khoahoc/create">
+												<i class="fa fa-plus mr-1"></i>Add
+											</button>
+										</th:block>
+										<button disabled="disabled" class="btn btn-sm btn-warning"
+											data-target=".modal" data-toggle="modal" id="editkhchuaduyet">
+											<i class="fa fa-magic mr-1"></i>Edit
+										</button>
+										<button disabled="disabled" class="btn btn-sm btn-danger"
+											data-target=".modal" data-toggle="modal"
+											id="deletekhchuaduyet">
+											<i class="fa fa-trash mr-1"></i>Delete
+										</button>
+									</div>
+									<table width="100%" cellspacing="0"
+										class="table table-hover responsive nowrap" id="tbkhchuaduyet">
+										<thead>
+											<tr>
+												<th class="rgba-teal-strong">Mã KH</th>
+												<th class="rgba-teal-strong">Tên Khóa học</th>
+												<th class="rgba-teal-strong">Tên Loại KH</th>
+												<th class="rgba-teal-strong">TG BĐ học</th>
+												<th class="rgba-teal-strong">TG KT học</th>
+												<th class="rgba-teal-strong">TG BĐ ĐKí</th>
+												<th class="rgba-teal-strong">TG KT ĐKí</th>
+												<th class="rgba-teal-strong">Số lượng</th>
+												<th class="rgba-teal-strong">Số lượng hiện tại</th>
+												<th class="rgba-teal-strong">Học phí</th>
+												<th class="rgba-teal-strong">Mô tả</th>
+												<th class="rgba-teal-strong">Hình</th>
+												<th class="rgba-teal-strong">Đã duyệt</th>
+												<th class="rgba-teal-strong">Tên giáo trình</th>
+												<th class="rgba-teal-strong">Isdeleted</th>
+												<th class="rgba-teal-strong">Mã GV</th>
+											</tr>
+										</thead>
+										<tbody>
+											<tr th:each="kh,i : ${dsgvkh}" class="odd gradeX">
+												<td th:text="${kh.gvkhid.khoahoc.makh}">Mã KH</td>
+												<td th:text="${kh.gvkhid.khoahoc.tenkh}">Tên KH</td>
+												<td th:text="${kh.gvkhid.khoahoc.loaikhoahoc.tenloaikh}">Tên Loại KH</td>
+												<td th:text="${kh.gvkhid.khoahoc.tgbdhoc}">TG BĐ học</td>
+												<td th:text="${kh.gvkhid.khoahoc.tgkthoc}">TG KT học</td>
+												<td th:text="${kh.gvkhid.khoahoc.tgbddk}">TG BĐ ĐKí</td>
+												<td th:text="${kh.gvkhid.khoahoc.tgktdk}">TG KT ĐKí</td>
+												<td
+													th:text="${#numbers.formatDecimal(kh.gvkhid.khoahoc.soluong, 0, 'COMMA', 0, 'POINT')}">Số
+													lượng</td>
+												<td
+													th:text="${#numbers.formatDecimal(kh.gvkhid.khoahoc.soluonght, 0, 'COMMA', 0, 'POINT')}">Số
+													lượng hiện tại</td>
+												<td
+													th:text="${#numbers.formatDecimal(kh.gvkhid.khoahoc.hocphi, 0, 'COMMA', 1, 'POINT')}">Học
+													phí</td>
+												<td th:text="${kh.gvkhid.khoahoc.mota}">Mô tả</td>
+												<td th:text="${kh.gvkhid.khoahoc.hinh}">Hình</td>
+												<td th:text="${kh.gvkhid.khoahoc.daduyet}">Đã duyệt</td>
+												<td th:text="${kh.gvkhid.khoahoc.giaotrinh.tengt}">Tên GT</td>
+												<td th:text="${kh.gvkhid.khoahoc.isdeleted}">Isdeleted</td>
+												<td th:text="${kh.gvkhid.nguoidung.mand}">Mã GV</td>
+											</tr>
+										</tbody>
+									</table>
+								</div>
+							</div>
+							<!--/.Panel 3-->
+						</div>
+
+					</div>
+					<!--Grid column-->
+				</div>
+			</div>
+		</div>
+	</div>
+	</main>
+	<footer th:replace="adlayout :: footer"></footer>
+	<script src="ckfinder/ckfinder.js" th:src="@{/ckfinder/ckfinder.js}"></script>
+	<script th:inline="javascript">
+	//<![CDATA[
+		// Material Select Initialization		
+		$(document).ready(
+				function() {
+					//
+					$('.mdb-select').material_select();
+					//Table
+					var tbkhoa = $('#tbkhoa').DataTable(
+							{
+								dom : 'Bfrtip',
+								"columnDefs" : [ {
+									"targets" : [ 2 ],
+									"visible" : false,
+									"searchable" : false
+								} ],
+								select : {
+									style : 'single' //'multi',
+								// selector : 'td:first-child'
+								},
+								lengthMenu : [
+										[ 10, 25, 50, -1 ],
+										[ '10 rows', '25 rows', '50 rows',
+												'Show all' ] ],
+								buttons : [ 'pageLength', {
+									text : 'Select All',
+									className : '',
+									counter : true,
+									action : function(e, dt, node, config) {
+										if (config.counter) {
+											this.text('Select None');
+											tbkhoa.rows({
+												page : 'current'
+											}).select();
+											config.counter = false;
+										} else {
+											this.text('Select All');
+											tbkhoa.rows({
+												page : 'current'
+											}).deselect();
+											config.counter = true;
+										}
+									}
+								}, {
+									extend : 'colvis',
+									collectionLayout : 'fixed two-column'
+								} ]
+							});
+					//Table
+					var tbloaikh = $('#tbloaikh').DataTable(
+							{
+								dom : 'Bfrtip',
+								"columnDefs" : [ {
+									"targets" : [ 3 ],
+									"visible" : false,
+									"searchable" : false
+								} ],
+								select : {
+									style : 'single' //'multi',
+								// selector : 'td:first-child'
+								},
+								lengthMenu : [
+										[ 10, 25, 50, -1 ],
+										[ '10 rows', '25 rows', '50 rows',
+												'Show all' ] ],
+								buttons : [ 'pageLength', {
+									text : 'Select All',
+									className : '',
+									counter : true,
+									action : function(e, dt, node, config) {
+										if (config.counter) {
+											this.text('Select None');
+											tbloaikh.rows({
+												page : 'current'
+											}).select();
+											config.counter = false;
+										} else {
+											this.text('Select All');
+											tbloaikh.rows({
+												page : 'current'
+											}).deselect();
+											config.counter = true;
+										}
+									}
+								}, {
+									extend : 'colvis',
+									collectionLayout : 'fixed two-column'
+								} ]
+							});
+					//Table
+					var tbkhdaduyet = $('#tbkhdaduyet').DataTable(
+							{
+								dom : 'Bfrtip',
+								"columnDefs" : [ {
+									"targets" : [0, 8, 11, 14 ],
+									"visible" : false,
+									"searchable" : false
+								} ],
+								select : {
+									style : 'single' //'multi',
+								// selector : 'td:first-child'
+								},
+								lengthMenu : [
+										[ 10, 25, 50, -1 ],
+										[ '10 rows', '25 rows', '50 rows',
+												'Show all' ] ],
+								buttons : [ 'pageLength', {
+									text : 'Select All',
+									className : '',
+									counter : true,
+									action : function(e, dt, node, config) {
+										if (config.counter) {
+											this.text('Select None');
+											tbkhdaduyet.rows({
+												page : 'current'
+											}).select();
+											config.counter = false;
+										} else {
+											this.text('Select All');
+											tbkhdaduyet.rows({
+												page : 'current'
+											}).deselect();
+											config.counter = true;
+										}
+									}
+								}, {
+									extend : 'colvis',
+									collectionLayout : 'fixed two-column'
+								} ]
+							});
+
+					//Table
+					var tbkhchuaduyet = $('#tbkhchuaduyet').DataTable(
+							{
+								dom : 'Bfrtip',
+								"columnDefs" : [ {
+									"targets" : [0, 8, 11, 14, 15 ],
+									"visible" : false,
+									"searchable" : false
+								} ],
+								select : {
+									style : 'single' //'multi',
+								// selector : 'td:first-child'
+								},
+								lengthMenu : [
+										[ 10, 25, 50, -1 ],
+										[ '10 rows', '25 rows', '50 rows',
+												'Show all' ] ],
+								buttons : [ 'pageLength', {
+									text : 'Select All',
+									className : '',
+									counter : true,
+									action : function(e, dt, node, config) {
+										if (config.counter) {
+											this.text('Select None');
+											tbkhchuaduyet.rows({
+												page : 'current'
+											}).select();
+											config.counter = false;
+										} else {
+											this.text('Select All');
+											tbkhchuaduyet.rows({
+												page : 'current'
+											}).deselect();
+											config.counter = true;
+										}
+									}
+								}, {
+									extend : 'colvis',
+									collectionLayout : 'fixed two-column'
+								} ]
+							});
+
+					////////////////////////////// KHOA /////////////////////////////////////
+					var idkhoa;
+					$('#tbkhoa tbody').on('click', 'tr', function() {
+						if ($(this).hasClass('selected')) { //da chon roi thi ko chon nua
+							console.log('selected');
+							$('#editkhoa').removeAttr("disabled");
+							$('#deletekhoa').removeAttr("disabled");
+							$(this).removeClass('selected');
+							idkhoa = tbkhoa.row($(this)).data();
+						} else {
+							console.log('un selected');
+							$('#editkhoa').attr('disabled', 'disabled');
+							$('#deletekhoa').attr('disabled', 'disabled');
+							$(this).addClass('selected');
+						}
+					});
+					$('#editkhoa').click(function() {
+						$(this).attr('href', 'khoa/' + idkhoa[0] + '/edit');
+					});
+					$('#deletekhoa').click(
+							function() {
+								$(this).attr('href', 'isdelete');
+								setTimeout(
+										//waiting
+										function() {
+											$('#titledelete').html(
+													'Are you sure delete '
+															+ idkhoa[0]);
+											$('#yesdelete').attr(
+													'href',
+													'khoa/' + idkhoa[0]
+															+ '/delete');
+										}, 100);
+							});
+
+					tbkhoa.rows().every(function(rowIdx, tableLoop, rowLoop) {
+						var data = this.data();
+						if (data[2] == 'true') { //isdeleted column
+							this.node().remove();
+						}
+					});
+
+					///////////////////////////// LOAI KHOA HOC ////////////////////////////////////
+					var idloaikh;
+					$('#tbloaikh tbody').on('click', 'tr', function() {
+						if ($(this).hasClass('selected')) { //da chon roi thi ko chon nua
+							$('#editloaikh').removeAttr("disabled");
+							$('#deleteloaikh').removeAttr("disabled");
+							$(this).removeClass('selected');
+							idloaikh = tbloaikh.row($(this)).data();
+						} else {
+							$('#editloaikh').attr('disabled', 'disabled');
+							$('#deleteloaikh').attr('disabled', 'disabled');
+							table.$('tr.selected').removeClass('selected');
+							$(this).addClass('selected');
+						}
+					});
+					$('#editloaikh').click(
+							function() {
+								$(this).attr('href',
+										'loaikh/' + idloaikh[0] + '/edit');
+							});
+					$('#deleteloaikh').click(
+							function() {
+								$(this).attr('href', 'isdelete');
+								setTimeout(
+								//waiting
+								function() {
+									$('#titledelete').html(
+											'Are you sure delete '
+													+ idloaikh[0]);
+									$('#yesdelete')
+											.attr(
+													'href',
+													'loaikh/' + idloaikh[0]
+															+ '/delete');
+								}, 100);
+							});
+
+					tbloaikh.rows().every(function(rowIdx, tableLoop, rowLoop) {
+						var data = this.data();
+						if (data[3] == 'true') { //isdeleted column
+							this.node().remove();
+						}
+					});
+
+					///////////////////////////// KHOA HOC ////////////////////////////////////
+
+					// Da duuyet
+					var idkhdaduyet;
+					$('#tbkhdaduyet tbody').on('click', 'tr', function() {
+						if ($(this).hasClass('selected')) { //da chon roi thi ko chon nua
+							$('#editkhdaduyet').removeAttr("disabled");
+							$('#deletekhdaduyet').removeAttr("disabled");
+							$(this).removeClass('selected');
+							idkhdaduyet = tbkhdaduyet.row($(this)).data();
+						} else {
+							$('#editkhdaduyet').attr('disabled', 'disabled');
+							$('#deletekhdaduyet').attr('disabled', 'disabled');
+							table.$('tr.selected').removeClass('selected');
+							$(this).addClass('selected');
+						}
+					});
+					$('#editkhdaduyet').click(
+							function() {
+								$(this).attr('href',
+										'khoahoc/' + idkhdaduyet[0] + '/edit');
+							});
+					$('#deletekhdaduyet').click(
+							function() {
+								$(this).attr('href', 'isdelete');
+								setTimeout(
+								//waiting
+								function() {
+									$('#titledelete').html(
+											'Are you sure delete '
+													+ idkhdaduyet[0]);
+									$('#yesdelete').attr(
+											'href',
+											'khoahoc/' + idkhdaduyet[0]
+													+ '/delete');
+								}, 100);
+							});
+
+					tbkhdaduyet.rows().every(
+							function(rowIdx, tableLoop, rowLoop) {
+								var data = this.data();
+								if (data[14] == 'true') { //isdeleted column
+									this.node().remove();
+								}
+							});
+
+					// Chua duyet
+					var idkhchuaduyet;
+					$('#tbkhchuaduyet tbody').on(
+							'click',
+							'tr',
+							function() {
+								if ($(this).hasClass('selected')) { //da chon roi thi ko chon nua
+									idkhchuaduyet = tbkhchuaduyet.row($(this))
+									.data();
+								
+									if(idkhchuaduyet[15]==[[${mand}]] || [[ ${ #authorization.expression('hasRole(''STAFF'')') } ]]  == true){
+										$('#editkhchuaduyet').removeAttr("disabled");
+										$('#deletekhchuaduyet').removeAttr("disabled");
+									}else{
+										$('#editkhchuaduyet').attr('disabled', 'disabled');
+										$('#deletekhchuaduyet').attr('disabled', 'disabled');
+									}
+									$(this).removeClass('selected');
+								} else {
+									$('#editkhchuaduyet').attr('disabled',
+											'disabled');
+									$('#deletekhchuaduyet').attr('disabled',
+											'disabled');
+									table.$('tr.selected').removeClass(
+											'selected');
+									$(this).addClass('selected');
+								}
+							});
+					$('#editkhchuaduyet').click(
+							function() {
+								$(this)
+										.attr(
+												'href',
+												'khoahoc/' + idkhchuaduyet[0]
+														+ '/edit');
+							});
+					$('#deletekhchuaduyet').click(
+							function() {
+								$(this).attr('href', 'isdelete');
+								setTimeout(
+								//waiting
+								function() {
+									$('#titledelete').html(
+											'Are you sure delete '
+													+ idkhchuaduyet[0]);
+									$('#yesdelete').attr(
+											'href',
+											'khoahoc/' + idkhchuaduyet[0]
+													+ '/delete');
+								}, 100);
+							});
+
+					tbkhchuaduyet.rows().every(
+							function(rowIdx, tableLoop, rowLoop) {
+								var data = this.data();
+								if (data[14] == 'true') { //isdeleted column
+									this.node().remove();
+								}
+							});
+				});
+		//]]>
+	</script>
+</body>
+</html>

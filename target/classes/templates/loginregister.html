@@ -1,0 +1,72 @@
+<div class="modal-c-tabs">
+
+	<!-- Nav tabs -->
+	<ul class="nav nav-tabs tabs-2 teal" role="tablist">
+		<li class="nav-item"><a class="nav-link active" data-toggle="tab"
+			href="#panel17" role="tab"><i class="fa fa-user mr-1"></i> <th:block th:text="#{m.login}"></th:block></a>
+		</li>
+	</ul>
+
+	<!-- Tab panels -->
+	<div class="tab-content">
+		<!--Panel 17-->
+		<div class="tab-pane fade in show active" id="panel17" role="tabpanel">
+
+			<!--Body-->
+			<div class="modal-body mb-1">
+			<form th:action="@{/login}" method="POST">
+				<div class="md-form form-sm">
+					<i class="fa fa-envelope prefix"></i> <input type="text" id="email" name="email"
+						class="form-control required email"
+						data-placement="left" data-trigger="manual" 
+						th:attr="data-content=#{m.emailvalid}" /> 
+				<label for="email" >Email</label>
+				</div>
+
+				<div class="md-form form-sm">
+					<i class="fa fa-lock prefix"></i> <input type="password" id="password" name="password"
+						class="form-control required password" data-placement="left"
+						data-trigger="manual"
+						th:attr="data-content=#{m.passwordvalid}" />
+				<label for="password" th:text="#{m.password}">Your Password</label>
+				</div>
+				<div class="text-center mt-1">
+					<button type="submit" class="btn default-color">
+						<th:block th:text="#{m.login}"></th:block> <i class="fa fa-sign-in ml-1"></i>
+					</button>
+				</div>
+				</form>
+			</div>
+			<div class="text-center">
+				<p th:text="#{m.orloginwith}">OR Login With:</p>
+				<a class="btn btn-fb" th:href="@{/login/facebook}"><i
+					class="fa fa-facebook left"></i> Facebook</a> <a class="btn btn-gplus"
+					th:href="@{/login/google}"><i class="fa fa-google-plus left"></i>
+					Google +</a>
+			</div>
+			<!--Footer-->
+			<div class="modal-footer">
+				<div class="options text-center text-md-right mt-1">
+					<p>
+						<th:block th:text="#{m.notmember}"></th:block> <a id="btnregister" class="blue-text wow fadeInDown"
+							data-wow-delay="0.7s" data-toggle="modal" th:href="@{/register}"
+							data-target="#modalregister" th:text="#{m.register}">Register</a>
+					</p>
+					<p>
+					<a id="btnforgetpw"
+									class="blue-text"
+									data-wow-delay="0.7s" data-toggle="modal" th:text="#{m.forgetpassword}"
+									th:href="@{/forgetpassword}" data-target="#modalregister">Register</a>
+					</p>
+				</div>
+				<button type="button"
+					class="btn btn-outline-info waves-effect ml-auto"
+					data-dismiss="modal" th:text="#{m.close}">Close</button>
+			</div>
+		</div>
+		<!--/.Panel 7-->
+	</div>
+
+</div>
+
+<script th:src="@{/js/cusvalidateform.js}"></script>

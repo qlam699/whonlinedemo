@@ -1,0 +1,368 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="homelayout :: head"></head>
+<body>
+	<div th:replace="homelayout :: header"></div>
+	<div th:replace="homelayout :: modal"></div>
+	<div th:replace="homelayout :: modalright"></div>
+	<!--Content-->
+	<main class="container"> <!--./ code here --> <!--Grid row-->
+	<div class="row mt-4">
+		<!--Grid column-->
+		<div class="col-md-12">
+			<h2 class="text-center font-bold" th:text="#{m.myaccount}">My
+				Account</h2>
+			<!-- Nav tabs -->
+			<ul class="nav nav-tabs nav-justified">
+				<th:block sec:authorize="hasRole('ROLE_TEACHER')">
+					<li class="nav-item"><a class="nav-link" data-toggle="tab"
+						href="#panel1" role="tab" th:text="#{m.notify}">Notify</a></li>
+				</th:block>
+				<li class="nav-item"><a class="nav-link active"
+					data-toggle="tab" href="#panel2" role="tab" th:text="#{m.profile}">Profile</a></li>
+				<th:block sec:authorize="hasRole('ROLE_STUDENT')">
+					<li class="nav-item"><a class="nav-link" data-toggle="tab"
+						href="#panel3" role="tab" th:text="#{m.course}">Courses</a></li>
+				</th:block>
+			</ul>
+			<!-- Tab panels -->
+			<div class="tab-content card">
+				<!--Panel 1-->
+				<div class="tab-pane fade" id="panel1" role="tabpanel">
+					<br />
+					<div th:if="${#lists.isEmpty(dstn)}">
+						<i class="fa fa-comments" aria-hidden="true"></i> No Message
+					</div>
+					<div th:each="tn,i : ${dstn}"
+						class="list-group-item list-group-item-action media m-2">
+						<img class="mr-3 avatar-sm float-left"
+							th:if="${tn.ndtnid.nguoigui.hinh==''||tn.ndtnid.nguoigui.hinh==null}"
+							width="500" th:attr="avatar=${tn.ndtnid.nguoigui.hovaten}" /> <img
+							class="mr-3 avatar-sm float-left"
+							th:unless="${tn.ndtnid.nguoigui.hinh==''||tn.ndtnid.nguoigui.hinh==null}"
+							width="500" th:src="${tn.ndtnid.nguoigui.hinh}" />
+						<div class="d-flex justify-content-between mb-1 ">
+							<small th:text="${tn.ndtnid.tinnhan.tggui}">13 July</small>
+						</div>
+						<!-- Message -->
+						<h4 th:text="${tn.ndtnid.tinnhan.tieude}"></h4>
+						<hr />
+						<div class="text-truncate" th:utext="${tn.ndtnid.tinnhan.noidung}"></div>
+					</div>
+
+				</div>
+				<!--/.Panel 1-->
+				<!--Panel 2-->
+				<div class="tab-pane fade in show active" id="panel2"
+					role="tabpanel">
+					<br />
+					<div class="row">
+						<div class="col-md-6 mb-r">
+							<!--Card-->
+							<div class="card testimonial-card">
+								<!--Bacground color-->
+								<div class="card-up aqua-gradient"></div>
+								<!--Avatar-->
+								<div class="avatar">
+									<img id="imgpreview" class="img-fluid" style="height: 100%"
+										th:if="${nd.hinh==''||nd.hinh==null}"
+										th:attr="avatar=${nd.hovaten}" /> <img id="imgpreview"
+										class="img-fluid" style="height: 100%"
+										th:unless="${nd.hinh==''||nd.hinh==null}" th:src="${nd.hinh}" />
+								</div>
+
+								<div class="card-body">
+									<!--Name-->
+									<h4 class="card-title" th:text="${nd.hovaten}">Your name</h4>
+									<hr />
+									<div class="file-field">
+										<p>
+											<strong id="xImagePath" th:text="#{m.selectimage}">Selected
+												Image URL</strong><br /> <input
+												class="btn btn-primary btn-sm waves-effect waves-light"
+												type="button" th:value="#{m.browseimage}"
+												onclick="BrowseServer( 'Images:/', 'xImagePath' );" />
+										</p>
+									</div>
+									<small th:text="#{m.noteavatar}">Note: You should
+										select square image !</small>
+								</div>
+
+							</div>
+							<!--/.Card-->
+							<div class="text-center mt-1-half">
+								<a id="btnchangepw" class="btn btn-success"
+									data-wow-delay="0.7s" data-toggle="modal"
+									th:href="@{/changepassword}" data-target="#modalregister"
+									th:text="#{m.changepassword}">Register</a>
+							</div>
+						</div>
+
+						<div class="col-md-6 mb-r">
+							<form id="myform" action="myaccount/save"
+								th:action="@{/myaccount/save}" th:object="${nd}" method="POST">
+								<!--Email validation-->
+								<input type="hidden" id="hinh" class="form-control"
+									th:field="*{hinh}" />
+								<div class="md-form">
+									<i class="fa fa-plus-square prefix"></i> <input type="text"
+										id="mand" class="form-control" readonly="readonly"
+										th:field="*{mand}" /> <label for="mand" data-error="wrong"
+										data-success="right" class="">ID</label>
+								</div>
+								<div class="md-form">
+									<i class="fa fa-vcard-o prefix"></i> <input type="text"
+										id="hovaten" class="form-control validate"
+										th:field="*{hovaten}" /> <label for="hovaten"
+										data-error="wrong" data-success="right" class=""
+										th:text="#{m.fullname}">Full name</label>
+								</div>
+								<input type="hidden" id="phai" th:value="${nd.phai}"
+									th:field="*{phai}" />
+								<div class="switch">
+									<label> <th:block th:text="#{m.male}"></th:block> <input
+										id="cbphai" type="checkbox" th:checked="${nd.phai}" /> <span
+										class="lever"></span> <th:block th:text="#{m.female}"></th:block>
+									</label>
+								</div>
+
+								<div class="md-form">
+									<i class="fa fa-address-book-o prefix"></i> <input type="text"
+										id="diachi" class="form-control validate" th:field="*{diachi}" />
+									<label for="diachi" data-error="wrong" data-success="right"
+										class="" th:text="#{m.address}">Address</label>
+								</div>
+								<div class="md-form">
+									<i class="fa fa-address-card-o prefix"></i> <input type="text"
+										id="cmnd" class="form-control validate" th:field="*{cmnd}" />
+									<label for="cmnd" data-error="wrong" data-success="right"
+										class="" th:text="#{m.cmnd}">Identity card number</label>
+								</div>
+								<div class="md-form">
+									<i class="fa fa-paper-plane-o prefix"></i> <input type="email"
+										readonly="readonly" id="email" class="form-control"
+										th:field="*{email}" /> <label for="email" data-error="wrong"
+										data-success="right" class="">Email</label>
+								</div>
+								<div class="md-form">
+									<i class="fa fa-align-justify prefix"></i> <input type="text"
+										id="mota" class="form-control validate" th:field="*{mota}" />
+									<label for="mota" data-error="wrong" data-success="right"
+										class="" th:text="#{m.description}">Description</label>
+								</div>
+
+								<input type="hidden" class="form-control" id="ngaysinh"
+									th:field="*{ngaysinh}" />
+								<div class="md-form">
+									<i class="fa fa-calendar prefix"></i> <input type="text"
+										class="form-control" id="ngaysinhview"
+										placeholder="Birthday: DD/MM/YYYY" /> <label
+										for="ngaysinhview" data-error="wrong" data-success="right"
+										th:text="#{m.birthday}">Birthday</label>
+								</div>
+
+								<input class="btn btn-default" type="submit"
+									th:value="#{m.save}" />
+							</form>
+						</div>
+					</div>
+				</div>
+				<!--/.Panel 2-->
+
+				<!--Panel 3-->
+				<div class="tab-pane fade" id="panel3" role="tabpanel">
+					<h1 th:if="${!dskh.empty}" class="h1-responsive"
+						th:text="#{m.course}">Courses</h1>
+					<div class="row courselist m-2" th:each="kh,i : ${dskh}">
+						<br />
+						<!--Image column-->
+						<div class="avatar">
+							<a th:href="@{/detailcourse/}+*{kh.hvkhid.khoahoc.makh}"> <img
+								th:if="${kh.hvkhid.khoahoc.hinh==''||kh.hvkhid.khoahoc.hinh==null}"
+								th:attr="avatar=${kh.hvkhid.khoahoc.tenkh}"
+								style="min-width: 160" class="img-fluid" /> <img
+								th:unless="${kh.hvkhid.khoahoc.hinh==''||kh.hvkhid.khoahoc.hinh==null}"
+								th:src="${kh.hvkhid.khoahoc.hinh}" style="min-width: 160"
+								class="img-fluid" />
+							</a>
+						</div>
+						<!--/.Image column-->
+						<!--Content column-->
+						<div class="col-sm-10 col-12">
+							<a th:href="@{/detailcourse/}+*{kh.hvkhid.khoahoc.makh}">
+								<h3 class="user-name" th:text="${kh.hvkhid.khoahoc.tenkh}">Name
+									Course</h3>
+							</a> <a th:href="@{/forum/}+*{kh.hvkhid.khoahoc.makh}">
+								<ul class="list-unstyled">
+									<li class="comment-date"><i class="fa fa-comments"></i> <span
+										th:text="#{m.forum}">Forum</span></li>
+								</ul>
+							</a>
+
+							<div class="nd">
+								<ul class="list-unstyled">
+									<li class="comment-date"><i class="fa fa-clock-o"></i> <span
+										th:text="'Start time: ' + ${kh.hvkhid.khoahoc.tgbdhoc}"> </span></li>
+								</ul>
+								<ul class="list-unstyled">
+									<li class="comment-date"><i class="fa fa-gavel"></i> <span
+										th:text="#{m.evaluate}">Evaluate</span></li>
+								</ul>
+
+								<!--Review-->
+								<div class="modal-body mb-0">
+									<form th:object="${hvkh}" th:action="@{/danhgia/save}"
+										method="POST">
+
+										<input type="hidden" id="mahv" class="form-control"
+											name="hvkhid.nguoidung.mand"
+											th:value="${kh.hvkhid.nguoidung.mand}" /> <input
+											type="hidden" id="makh" class="form-control"
+											name="hvkhid.khoahoc.makh"
+											th:value="${kh.hvkhid.khoahoc.makh}" /> <span
+											th:id="${'my-rating' + i.index}"></span> <span
+											th:id="${'live-rating' + i.index}" id="displaystar"
+											th:text="${kh.sao}"></span> <input type="hidden"
+											th:id="${'sao'+ i.index}" class="form-control" name="sao"
+											value="0" />
+										<script th:inline="javascript">
+								$('#my-rating' + [[${ i.index }]]).starRating(
+										{
+											initialRating : [[${ kh.sao }]],
+											disableAfterRate : false,
+											onHover : function(currentIndex,
+													currentRating, $el) {
+												$('#live-rating' + [[${ i.index }]]).text(
+														currentIndex);
+											},
+											onLeave : function(currentIndex,
+													currentRating, $el) {
+												$('#live-rating' + [[${ i.index }]]).text(
+														currentRating);
+												$('#sao' + [[${ i.index }]] ).val(currentRating);
+											},
+											starSize: 25
+										});
+							</script>
+
+										<div th:if="${kh.sao == 0}" class="md-form form-sm ">
+											<label th:text="#{m.content}" class="pb-2">Nội dung</label>
+											<textarea type="text" class="form-control"
+												th:field="*{noidung}" th:value="${kh.noidung}"></textarea>
+										</div>
+
+										<div th:if="${kh.sao > 0}" class="md-form form-sm">
+											<textarea type="text" class="form-control"
+												th:text="${kh.noidung}" readonly="readonly">
+											</textarea>
+										</div>
+
+
+										<div th:if="${kh.sao == 0}" class="text-center mt-1-half">
+											<button th:text="#{m.save}"
+												class="btn btn-info mb-2 waves-effect waves-light">
+												Save <i class="fa fa-send ml-1"></i>
+											</button>
+										</div>
+									</form>
+								</div>
+							</div>
+							<br />
+						</div>
+						<!--/.Content column-->
+					</div>
+
+				</div>
+				<!--/.Panel 3-->
+			</div>
+
+		</div>
+		<!--Grid column-->
+	</div>
+
+	<!--./ code here --> </main>
+	<!--/.Content-->
+	<footer th:replace="homelayout :: footer"></footer>
+	<script src="ckfinder/ckfinder.js" th:src="@{/ckfinder/ckfinder.js}"></script>
+	<script type="text/javascript" src="js/moment-with-locales.min.js"
+		th:src="@{/js/moment-with-locales.min.js}"></script>
+	<script type="text/javascript"
+		src="js/bootstrap-material-datetimepicker.js"
+		th:src="@{/js/bootstrap-material-datetimepicker.js}"></script>
+
+	<script>
+	 $(function() {
+		$('#ngaysinh').bootstrapMaterialDatePicker({
+			weekStart : 0,
+			time : false,
+			currentDate : new Date(),
+		});
+	});
+	
+	$(document).ready(
+			function() {
+				var $ngaysinh = $('#ngaysinh');
+				var $ngaysinhview = $('#ngaysinhview');
+
+				$ngaysinhview.bootstrapMaterialDatePicker(
+						{
+							weekStart : 0,
+							currentDate : moment($ngaysinh.val(), "YYYY-MM-DD")
+									.format('DD-MM-YYYY'),
+							time : false,
+							format : 'DD-MM-YYYY'
+						}).on(
+						'change',
+						function(e, date) {
+							$ngaysinh.val(moment(date, "DD-MM-YYYY").format(
+									'YYYY-MM-DD'));
+						});
+			});  
+	
+		/*Avatar start*/
+		function BrowseServer(startupPath, functionData) {
+			// You can use the "CKFinder" class to render CKFinder in a page:
+			var finder = new CKFinder();
+
+			// The path for the installation of CKFinder (default = "/ckfinder/").
+			finder.basePath = '../';
+
+			//Startup path in a form: "Type:/path/to/directory/"
+			finder.startupPath = startupPath;
+
+			// Name of a function which is called when a file is selected in CKFinder.
+			finder.selectActionFunction = SetFileField;
+
+			// Additional data to be passed to the selectActionFunction in a second argument.
+			// We'll use this feature to pass the Id of a field that will be updated.
+			finder.selectActionData = functionData;
+
+			// Name of a function which is called when a thumbnail is selected in CKFinder. Preview img
+			// finder.selectThumbnailActionFunction = ShowThumbnails;
+
+			// Launch CKFinder
+			finder.popup();
+		};
+
+		// This is a sample function which is called when a file is selected in CKFinder.
+		function SetFileField(fileUrl, data) {
+			document.getElementById(data["selectActionData"]).innerHTML = this
+					.getSelectedFile().name;
+			document.getElementById("imgpreview").src = fileUrl;
+			document.getElementById("hinh").value = fileUrl;
+		};
+
+		// This is a sample function which is called when a thumbnail is selected in CKFinder.
+		/* function ShowThumbnails( fileUrl, data )
+		{
+			// this = CKFinderAPI
+			// var sFileName = this.getSelectedFile().name;
+			document.getElementById("imgpreview").src=fileUrl;
+			// It is not required to return any value.
+			// When false is returned, CKFinder will not close automatically.
+			return false;
+		} */
+		/*Avatar end*/
+		
+	</script>
+</body>
+</html>

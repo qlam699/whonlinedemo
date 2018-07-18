@@ -1,0 +1,197 @@
+<meta charset="utf-8" />
+<div class="modal-content">
+	<!--Header-->
+	<div class="modal-header light-blue darken-3 white-text">
+		<h4 class="title">
+			<i class="fa fa-pencil"></i>
+			<th:block th:text="#{m.student}"></th:block>
+		</h4>
+		<button type="button" class="close waves-effect waves-light"
+			data-dismiss="modal" aria-label="Close">
+			<span aria-hidden="true" class="fa fa-remove"></span>
+		</button>
+	</div>
+	<!--Body-->
+	<div class="modal-body mb-0">
+		<form id="myform" class="form-inline pull-right"
+			action="hocvien/save" th:object="${hocvien}"
+			th:action="@{/hocvien/save}" method="POST">
+
+			<input type="hidden" id="mand" class="form-control"
+				th:field="*{mand}" />
+			<div class="container">
+				<div class="md-form form-sm">
+					<i class="fa fa-tag prefix"></i> <input type="text" id="hovaten"
+						th:field="*{hovaten}" class="form-control required" /> <label
+						for="hovaten" class="" th:text="#{m.fullname}">Full name</label>
+				</div>
+
+				<input type="hidden" id="phai" th:value="${phai}" th:field="*{phai}" />
+				<div class="switch" style="border: 0">
+					<label style="position: relative"> <th:block
+							th:text="#{m.male}"></th:block> <input id="cbphai"
+						type="checkbox" th:checked="*{phai}" /> <span class="lever"></span>
+						<th:block th:text="#{m.female}"></th:block>
+					</label>
+				</div>
+
+				<input type="hidden" class="form-control" id="ngaysinh"
+					th:field="*{ngaysinh}" />
+				<div class="md-form form-sm">
+					<i class="fa fa-tag prefix"></i> <input type="text"
+						class="form-control" id="ngaysinhview" /> <label
+						th:text="#{m.birthday}" for="ngaysinhview">Date of birth</label>
+				</div>
+
+				<div class="md-form form-sm">
+					<i class="fa fa-tag prefix"></i> <input type="text" id="diachi"
+						th:field="*{diachi}" class="form-control required name"
+						data-placement="left" data-trigger="manual"
+						th:attr="data-content=#{m.namevalid}" /> <label for="diachi"
+						th:text="#{m.address}">Address</label>
+				</div>
+			</div>
+
+			<div class="md-form form-sm">
+				<i class="fa fa-tag prefix"></i> <input type="text" id="cmnd"
+					th:field="*{cmnd}" class="form-control required cmnd"
+					data-placement="left" data-trigger="manual"
+					th:attr="data-content=#{m.cmndvalid}" /> <label for="cmnd"
+					th:text="#{m.cmnd}"> Identity card number</label>
+			</div>
+
+			<div class="md-form form-sm">
+				<i class="fa fa-tag prefix"></i> <input type="text" id="email"
+					th:field="*{email}" class="form-control required email"
+					data-placement="right" data-trigger="manual"
+					th:attr="data-content=#{m.emailvalid}" /> <label
+					th:text="#{m.youremail}" for="email">Your email</label>
+			</div>
+
+			<div class="container">
+				<div class="md-form form-sm">
+					<i class="fa fa-tag prefix"></i> <input type="text" id="mota"
+						class="form-control" th:field="*{mota}" /> <label for="mota"
+						th:text="#{m.description}">Description</label>
+				</div>
+			</div>
+
+			<input type="hidden" id="hinh" class="form-control"
+				th:field="*{hinh}" />
+			<div class="avatar">
+				<img id="imgpreview" class="img-fluid" th:src="${hocvien.hinh}" />
+			</div>
+			<div class="card-body">
+				<!--Name-->
+				<div class="file-field">
+					<p>
+						<strong id="xImagePath" th:text="#{m.selectimage}">Selected
+							Image URL</strong><br /> <input
+							class="btn btn-primary btn-sm waves-effect waves-light"
+							type="button" th:value="#{m.browseimage}"
+							onclick="BrowseServer( 'Images:/', 'xImagePath' );" />
+					</p>
+				</div>
+				<br /> <br /> <small th:text="#{m.noteavatar}">Note: You
+					should select square image !</small>
+			</div>
+
+			<input type="hidden" id="ngaycap" class="form-control"
+					th:field="*{ngaycap}" />
+			<input type="hidden" id="matkhau" class="form-control"
+					th:field="*{matkhau}" />
+			<input type="hidden" id="loaitaikhoan" class="form-control"
+					th:field="*{loaitaikhoan}" />
+			<input type="hidden" id="maquyen" class="form-control"
+					th:field="*{quyen.maquyen}" />
+					
+			<div class="text-center mt-1-half">
+				<button th:text="#{m.save}"
+					class="btn btn-info mb-2 waves-effect waves-light">
+					Save <i class="fa fa-send ml-1"></i>
+				</button>
+			</div>
+		</form>
+	</div>
+</div>
+<script th:src="@{/ckfinder/ckfinder.js}"></script>
+<script>
+	$(function() { //active label
+		if ($('.form-inline input').val() != "") {
+			$('label').each(function() {
+				$(this).addClass('active');
+			});
+		}
+
+		$('#ngaysinh').bootstrapMaterialDatePicker({
+			weekStart : 0,
+			time : false,
+			currentDate : new Date()
+		});
+
+		$('#myform :checkbox').change(function() {
+			var phai = $("#phai");
+			if (this.checked) {
+				phai.val(1);
+			} else {
+				phai.val(0);
+			}
+		});
+		var h = $('#hinh').val();
+		document.getElementById("imgpreview").src = h;
+	});
+	/*Avatar start*/
+	function BrowseServer(startupPath, functionData) {
+		// You can use the "CKFinder" class to render CKFinder in a page:
+		var finder = new CKFinder();
+
+		// The path for the installation of CKFinder (default = "/ckfinder/").
+		finder.basePath = '../';
+
+		//Startup path in a form: "Type:/path/to/directory/"
+		finder.startupPath = startupPath;
+
+		// Name of a function which is called when a file is selected in CKFinder.
+		finder.selectActionFunction = SetFileField;
+
+		// Additional data to be passed to the selectActionFunction in a second argument.
+		// We'll use this feature to pass the Id of a field that will be updated.
+		finder.selectActionData = functionData;
+
+		// Name of a function which is called when a thumbnail is selected in CKFinder. Preview img
+		// finder.selectThumbnailActionFunction = ShowThumbnails;
+
+		// Launch CKFinder
+		finder.popup();
+	}
+
+	// This is a sample function which is called when a file is selected in CKFinder.
+	function SetFileField(fileUrl, data) {
+		document.getElementById(data["selectActionData"]).innerHTML = this
+				.getSelectedFile().name;
+		document.getElementById("imgpreview").src = fileUrl;
+		document.getElementById("hinh").value = fileUrl;
+	}
+	/*Avatar end*/
+	$(document).ready(
+			function() {
+				// TG BD DK
+				var $ngaysinh = $('#ngaysinh');
+				var $ngaysinhview = $('#ngaysinhview');
+
+				$ngaysinhview.bootstrapMaterialDatePicker(
+						{
+							weekStart : 0,
+							currentDate : moment($ngaysinh.val(),
+									"YYYY-MM-DD").format(
+									'DD-MM-YYYY'),
+							format : 'DD-MM-YYYY'
+						}).on(
+						'change',
+						function(e, date) {
+							$ngaysinh.val(moment(date, "DD-MM-YYYY")
+									.format('YYYY-MM-DD'));
+						});
+			});
+</script>
+<script th:src="@{/js/cusvalidateform.js}"></script>

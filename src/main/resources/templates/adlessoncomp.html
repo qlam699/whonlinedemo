@@ -1,0 +1,81 @@
+<meta charset="utf-8" />
+
+<div th:fragment="fchuong" class="mb-r container-fluid">
+	<br />
+	<div class="rowbtn">
+		<button class="btn btn-sm btn-success" data-target=".modal"
+			data-toggle="modal" href="chuong/create">
+			<i class="fa fa-plus mr-1"></i>Add
+		</button>
+		<button disabled="disabled" class="btn btn-sm btn-warning"
+			data-target=".modal" data-toggle="modal" id="editchuong">
+			<i class="fa fa-magic mr-1"></i>Edit
+		</button>
+		<button disabled="disabled" class="btn btn-sm btn-danger"
+			data-target=".modal" data-toggle="modal" id="deletechuong">
+			<i class="fa fa-trash mr-1"></i>Delete
+		</button>
+		<button disabled="disabled" class="btn btn-sm btn-primary"
+			onclick="chaytab(3)" href="#panel3" id="btnnextbai">Next tab</button>
+	</div>
+	<table width="100%" cellspacing="0"
+		class="table table-hover responsive nowrap" id="tbchuong">
+		<thead>
+			<tr>
+				<th class="rgba-teal-strong">Mã Chương</th>
+				<th class="rgba-teal-strong">Tên Chương</th>
+				<th class="rgba-teal-strong">Mã GT</th>
+				<th class="rgba-teal-strong">Isdeleted</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr th:each="ch,i : ${dschuong}" class="odd gradeX">
+				<td th:text="${ch.machuong}">Mã Chương</td>
+				<td th:text="${ch.tenchuong}">Tên Chương</td>
+				<td th:text="${ch.giaotrinh.magt}">Mã GT</td>
+				<td th:text="${ch.isdeleted}">Isdeleted</td>
+			</tr>
+		</tbody>
+	</table>
+</div>
+
+<div th:fragment="fbai" class="mb-r container-fluid">
+	<br />
+	<div class="rowbtn">
+		<button class="btn btn-sm btn-success btnchap" data-target=".modal"
+			data-toggle="modal" href="bai/create">
+			<i class="fa fa-plus mr-1"></i>Add
+		</button>
+		<button disabled="disabled" class="btn btn-sm btn-warning btnchap"
+			data-target=".modal" data-toggle="modal" id="editbai">
+			<i class="fa fa-magic mr-1"></i>Edit
+		</button>
+		<button disabled="disabled" class="btn btn-sm btn-danger"
+			data-target=".modal" data-toggle="modal" id="deletebai">
+			<i class="fa fa-trash mr-1"></i>Delete
+		</button>
+		<a type="button" id="btnstream" class=" btn btn-sm btn-primary center"><i
+			class="fa fa-bullseye"></i> Live Stream</a>
+	</div>
+	<table width="100%" cellspacing="0"
+		class="table table-hover responsive nowrap" id="tbbai">
+		<thead>
+			<tr>
+				<th class="rgba-teal-strong">Mã Bài</th>
+				<th class="rgba-teal-strong">Tên Bài</th>
+				<th class="rgba-teal-strong">Mã Chương</th>
+				<th class="rgba-teal-strong">Trạng Thái</th>
+				<th class="rgba-teal-strong">Isdeleted</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr th:each="b,i : ${dsbai}" class="odd gradeX">
+				<td th:text="${b.mabai}">Mã Bài</td>
+				<td th:text="${b.tenbai}">Tên Bài</td>
+				<td th:text="${b.chuong.machuong}">Mã Chương</td>
+				<td th:text="${b.trangthai}">Trạng Thái</td>
+				<td th:text="${b.isdeleted}">Isdeleted</td>
+			</tr>
+		</tbody>
+	</table>
+</div>

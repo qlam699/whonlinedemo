@@ -1,0 +1,82 @@
+<meta charset="utf-8" />
+<!--Header-->
+<div class="modal-header">
+	<div class="col">
+		<a class="btn-small btn-responsive btn-floating peach-gradient"
+			data-dismiss="modal"><i class="fa fa-reply" aria-hidden="true"></i></a>
+		<h4 class="d-inline modal-title font-bold center" id="myModalLabel" th:text="#{m.postanarticle}">
+			Đăng bài viết</h4>
+	</div>
+</div>
+<!--Body-->
+<div class="modal-body">
+	<div id="wrapper" style="padding: 0">
+		<div id="page-content-wrapper">
+			<!-- Section: Create Page -->
+			<section class="section container-fluid">
+				<!-- First row -->
+				<form class="row form" action="thaoluan/save"
+					th:object="${thaoluan}" th:action="@{/thaoluan/q/save}"
+					method="POST">
+					<!-- First col -->
+					<div class="col m-3">
+						<!-- First card -->
+						<div class="card mb-r post-title-panel">
+							<div class="card-body">
+								<input type="hidden" id="tgdang" th:field="*{thaoluanid.tgdang}" />
+								
+								<div class="md-form mt-1 mb-0">
+									<div class="md-form mt-1 mb-0">
+										<input type="text" id="tieude"
+											th:field="*{tieude}" 
+											class="form-control required name" data-placement="top"
+											data-trigger="manual" th:attr="data-content=#{m.namevalid}"/> 
+										<label for="tieude" th:text="#{m.title}">Tiêu đề</label>
+									</div>
+								</div>
+							</div>
+						</div>
+						<!-- /.First card -->
+
+						<!-- Second card -->
+						<div class="card mb-r">
+							<textarea id="noidung" class="form-control" th:field="*{noidung}" th:text="*{noidung}"> </textarea>
+						</div>
+						<!-- /.Second card -->
+
+						<div class="text-center mt-1-half">
+							<button th:text="#{m.save}" class="btn btn-info mb-2 waves-effect waves-light" type="submit">
+								Save <i class="fa fa-send ml-1"></i>
+							</button>
+						</div>
+					</div>
+					<!-- /.First col -->
+				</form>
+				<!-- /.First row -->
+			</section>
+			<!-- /.Section: Create Page -->
+		</div>
+	</div>
+</div>
+<script th:src="@{/ckeditor/ckeditor.js}"></script>
+<script th:src="@{/ckfinder/ckfinder.js}"></script>
+<script>
+	CKEDITOR
+			.replace(
+					'noidung',
+					{
+						filebrowserBrowseUrl : 'ckfinder/ckfinder.html',
+						filebrowserImageBrowseUrl : 'ckfinder/ckfinder.html?type=Images',
+						filebrowserFlashBrowseUrl : 'ckfinder/ckfinder.html?type=Flash',
+						filebrowserUploadUrl : 'ckfinder/core/connector/java/connector.java?command=QuickUpload&amp;type=Files',
+						filebrowserImageUploadUrl : 'ckfinder/core/connector/java/connector.java?command=QuickUpload&amp;type=Images',
+						filebrowserFlashUploadUrl : 'ckfinder/core/connector/java/connector.java?command=QuickUpload&amp;type=Flash'
+					});
+	if ($('.form input').val() != "") {
+		$('label').each(function() {
+			$(this).addClass('active');
+		});
+	}
+</script>
+
+<script th:src="@{/js/cusvalidateform.js}"></script>

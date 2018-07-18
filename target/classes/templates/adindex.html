@@ -1,0 +1,285 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="adlayout :: head"></head>
+<body>
+	<div th:replace="adlayout :: header"></div>
+	<!--Content-->
+	<main class="container-fluid" id="mainad"> <!--./ code here -->
+	<div class="modal-content">
+		<div class="modal-body" style="margin-top: 54px">
+			<div id="wrapper">
+				<div th:replace="adlayout :: sidebar"></div>
+				<div id="page-content-wrapper">
+					<h1 id="home" class="text-center font-bold mt-3">Thống kê</h1>
+					<section class="container-fluid overview">
+						<!--Section: Intro-->
+						<section class="tag">
+							<!--Grid row-->
+							<div class="row">
+								<!--Grid column-->
+								<div class="col-xl-3 col-md-6 mb-r">
+									<!--Card Success-->
+									<div class="card classic-admin-card success-color">
+										<div class="card-body">
+											<div class="pull-right">
+												<i class="fa fa-money"></i>
+											</div>
+											<p class="white-text">Số khóa học</p>
+											<h4 th:text="${khsize}"></h4>
+										</div>
+
+									</div>
+									<!--/.Card Success-->
+								</div>
+								<!--Grid column-->
+
+								<!--Grid column-->
+								<div class="col-xl-3 col-md-6 mb-r">
+									<!--Card Default-->
+									<div class="card classic-admin-card default-color">
+										<div class="card-body">
+											<div class="pull-right">
+												<i class="fa fa-line-chart"></i>
+											</div>
+											<p class="white-text">Số người dùng </p>
+											<h4 th:text="${ndsize}"></h4>
+										</div>
+
+									</div>
+									<!--/.Card Default-->
+								</div>
+								<!--Grid column-->
+
+								<!--Grid column-->
+								<div class="col-xl-3 col-md-6 mb-r">
+									<!--Card Blue-->
+									<div class="card classic-admin-card blue">
+										<div class="card-body">
+											<div class="pull-right">
+												<i class="fa fa-pie-chart"></i>
+											</div>
+											<p class="white-text">Số giáo viên </p>
+											<h4 th:text="${gvsize}"></h4>
+										</div>
+
+									</div>
+									<!--/.Card Blue-->
+								</div>
+								<!--Grid column-->
+
+								<!--Grid column-->
+								<div class="col-xl-3 col-md-6 mb-r">
+									<!--Card Purple-->
+									<div class="card classic-admin-card deep-purple lighten-1">
+										<div class="card-body">
+											<div class="pull-right">
+												<i class="fa fa-bar-chart"></i>
+											</div>
+											<p class="white-text">Số học viên</p>
+											<h4 th:text="${hvsize}"></h4>
+										</div>
+
+									</div>
+									<!--/.Card Purple-->
+								</div>
+								<!--Grid column-->
+							</div>
+							<!--Grid row-->
+						</section>
+
+						<!--Section: Intro-->
+						<div class="row">
+							<!-- First column -->
+							<div class="col-lg-6 col-md-12">
+								<div class="card mb-r">
+									<div class="card-header white-text blue">Google analytic</div>
+									<div class="card-body">
+										<div class="row mb-1">
+											<div class="col-4">
+												<small>Pages/Visits</small>
+												<h4 th:text="${counter}">139 419</h4>
+											</div>
+											<div class="col-4">
+												<small>New visitors</small>
+												<h4>51.94%</h4>
+											</div>
+											<div class="col-4">
+												<small>Last week</small>
+												<h4>51 932</h4>
+											</div>
+										</div>
+
+										<a href="#" class="btn btn-primary">See more</a>
+									</div>
+								</div>
+							</div>
+
+							<!--/.Panel-->
+						</div>
+						<!--Grid column-->
+						<div class="card card-cascade narrower">
+							<!--Card-->
+							
+							<div class="view gradient-card-header default-color">
+							<h1>Thống kê doanh thu</h1>
+								<canvas id="traffic" height="155px"></canvas>
+							</div>
+							<!--/.Card-->
+						</div>
+						<!--Grid column-->
+
+
+						<div class="card card-cascade narrower">
+							<div class="row mt-5">
+								<!--Card image-->
+								<div class="view gradient-card-header info-color col-md">
+								<h1>Thống kê khóa học theo loại khóa học</h1>
+									<canvas id="lkh" height="155px"></canvas>
+									<label>Loai khoa hoc</label>
+								</div>
+								<!--/Card image-->
+							</div>
+						</div>
+						<!--Section: Cascading panels-->
+						
+						<div class="card card-cascade narrower">
+						<h2 class="text-center m-4">Thống kê tổng hợp </h2>
+							<div class="row m-3">
+								<!--Card image-->
+								<div class="view gradient-card-header info-color col-md">
+									<canvas id="tkth7" height="155px"></canvas>
+									<label th:if="${#lists.isEmpty(mangtonghop7ngay)}" style="color:red">Khong co du lieu 7 ngay truoc</label>
+									<label th:if="${not #lists.isEmpty(mangtonghop7ngay)}">7 ngay truoc</label>
+								</div>
+								<!--/Card image-->
+
+								<!--Card image-->
+								<div class="view gradient-card-header info-color col-md">
+									<canvas id="tkth1" height="155px"></canvas>
+									<label th:if="${#lists.isEmpty(mangtonghophomqua)}" style="color:red">Khong co du lieu ngay truoc</label>
+									<label th:if="${not #lists.isEmpty(mangtonghophomqua)}">ngay truoc</label>
+								</div>
+								<!--/Card image-->
+							</div>
+						</div>
+						<!--Section: Cascading panels-->
+					</section>
+
+				</div>
+			</div>
+		</div>
+	</div>
+	</main>
+	<footer th:replace="adlayout :: footer"></footer>
+	<script th:inline="javascript">
+	//<![CDATA[
+		/*Global settings*/
+		Chart.defaults.global.defaultFontColor = '#fff';
+		function getRandomColor() {
+			  var letters = '0123456789ABCDEF';
+			  var color = '#';
+			  for (var i = 0; i < 6; i++) {
+			    color += letters[Math.floor(Math.random() * 16)];
+			  }
+			  return color;
+			}
+		
+		$(function() {
+			//bar
+			var ctx = document.getElementById("traffic").getContext('2d');
+			var myBarChart = new Chart(ctx, {
+				type : 'bar',
+				data : {
+					labels : [ "Last month", "Last week", "Last 5 days", "Last 3 days", "Yesterday"],
+					datasets : [ {
+						label : 'Doanh thu',
+						data : [[ ${mangdoanhthu} ]],
+						backgroundColor : [ 'rgba(255, 99, 132, 0.2)',
+								'rgb(54, 188, 237)',
+								'rgba(255, 206, 86, 0.2)',
+								'rgb(16, 178, 70)',
+								'rgba(153, 102, 255, 0.2)'],
+						borderColor : [ 'rgba(255,99,132,1)',
+								'rgba(54, 162, 235, 1)',
+								'rgba(255, 206, 86, 1)',
+								'rgba(75, 192, 192, 1)',
+								'rgba(153, 102, 255, 1)' ],
+						borderWidth : 2,
+						color : 'rgb(16, 151, 178)'
+					} ]
+				},
+				optionss : {
+					scales : {
+						yAxes : [ {
+							ticks : {
+								beginAtZero : true
+							}
+						} ]
+					}
+				}
+			});
+
+			//pie
+			var ctxP = document.getElementById("tkth7").getContext('2d');
+			var myPieChart = new Chart(ctxP, {
+				type : 'pie',
+				data : {
+					labels : [ "Hoc vien", "Giao Vien", "Nguoi Dung",
+							"Giao Trinh", "Khoa hoc", "Doanh Thu" ],
+					datasets : [ {
+						data : [[ ${mangtonghop7ngay} ]],
+						backgroundColor : [ "#F7464A", "#46BFBD", "#FDB45C",
+								"#949FB1", "#4D5360", "#000" ],
+						hoverBackgroundColor : [ "#FF5A5E", "#5AD3D1",
+								"#FFC870", "#A8B3C5", "#616774", "#CCC" ]
+					} ]
+				},
+				options : {
+					responsive : true
+				}
+			});
+			
+			//pie
+			var ctxP1 = document.getElementById("tkth1").getContext('2d');
+			var myPieChart1 = new Chart(ctxP1, {
+				type : 'pie',
+				data : {
+					labels : [ "Hoc vien", "Giao Vien", "Nguoi Dung",
+							"Giao Trinh", "Khoa hoc", "Doanh Thu" ],
+					datasets : [ {
+						data : [[ ${mangtonghophomqua} ]],
+						backgroundColor : [ "#F7464A", "#46BFBD", "#FDB45C",
+								"#949FB1", "#4D5360", "#000" ],
+						hoverBackgroundColor : [ "#FF5A5E", "#5AD3D1",
+								"#FFC870", "#A8B3C5", "#616774", "#CCC" ]
+					} ]
+				},
+				options : {
+					responsive : true
+				}
+			});
+			var arrcolorbg=[];
+			for(var i=0;i< [[ ${#lists.size(mangtenlkh)} ]] ;i++){
+				arrcolorbg.push(getRandomColor());
+			}
+			//pie
+			var ctxPlkh = document.getElementById("lkh").getContext('2d');
+			var myPieChartlkh = new Chart(ctxPlkh, {
+				type : 'pie',
+				data : {
+					labels : [[ ${mangtenlkh} ]],
+					datasets : [ {
+						data : [[ ${manglkh} ]],
+						backgroundColor : arrcolorbg,
+						hoverBackgroundColor : arrcolorbg
+					} ]
+				},
+				options : {
+					responsive : true
+				}
+			});
+
+		});
+		//]]>
+	</script>
+</body>
+</html>

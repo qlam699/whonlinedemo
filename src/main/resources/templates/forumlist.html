@@ -1,0 +1,170 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="adlayout :: head"></head>
+<body>
+	<div th:replace="homelayout :: header"></div>
+	<div th:replace="homelayout :: modal"></div>
+	<div th:replace="homelayout :: modalfull"></div>
+	<div th:replace="homelayout :: modalright"></div>
+	<!-- Content -->
+	<main class="container"> <br />
+	<h1 id="home" class="text-center font-bold mt-1" th:text="#{m.discuss}">Trao
+		đổi thảo luận</h1>
+	<div class="mb-r container-fluid">
+		<br />
+		<div class="rowbtn">
+			<button class="btn btn-sm btn-success btnchap" data-target=".modal"
+				data-toggle="modal" th:href="@{/diendan/create}">
+				<i class="fa fa-plus mr-1"></i>Add
+			</button>
+			<button disabled="disabled" class="btn btn-sm btn-warning btnchap"
+				data-target=".modal" data-toggle="modal" id="edittl">
+				<i class="fa fa-magic mr-1"></i>Edit
+			</button>
+			<button disabled="disabled" class="btn btn-sm btn-danger"
+				data-target=".modal" data-toggle="modal" id="deletetl">
+				<i class="fa fa-trash mr-1"></i>Delete
+			</button>
+		</div>
+
+		<table width="100%" cellspacing="0"
+			class="table table-hover responsive nowrap" id="tbtl">
+			<thead>
+				<tr>
+					<th class="rgba-teal-strong">Tiêu đề</th>
+					<th class="rgba-teal-strong">Mã ND</th>
+					<th class="rgba-teal-strong">Thời gian đăng</th>
+					<th class="rgba-teal-strong">Người khởi tạo</th>
+					<th class="rgba-teal-strong">Chi tiết</th>
+
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:each="tl,i : ${ftl}" class="odd gradeX">
+					<td th:text="${tl.tieude}">Tiêu đề</td>
+					<td th:text="${tl.thaoluanid.nguoidung.mand}">Mand</td>
+					<td th:text="${tl.thaoluanid.tgdang}">Thời gian đăng</td>
+					<td th:text="${tl.thaoluanid.nguoidung.hovaten}">Người khởi
+						tạo</td>
+					<td><a th:text="#{m.detail}"
+						class="btn btn-xs btn-success btnchap"
+						th:href="@{/forum/}+*{tl.khoahoc.makh}+'/'+*{tl.matl}" target='_blank'>Chi
+							tiết</a></td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+	</main>
+	<!-- /.Content -->
+	<footer th:replace="homelayout :: footer"></footer>
+	<!-- DataTables JavaScript -->
+	<script th:src="@{/js/jquery.dataTables.min.js}"></script>
+	<script th:src="@{/js/dataTables.buttons.min.js}"></script>
+	<script th:src="@{/js/buttons.colVis.min.js}"></script>
+	<script th:src="@{/js/dataTables.select.min.js}"></script>
+	<script th:src="@{/js/dataTables.responsive.min.js}"></script>
+	<script type="text/javascript"
+		th:src="@{/js/bootstrap-material-datetimepicker.js}"></script>
+	<script th:inline="javascript">
+	//<![CDATA[
+		// Material Select Initialization		
+		$(document).ready(
+				function() {
+					$('.btnchap').click(function() {
+						$(".modal").attr("id", "modalfullscreen");
+						$(".modal-dialog").removeClass("cascading-modal");
+					});
+					
+					//Table
+					var tbtl = $('#tbtl').DataTable(
+							{
+								 "columnDefs": [
+							            {
+							                "targets": [ 1 ],
+							                "visible": false,
+							                "searchable": false
+							            }
+							        ],
+								dom : 'Bfrtip',
+								select : {
+									style : 'single' //'multi',
+								// selector : 'td:first-child'
+								},
+								lengthMenu : [
+										[ 10, 25, 50, -1 ],
+										[ '10 rows', '25 rows', '50 rows',
+												'Show all' ] ],
+								buttons : [ 'pageLength', {
+									text : 'Select All',
+									className : '',
+									counter : true,
+									action : function(e, dt, node, config) {
+										if (config.counter) {
+											this.text('Select None');
+											tbtl.rows({
+												page : 'current'
+											}).select();
+											config.counter = false;
+										} else {
+											this.text('Select All');
+											tbtl.rows({
+												page : 'current'
+											}).deselect();
+											config.counter = true;
+										}
+									}
+								}, {
+									extend : 'colvis',
+									collectionLayout : 'fixed two-column'
+								} ]
+							});
+
+					var idtl, dt;
+					$('#tbtl tbody').on('click', 'tr', function() {
+						if (!$(this).hasClass('selected')) { //da chon roi thi ko chon nua
+							idtl = tbtl.row($(this)).data();
+							if(idtl[1]==[[${mand}]]){
+								$('#edittl').removeAttr("disabled");
+								$('#deletetl').removeAttr("disabled");
+							}else{
+								$('#edittl').attr('disabled', 'disabled');
+								$('#deletetl').attr('disabled', 'disabled');
+							}
+							$(this).removeClass('selected');
+						} else {
+							$('#edittl').attr('disabled', 'disabled');
+							$('#deletetl').attr('disabled', 'disabled');
+							table.$('tr.selected').removeClass('selected');
+							$(this).addClass('selected');
+						}
+					});
+					$('#edittl').click(
+							function() {
+								dt = idtl[2].replace(" ", "z");
+								$(this).attr(
+										'href',
+										'/diendan/' + idtl[1] + 'z' + dt
+												+ '/edit');
+							});
+					$('#deletetl').click(
+							function() {
+								dt = idtl[2].replace(" ", "z");
+								$(this).attr('href', '/isdelete');
+								setTimeout(
+								//waiting
+								function() {
+									$('#titledelete').html(
+											'Are you sure delete ' + idtl[1]
+													+ " " + idtl[2]);
+
+									$('#yesdelete').attr(
+											'href',
+											'/thaoluan/q/' + idtl[1] + 'z' + dt
+													+ '/delete');
+								}, 100);
+							});
+
+				});
+		//]]>
+	</script>
+</body>
+</html>

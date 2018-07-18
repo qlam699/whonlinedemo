@@ -1,0 +1,177 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="adlayout :: head"></head>
+<body>
+	<div th:replace="adlayout :: header"></div>
+	<div th:replace="homelayout::modal"></div>
+	<!--Content-->
+	<main class="container-fluid" id="mainad"> <!--./ code here -->
+	<div class="modal-content">
+		<div class="modal-body" style="margin-top: 54px">
+			<div id="wrapper">
+				<div th:replace="adlayout :: sidebar"></div>
+				<div id="page-content-wrapper">
+					<h1 id="home" class="text-center font-bold mt-1"
+						th:text="#{m.messagesmanagement}">Quản lý Tin nhắn</h1>
+					<!--Grid column-->
+					<div class="mb-r container-fluid">
+						<br />
+						<div class="rowbtn">
+							<button disabled="disabled" class="btn btn-sm btn-primary"
+								data-target=".modal" data-toggle="modal" id="viewtn">
+								<i class="fa fa-sticky-note-o mr-1"></i>View
+							</button>
+							<th:block sec:authorize="hasRole('ROLE_STAFF')">
+								<button class="btn btn-sm btn-success" data-target=".modal"
+									data-toggle="modal" href="tinnhan/create">
+									<i class="fa fa-plus mr-1"></i>Add
+								</button>
+								<button disabled="disabled" class="btn btn-sm btn-warning"
+									data-target=".modal" data-toggle="modal" id="edittn">
+									<i class="fa fa-magic mr-1"></i>Chuyển tiếp
+								</button>
+								<button disabled="disabled" class="btn btn-sm btn-danger"
+									data-target=".modal" data-toggle="modal" id="deletetn">
+									<i class="fa fa-trash mr-1"></i>Delete
+								</button>
+							</th:block>
+						</div>
+						<table width="100%" cellspacing="0"
+							class="table table-hover responsive nowrap" id="tbtn">
+							<thead>
+								<tr>
+									<th class="rgba-teal-strong">Mã TN</th>
+									<th:block sec:authorize="hasRole('ROLE_STAFF')">
+										<th class="rgba-teal-strong">Mã người nhận</th>
+										<th class="rgba-teal-strong">Người nhận</th>
+										<th class="rgba-teal-strong">Ngày gửi</th>
+									</th:block>
+									<th:block sec:authorize="hasRole('ROLE_TEACHER')">
+										<th class="rgba-teal-strong">Mã người gửi</th>
+										<th class="rgba-teal-strong">Người gửi</th>
+										<th class="rgba-teal-strong">Ngày nhận</th>
+									</th:block>
+									<th class="rgba-teal-strong">Tiêu đề</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr th:each="tn,i : ${dstn}" class="odd gradeX">
+									<td th:text="${tn.ndtnid.tinnhan.matn}">Mã TN</td>
+									<th:block sec:authorize="hasRole('ROLE_STAFF')">
+										<td th:text="${tn.ndtnid.nguoinhan.mand}">Mã người nhận</td>
+										<td th:text="${tn.ndtnid.nguoinhan.hovaten}">Người nhận</td>
+										<td th:text="${tn.ndtnid.tinnhan.tggui}">Ngày gửi</td>
+									</th:block>
+									<th:block sec:authorize="hasRole('ROLE_TEACHER')">
+										<td th:text="${tn.ndtnid.nguoigui.mand}">Mã người gửi</td>
+										<td th:text="${tn.ndtnid.nguoigui.hovaten}">Người gửi</td>
+										<td th:text="${tn.ndtnid.tinnhan.tggui}">Ngày nhận</td>
+									</th:block>
+									<td th:text="${tn.ndtnid.tinnhan.tieude}">Tiêu đề</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+					<!--Grid column-->
+				</div>
+			</div>
+		</div>
+	</div>
+	</main>
+	<footer th:replace="adlayout :: footer"></footer>
+	<script>
+		// Material Select Initialization		
+		$(document).ready(
+				function() {
+					//
+					$('.mdb-select').material_select();
+					//Table
+					var tbtn = $('#tbtn').DataTable(
+							{
+								"columnDefs" : [ {
+									"targets" : [ 0, 1 ],
+									"visible" : false,
+									"searchable" : false
+								} ],
+								dom : 'Bfrtip',
+								select : {
+									style : 'single' //'multi',
+								// selector : 'td:first-child'
+								},
+								lengthMenu : [
+										[ 10, 25, 50, -1 ],
+										[ '10 rows', '25 rows', '50 rows',
+												'Show all' ] ],
+								buttons : [ 'pageLength', {
+									text : 'Select All',
+									className : '',
+									counter : true,
+									action : function(e, dt, node, config) {
+										if (config.counter) {
+											this.text('Select None');
+											tbtn.rows({
+												page : 'current'
+											}).select();
+											config.counter = false;
+										} else {
+											this.text('Select All');
+											tbtn.rows({
+												page : 'current'
+											}).deselect();
+											config.counter = true;
+										}
+									}
+								}, {
+									extend : 'colvis',
+									collectionLayout : 'fixed two-column'
+								} ]
+							});
+
+					var idtn;
+					$('#tbtn tbody').on('click', 'tr', function() {
+						if ($(this).hasClass('selected')) { //da chon roi thi ko chon nua
+							$('#viewtn').removeAttr("disabled");
+							$('#edittn').removeAttr("disabled");
+							$('#deletetn').removeAttr("disabled");
+							$(this).removeClass('selected');
+							idtn = tbtn.row($(this)).data();
+						} else {
+							$('#viewtn').attr('disabled', 'disabled');
+							$('#edittn').attr('disabled', 'disabled');
+							$('#deletetn').attr('disabled', 'disabled');
+							table.$('tr.selected').removeClass('selected');
+							$(this).addClass('selected');
+						}
+					});
+					$('#viewtn').click(
+							function() {
+								$(this).attr(
+										'href',
+										'tinnhan/' + idtn[0]
+												+ '/view');
+							});
+					$('#edittn').click(
+							function() {
+								$(this).attr(
+										'href',
+										'tinnhan/' + idtn[1] + 'z' + idtn[0]
+												+ '/edit');
+							});
+					$('#deletetn').click(
+							function() {
+								$(this).attr('href', 'isdelete');
+								setTimeout(
+								//waiting
+								function() {
+									$('#titledelete').html(
+											'Are you sure delete ' + idtn[0]);
+									$('#yesdelete').attr(
+											'href',
+											'tinnhan/' + idtn[1] + 'z'
+													+ idtn[0] + '/delete');
+								}, 100);
+							});
+
+				});
+	</script>
+</body>
+</html>

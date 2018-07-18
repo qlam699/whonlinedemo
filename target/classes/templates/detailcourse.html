@@ -1,0 +1,335 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="homelayout :: head"></head>
+<body>
+	<div th:replace="homelayout :: header"></div>
+	<div th:replace="homelayout :: modal"></div>
+	<div th:replace="homelayout :: modalright"></div>
+	<!--Content-->
+	<main class="container" style="min-height:500px"> <!--./ code here -->
+	<ol class="breadcrumb mt-2">
+		<li class="breadcrumb-item"><a href="/">Home</a></li>
+		<li class="breadcrumb-item"><a href="/courses">Courses</a></li>
+		<li class="breadcrumb-item active" th:text="${khoahoc.tenkh}">Data</li>
+	</ol>
+	<section id="detailc">
+		<div class="card" id="topdetail">
+			<div class="card-body">
+				<div th:each="kh,i : ${khoahoc}"
+					class="ep-single-course-header clearfix">
+					<h1 th:text="${kh.tenkh}" class="course-title entry-title">Basic
+						PHP</h1>
+
+					<div class="course-meta pull-left row">
+						<div class="course-categories col">
+							<img class="img-fluid" th:attr="avatar=${kh.tenkh}"
+								style="min-width: 120px" />
+						</div>
+						<div class="course-categories col">
+							<span class="my-rating-1"></span> <span class="live-rating"
+								th:text="${khoahoc.sodiem}"></span>
+							<script th:inline="javascript">
+								$(".my-rating-1").starRating(
+										{
+											initialRating : [[${ khoahoc.sodiem }]] ,
+											disableAfterRate : false,
+											onHover : function(currentIndex,
+													currentRating, $el) {
+												$('.live-rating').text(
+														currentIndex);
+											},
+											onLeave : function(currentIndex,
+													currentRating, $el) {
+												$('.live-rating').text(
+														currentRating);
+											},
+											readOnly: true,
+											starSize: 25
+										});
+							</script>
+						</div>
+						<div class="course-author col" itemscope=""
+							itemtype="http://schema.org/Person">
+							<div class="author-contain">
+								<label class="font-weight-bold" itemprop="jobTitle"
+									th:text="#{m.teacher}">Teacher</label>
+								<div class="value" itemprop="name" th:each="gv,i : ${listgv}">
+									<p th:text="${gv.hovaten}"></p>
+								</div>
+							</div>
+						</div>
+						<div class="course-categories col">
+							<label class="font-weight-bold" th:text="#{m.category}">Categories</label>
+							<div class="value">
+								<span th:text="${kh.loaikhoahoc.tenloaikh}" class="cat-links">
+									<a
+									href="http://wp-education.xoothemes.com/course-category/php/">PHP</a>
+								</span>
+							</div>
+						</div>
+
+						<div class="course-categories col">
+							<label class="font-weight-bold" th:text="#{m.price}">Price</label>
+							<div class="value">
+								<span th:text="${kh.hocphi}+' USD'" class="cat-links"> </span>
+							</div>
+						</div>
+
+						<div class="course-categories">
+							<form sec:authorize="isAuthenticated()" th:unless="${dadk}"
+								method="post" th:action="@{/pay}">
+								<input type="hidden" name="makh" th:value="${kh.makh}" />
+								<button class="btn btn-primary btnregcourse" type="submit">
+									<i class="fa fa-paypal"></i> <span th:text="#{m.register}"></span>
+								</button>
+								<div th:replace="homecom::loading"></div>
+							</form>
+							<img sec:authorize="isAuthenticated()" th:unless="${dadk}"
+								th:src="@{/img/paypallogo.jpg}" alt="Payment by Paypal" /> <a
+								sec:authorize="isAuthenticated()" th:if="${dadk}" type="button"
+								th:href="@{/forum/}+*{kh.makh}" class=" btn btn-primary center"><i
+								class="fa fa-comments"></i> <span th:text="#{m.forum}"></span></a><!--  <a
+								sec:authorize="isAuthenticated()" th:if="${dadk}" type="button"
+								id="btnlive" class="btn special-color center" disabled="disabled"><i
+								class="fa fa-bullseye"></i> Live Stream</a> -->
+
+							<div id="public-rooms" style="text-align: left;"></div> 
+
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div id="khong" class="d-none"></div>
+		<!--Grid row-->
+		<div class="row mt-3" id="maindetail">
+
+			<!--Grid column-->
+			<div class="col mb-r">
+
+				<!-- Nav tabs -->
+				<ul class="nav nav-tabs nav-justified">
+					<li class="nav-item"><a class="nav-link active"
+						data-toggle="tab" href="#panel1" role="tab"
+						th:text="#{m.overview}">Overview</a></li>
+					<li class="nav-item"><a class="nav-link" data-toggle="tab"
+						href="#panel2" role="tab" th:text="#{m.curriculum}">curriculum</a></li>
+					<li class="nav-item"><a class="nav-link" data-toggle="tab"
+						href="#panel4" role="tab" th:text="#{m.teacher}">instructor</a></li>
+				</ul>
+				<!-- Tab panels -->
+				<div class="tab-content card">
+					<!--Panel 1-->
+					<div class="tab-pane fade in show active" id="panel1"
+						role="tabpanel">
+						<br />
+						<div class="row">
+							<div class="ep-course-content col-md-8">
+								<h2 class="course-description-heading"
+									id="learn-press-course-description-heading"
+									th:text="#{m.courseoverview}">Course Overview</h2>
+								<div class="course-description"
+									id="learn-press-course-description">
+									<div th:utext="${khoahoc.mota}">description</div>
+								</div>
+							</div>
+							<div class="ep-course-info col-md-4">
+								<h3 th:text="#{m.coursefeature}">Course Features</h3>
+								<ul>
+									<li><i class="fa fa-files-o" aria-hidden="true"></i><span
+										class="course-info-label" th:text="#{m.curriculum}">Sogt</span><span
+										class="course-info-value"
+										th:text="${#lists.size(khoahoc.giaotrinh)}">17</span></li>
+									<li><i class="fa fa-files-o" aria-hidden="true"></i><span
+										class="course-info-label" th:text="#{m.chapter}">Sochuong</span><span
+										class="course-info-value"
+										th:text="${#lists.size(khoahoc.giaotrinh.chuongs)}">17</span></li>
+
+									<li><i class="fa fa-files-o" aria-hidden="true"></i><span
+										class="course-info-label" th:text="#{m.teacher}">Lectures</span><span
+										class="course-info-value" th:text="${#lists.size(listgv)}">17</span></li>
+									<li><i class="fa fa-clock-o" aria-hidden="true"></i><span
+										class="course-info-label" th:text="#{m.dateregister}">Date
+											Register</span><span class="course-info-value"
+										th:text="${khoahoc.tgbddk + ' &rArr; '+ khoahoc.tgktdk}">10
+											week</span></li>
+									<li><i class="fa fa-clock-o" aria-hidden="true"></i><span
+										class="course-info-label" th:text="#{m.durationcourse}">Duration
+											courses</span><span class="course-info-value"
+										th:text="${khoahoc.tgbdhoc + ' &rArr; '+ khoahoc.tgkthoc}">10
+											week</span></li>
+								</ul>
+							</div>
+						</div>
+					</div>
+					<!--/.Panel 1-->
+					<!--Panel 2-->
+					<div class="tab-pane fade" id="panel2" role="tabpanel">
+						<br />
+						<h3 th:text="${khoahoc.giaotrinh.tengt}"></h3>
+						<a sec:authorize="isAuthenticated()" th:if="${dadk}"
+							class="btn btn-xs btn-success btnchap" data-toggle="modal"
+							th:text="#{m.detail}+' '+${khoahoc.giaotrinh.tengt}"
+							th:href="@{/detailpost}" data-target=".modal">sad</a>
+						<hr />
+						<h3 th:text="#{m.chapter}"></h3>
+						<div th:each="c,i : ${khoahoc.giaotrinh.chuongs}">
+							<li th:text="${c.tenchuong}"></li>
+						</div>
+
+					</div>
+					<!--/.Panel 2-->
+					<div class="tab-pane fade" id="panel4" role="tabpanel">
+						<br />
+						<!--First row-->
+						<div class="row mb-2" th:each="gv,i : ${listgv}">
+							<!--Avatar-->
+							<div class="col-12 col-sm-2">
+								<a th:href="@{/detailteacher/}+*{gv.mand}"> <img
+									th:if="${gv.hinh==''||gv.hinh==null}" width="200"
+									th:attr="avatar=${gv.hovaten}"
+									class="img-fluid rounded-circle z-depth-2" /> <img
+									th:unless="${gv.hinh==''||gv.hinh==null}" width="200"
+									th:src="${gv.hinh}" class="img-fluid rounded-circle z-depth-2" />
+								</a>
+							</div>
+							<!--Author Data-->
+							<div class=" col-12 col-sm-10">
+								<a th:href="@{/detailteacher/}+*{gv.mand}">
+									<p>
+										<strong th:text="${gv.hovaten}">John Doe</strong>
+									</p>
+								</a>
+								<p th:text="${gv.email}">Email</p>
+								<p th:text="${gv.mota}" class="hidden-md-down">Description</p>
+							</div>
+						</div>
+
+						<!--/.First row-->
+
+					</div>
+				</div>
+
+			</div>
+			<!--Grid column-->
+
+		</div>
+		<div id="disqus_thread"></div>
+		<script>
+			/*  var disqus_config = function () {
+			 this.page.url = detailcourse;  // Replace PAGE_URL with your page's canonical URL variable
+			 this.page.identifier = detailcourse; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+			 }; */
+			 
+			(function() { // DON'T EDIT BELOW THIS LINE
+				var d = document, s = d.createElement('script');
+				s.src = 'https://web-study-online.disqus.com/embed.js';
+				s.setAttribute('data-timestamp', +new Date());
+				(d.head || d.body).appendChild(s);
+			})();
+		</script>
+		<noscript>
+			Please enable JavaScript to view the <a
+				href="https://disqus.com/?ref_noscript">comments powered by
+				Disqus.</a>
+		</noscript>
+
+	</section>
+
+	<!--./ code here --> </main>
+	<!--/.Content-->
+	<footer th:replace="homelayout :: footer"></footer>
+	<script
+		src="https://rtcmulticonnection.herokuapp.com/dist/RTCMultiConnection.min.js"></script>
+	<script
+		src="https://rtcmulticonnection.herokuapp.com/socket.io/socket.io.js"></script>
+	<script th:inline="javascript">
+	$(document).ready(function(){
+		$(".btnregcourse").click(function(){
+			$('.loading').removeClass("d-none");
+			$(this).hide();
+			$('.loading').addClass("active");
+		});
+	});
+	</script>
+	<script th:inline="javascript">
+		$(document).ready(function() {
+			$('.btnchap').click(function() {
+				//$(".modal").addClass("modal-fullscreen");
+				$(".modal").attr("id", "modalfullscreen");
+				$(".modal-dialog").removeClass("cascading-modal");
+			});
+
+		});
+		if( [[${#authorization.expression('isAuthenticated()')}]] ){
+			// Stream Multirtc
+			var connection = new RTCMultiConnection();
+
+			// this line is VERY_important
+			connection.socketURL = 'https://rtcmulticonnection.herokuapp.com:443/';
+			var curmakh=[[ ${khoahoc.makh} ]];
+			
+			
+			var publicRoomsDiv = document.getElementById('public-rooms');
+            (function looper() {
+                // connection.getPublicModerators(startsWith, callback)
+                connection.getPublicModerators(function(array) {
+                    publicRoomsDiv.innerHTML = '';
+                    array.forEach(function(moderator) {
+                        // moderator.userid
+                        // moderator.extra
+                        if(moderator.userid == connection.userid || moderator.userid.indexOf(curmakh) === -1 ) return; // if owner himself
+
+                        var li = document.createElement('div');
+                      //  li.innerHTML = '<b>' + moderator.userid + '</b>&nbsp;&nbsp;';
+
+                        var button = document.createElement('button');
+                        button.id = moderator.userid;
+                        button.className="btn btn-danger";
+                        button.onclick = function() {
+                        	window.location=moderator.extra.urlroom+"/?roomid="+moderator.userid;
+                        };
+                        button.innerHTML = '<i class="fa fa-bullseye"></i> Join NOW';
+                        li.appendChild(button);
+
+                        if(moderator.userid == connection.sessionid) {
+                            // if already connected with same moderator
+                            button.disabled = true;
+                        }
+
+                        publicRoomsDiv.insertBefore(li, publicRoomsDiv.firstChild);
+                    });
+                    setTimeout(looper, 3000);
+                });
+            })();
+			/* Public room				
+	    (function looper() {
+	        connection.getPublicModerators(function(array) {
+	            array.forEach(function(moderator) {
+	            	console.log(moderator);
+	                // moderator.userid
+	                // moderator.extra
+	                if(moderator.userid == connection.userid ||moderator.userid.indexOf(curmakh) === -1 ) return; // if owner himself
+	                var btnlive=document.getElementById('btnlive');
+ 	                btnlive.disabled=false;
+ 	                btnlive.className="btn btn-danger";
+	 	               btnlive.onclick = function() {
+		                    window.location=moderator.extra.urlroom+"/?roomid="+moderator.userid;
+		                   // connection.join(this.id);
+		                };
+
+	                 if(moderator.userid == connection.sessionid) {
+	                    // if already connected with same moderator
+	                    btnlive.disabled = true;
+	                    btnlive.className="btn special-color";
+	                } 
+
+	            });
+	            setTimeout(looper, 3000);
+	        });
+	    })();
+			*/
+		}
+		
+	</script>
+</body>
+</html>

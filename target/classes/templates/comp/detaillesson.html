@@ -1,0 +1,29 @@
+<div id="bodylesson">
+<h1 th:text="${bai.tenbai}" id="home">tenbai</h1>
+<div th:utext="${bai.noidung}" class="page-content inset"
+	data-spy="scroll" data-target="#spy"></div>
+	<button class="downloaddoc btn btn-default" onclick="jQuery.print()">Download</button>
+	
+</div>
+<div id="disqus_thread"></div>
+<script th:src="@{/js/jQuery.print.min.js}"></script>
+<script>
+	var x=$('.page-content').text();
+	$('.page-content').html(x);
+	/*  var disqus_config = function () {
+	 this.page.url = detailcourse;  // Replace PAGE_URL with your page's canonical URL variable
+	 this.page.identifier = detaillesson; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+	 }; */
+
+	(function() { // DON'T EDIT BELOW THIS LINE
+		var d = document, s = d.createElement('script');
+		s.src = 'https://http-localhost-8080-5.disqus.com/embed.js';
+		s.setAttribute('data-timestamp', +new Date());
+		(d.head || d.body).appendChild(s);
+	})();
+</script>
+<noscript>
+	Please enable JavaScript to view the <a
+		href="https://disqus.com/?ref_noscript">comments powered by
+		Disqus.</a>
+</noscript>

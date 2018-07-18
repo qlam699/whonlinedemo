@@ -1,0 +1,189 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="homelayout :: head"></head>
+<body>
+	<div th:replace="homelayout :: header"></div>
+	<div th:replace="homelayout :: modal"></div>
+	<div th:replace="homelayout :: modalright"></div>
+	<!--Content-->
+	<main class="container"> <br /> <!--./ code here --> <!--Author box-->
+	<h2 class="section-heading" th:text="#{m.questionandanswer}">Question
+		and Answer</h2>
+	<div class="row breadcrumb cyan lighten-4 mt-3">
+
+		<!--Avatar-->
+		<div class="col-12 col-sm-2">
+			<img th:if="${qtl.thaoluanid.nguoidung.hinh==''}"
+				th:attr="avatar=${qtl.thaoluanid.nguoidung.hovaten}"
+				class="img-fluid rounded-circle z-depth-2" width="200" /> <img
+				th:unless="${qtl.thaoluanid.nguoidung.hinh==''}"
+				th:src="${qtl.thaoluanid.nguoidung.hinh}"
+				class="img-fluid rounded-circle z-depth-2" />
+		</div>
+		<!--Author Data-->
+		<div class=" col-12 col-sm-10">
+			<h3 th:text="${qtl.thaoluanid.nguoidung.hovaten}" class="user-name">nguoi
+				hoi</h3>
+			<!-- <div class="personal-sm">
+				<a class="email-ic"><i class="fa fa-home"> </i></a> <a class="fb-ic"><i
+					class="fa fa-facebook"> </i></a> <a class="tw-ic"><i
+					class="fa fa-twitter"> </i></a> <a class="gplus-ic"><i
+					class="fa fa-google-plus"> </i></a> <a class="li-ic"><i
+					class="fa fa-linkedin"> </i></a> <a class="email-ic"><i
+					class="fa fa-envelope-o"> </i></a>
+			</div> -->
+			<div class="card-data">
+				<ul class="list-unstyled">
+					<li class="comment-date"><i class="fa fa-clock-o"></i> <span
+						th:text="${qtl.thaoluanid.tgdang}" th:remove="tag">thoi
+							gian dang</span></li>
+				</ul>
+			</div>
+			<h2 th:text="${qtl.tieude}">tieu de</h2>
+			<div id="noidungq" th:utext="${qtl.noidung}">noi dung</div>
+		</div>
+	</div>
+	<!--/.Author box--> <!--Section: Comments list-->
+
+	<section class="">
+
+		<!--Main wrapper-->
+		<div class="comments-list text-left">
+			<div class="section-heading">
+				<h3>
+					<th:block th:text="#{m.comments}"></th:block> <span th:text="${crtl}" class="badge blue">3</span>
+				</h3>
+			</div>
+			<hr />
+			<div th:each="tl,i : ${rtl}" class="row clearfix">
+				<!--Image column-->
+				<div class="col-sm-2 col-12">
+					<img th:if="${tl.thaoluanid.nguoidung.hinh==''}"
+						th:attr="avatar=${tl.thaoluanid.nguoidung.hovaten}" width="200" /> <img
+						th:unless="${tl.thaoluanid.nguoidung.hinh==''}"
+						th:src="${tl.thaoluanid.nguoidung.hinh}" />
+				</div>
+				<!--/.Image column-->
+				<!--Content column-->
+				<div class="col-sm-10 col-12">
+					<input type="hidden" class="mand"
+						th:value="${tl.thaoluanid.nguoidung.mand}" /> <input
+						type="hidden" class="tg" th:value="${tl.thaoluanid.tgdang}" />
+					<h3 th:text="${tl.thaoluanid.nguoidung.hovaten}" class="user-name">nguoi
+						tra loi</h3>
+					<a th:if="${tl.thaoluanid.nguoidung.mand==user.mand}"
+						class="btn btn-sm btn-success edit">Edit</a> <a
+						th:if="${tl.thaoluanid.nguoidung.mand==user.mand}"
+						class="btn btn-sm btn-danger delete">Delete</a>
+					<div class="card-data">
+						<ul class="list-unstyled">
+							<li class="comment-date"><i class="fa fa-clock-o"></i> <span
+								th:text="${tl.thaoluanid.tgdang}" th:remove="tag"> thoi
+									gian dang</span></li>
+						</ul>
+					</div>
+					<div th:utext="${tl.noidung}" class="cm">noi dung</div>
+				</div>
+				<!--/.Content column-->
+				<hr />
+			</div>
+		</div>
+		<!--/.Main wrapper-->
+
+	</section>
+	<!--Section: Leave a reply (Logged In User)-->
+	<section class="">
+
+		<!--Leave a reply form-->
+		<div class="reply-form">
+			<h1 class="section-heading" th:text="#{m.leaveareply}">Leave a
+				reply</h1>
+			<p class="text-center">(Logged In User)</p>
+
+			<!--Third row-->
+			<form th:object="${thaoluan}" th:action="@{/thaoluan/r/save}"
+				method="POST">
+				<div class="row">
+					<!--Image column-->
+					<div class="col-sm-2 col-12">
+						<img th:if="${user.hinh==''}" th:attr="avatar=${user.hovaten}"
+							width="200" /> <img th:unless="${user.hinh==''}"
+							th:src="${user.hinh}" />
+					</div>
+					<!--/.Image column-->
+					<input type="hidden" id="tgdang" th:field="*{thaoluanid.tgdang}" />
+					<input type="hidden" id="nguoidang"
+						th:field="*{thaoluanid.nguoidung.mand}" /> 
+					<div class="col-sm-10 col-12">
+						<div class="md-form">
+							<div class="md-form form-sm">
+								<textarea id="noidung" class="form-control"
+									th:field="*{noidung}"> </textarea>
+							</div>
+						</div>
+					</div>
+
+					<div class="text-center mt-1-half">
+						<button th:text="#{m.save}" class="btn btn-info mb-2 waves-effect waves-light">
+							Save <i class="fa fa-send ml-1"></i>
+						</button>
+					</div>
+					<!--/.Content column-->
+
+				</div>
+				<!--/.Third row-->
+			</form>
+		</div>
+		<!--/.Leave a reply form-->
+
+	</section>
+	<!--./ code here --> </main>
+	<!--/.Content-->
+	<footer th:replace="homelayout :: footer"></footer>
+	<script th:src="@{/ckeditor/ckeditor.js}"></script>
+	<script th:src="@{/ckfinder/ckfinder.js}"></script>
+	<script>
+		CKEDITOR
+				.replace(
+						'noidung',
+						{
+							filebrowserBrowseUrl : 'ckfinder/ckfinder.html',
+							filebrowserImageBrowseUrl : 'ckfinder/ckfinder.html?type=Images',
+							filebrowserFlashBrowseUrl : 'ckfinder/ckfinder.html?type=Flash',
+							filebrowserUploadUrl : 'ckfinder/core/connector/java/connector.java?command=QuickUpload&amp;type=Files',
+							filebrowserImageUploadUrl : 'ckfinder/core/connector/java/connector.java?command=QuickUpload&amp;type=Images',
+							filebrowserFlashUploadUrl : 'ckfinder/core/connector/java/connector.java?command=QuickUpload&amp;type=Flash'
+						});
+		function insertIntoCkeditor(str) {
+			CKEDITOR.instances['noidung'].setData(str);
+		}
+		// Material Select Initialization		
+		$(document).ready(function() {
+			$(".edit").click(function() {
+				//
+				$pa = $(this).parent();
+				$nd = $pa.children("div.cm");
+				//$("#noidung").text($nd.html());
+				insertIntoCkeditor($nd.html());
+				var tg = $pa.children(".tg").val();
+				var mand = $pa.children(".mand").val();
+				console.log(tg + " " + mand);
+				$("#tgdang").val(tg);
+				$("#nguoidang").val(mand);
+
+			});
+
+			$(".delete").click(function() {
+				$pa = $(this).parent();
+				var tg = $pa.children(".tg").val();
+				var mand = $pa.children(".mand").val();
+				var idtl = mand + 'z' + tg;
+				idtl = idtl.replace(" ", "z");
+
+				var url = "/thaoluan/r/" + idtl + "/delete";
+				window.location.href = url;
+			});
+
+		});
+	</script>
+</body>
+</html>

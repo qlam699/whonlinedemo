@@ -1,0 +1,340 @@
+<meta charset="utf-8" />
+<div class="modal-content">
+	<!--Header-->
+	<div class="modal-header light-blue darken-3 white-text">
+		<h4 class="title">
+			<i class="fa fa-pencil"></i>
+			<th:block th:text="#{m.course}"></th:block>
+		</h4>
+		<button type="button" class="close waves-effect waves-light"
+			data-dismiss="modal" aria-label="Close">
+			<span aria-hidden="true" class="fa fa-remove"></span>
+		</button>
+	</div>
+	<!--Body-->
+	<div class="modal-body mb-0">
+		<form id="myform" class="form-inline pull-right" action="khoahoc/save"
+			th:object="${khoahoc}" th:action="@{/khoahoc/save}" method="POST">
+			<input type="hidden" id="makh" class="form-control"
+				th:field="*{makh}" />
+
+			<div class="container">
+				<div class="md-form form-sm">
+					<i class="fa fa-tag prefix"></i> <input type="text" id="tenkh"
+						th:field="*{tenkh}" class="required name" data-placement="left"
+						data-trigger="manual" th:attr="data-content=#{m.namevalid}" /> <label
+						for="tenkh" th:text="#{m.coursename}" class="">Tên khóa
+						học</label>
+				</div>
+
+				<div class="md-form form-sm">
+					<label for="tenloaikh" th:text="#{m.selectcoursecategory}" class="">Chọn
+						loại khóa học</label> <select th:field="*{loaikhoahoc.maloaikh}"
+						id="selectmaloaikh"
+						class="mdb-select colorful-select dropdown-primary"
+						searchable="Search here..">
+						<option class="form-control" th:each="lkh,i : ${listloaikh}"
+							th:value="${lkh.maloaikh}" th:text="${lkh.tenloaikh}">Option
+							1</option>
+					</select>
+				</div>
+
+				<div class="md-form form-sm mt-2 mb-4">
+					<label for="tenloaikh" th:text="#{m.selectcurriculum}" class="">Chọn
+						giáo trình</label> <select th:field="*{giaotrinh.magt}" id="selectmagt"
+						class="mdb-select colorful-select dropdown-primary"
+						searchable="Search here..">
+						<option class="form-control" th:each="g,ia : ${listgiaotrinh}"
+							th:value="${g.magt}" th:text="${g.tengt}">Option 1</option>
+					</select>
+				</div>
+			</div>
+
+			<input type="hidden" class="form-control" id="tgbdhoc"
+				th:field="*{tgbdhoc}" />
+			<div class="md-form form-sm">
+				<i class="fa fa-tag prefix"></i> <input type="text"
+					class="form-control" id="tgbdhocview" /> <label
+					th:text="#{m.coursestarttime}" for="tgbdhocview">TG BĐ học</label>
+			</div>
+
+			<input type="hidden" class="form-control" id="tgkthoc"
+				th:field="*{tgkthoc}" />
+			<div class="md-form form-sm">
+				<i class="fa fa-tag prefix"></i> <input type="text"
+					class="form-control" id="tgkthocview" /> <label
+					th:text="#{m.coursecompletiontime}" for="tgkthocview">TG KT
+					học</label>
+			</div>
+
+			<input type="hidden" class="form-control" id="tgbddk"
+				th:field="*{tgbddk}" />
+			<div class="md-form form-sm">
+				<i class="fa fa-tag prefix"></i> <input type="text"
+					class="form-control" id="tgbddkview" /> <label
+					th:text="#{m.timetostartregistration}" for="tgbddkview">TG
+					BĐ Đăng ký</label>
+			</div>
+
+			<input type="hidden" class="form-control" id="tgktdk"
+				th:field="*{tgktdk}" />
+			<div class="md-form form-sm">
+				<i class="fa fa-tag prefix"></i> <input type="text"
+					class="form-control" id="tgktdkview" /> <label
+					th:text="#{m.timetoendregistration}" for="tgktdkview">TG BĐ
+					Đăng ký</label>
+			</div>
+
+			<div class="md-form form-sm">
+				<i class="fa fa-tag prefix"></i> <input type="text" id="soluong"
+					name="soluong"
+					th:value="${#numbers.formatDecimal(khoahoc.soluong, 0, 0, 'POINT')}"
+					class="form-control required sldk" data-placement="right"
+					data-trigger="manual"
+					th:attr="data-content=#{m.maximumquantityvalid}" /> <label
+					for="soluong" th:text="#{m.maximumquantity}" class="">Số
+					lượng tối đa</label>
+			</div>
+
+			<div class="md-form form-sm">
+				<i class="fa fa-tag prefix"></i> <input type="text" id="hocphi"
+					name="hocphi"
+					th:value="${#numbers.formatDecimal(khoahoc.hocphi, 0, 0, 'POINT')}"
+					class="form-control required money" data-placement="left"
+					data-trigger="manual" th:attr="data-content=#{m.moneyvalid}" /> <label
+					for="hocphi" th:text="#{m.tuitionfee}" class="">Tiền học
+					phí</label>
+			</div>
+			<div sec:authorize="hasRole('ROLE_STAFF')">
+				<input type="hidden" id="daduyet" th:value="${daduyet}"
+					th:field="*{daduyet}" />
+				<div class="container">
+					<div class="md-form form-sm">
+						<div class="switch form-control" style="border: 0">
+							<label style="position: relative"> <th:block
+									th:text="#{m.unapproved}"></th:block> <input id="cbdaduyet"
+								type="checkbox" th:checked="*{daduyet}" /> <span class="lever"></span>
+								<th:block th:text="#{m.approved}"></th:block>
+							</label>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="md-form form-sm ">
+				<label th:text="#{m.description}" class="pb-2">Mô tả</label>
+				<textarea type="text" id="mota" name="mota" class="form-control"
+					th:field="*{mota}"></textarea>
+			</div>
+
+
+			<input type="hidden" id="hinh" class="form-control"
+				th:field="*{hinh}" />
+			<div class="avatar">
+				<img id="imgpreview" class="img-fluid" th:src="${hinh}" />
+			</div>
+			<div class="card-body">
+				<!--Name-->
+				<div class="file-field">
+					<p>
+						<strong id="xImagePath" th:text="#{m.selectimage}">Selected
+							Image URL</strong><br /> <input
+							class="btn btn-primary btn-sm waves-effect waves-light"
+							type="button" th:value="#{m.browseimage}"
+							onclick="BrowseServer( 'Images:/', 'xImagePath' );" />
+					</p>
+				</div>
+				<br /> <br /> <small th:text="#{m.noteavatar}">Note: You
+					should select square image !</small>
+			</div>
+
+			<div class="text-center mt-1-half">
+				<button th:text="#{m.save}"
+					class="btn btn-info mb-2 waves-effect waves-light">
+					Save <i class="fa fa-send ml-1"></i>
+				</button>
+			</div>
+		</form>
+	</div>
+</div>
+<script th:src="@{/js/cusvalidateform.js}"></script>
+<script th:src="@{/ckeditor/ckeditor.js}"></script>
+<script th:src="@{/ckfinder/ckfinder.js}"></script>
+<script>
+	CKEDITOR
+			.replace(
+					'mota',
+					{
+						filebrowserBrowseUrl : 'ckfinder/ckfinder.html',
+						filebrowserImageBrowseUrl : 'ckfinder/ckfinder.html?type=Images',
+						filebrowserFlashBrowseUrl : 'ckfinder/ckfinder.html?type=Flash',
+						filebrowserUploadUrl : 'ckfinder/core/connector/java/connector.java?command=QuickUpload&amp;type=Files',
+						filebrowserImageUploadUrl : 'ckfinder/core/connector/java/connector.java?command=QuickUpload&amp;type=Images',
+						filebrowserFlashUploadUrl : 'ckfinder/core/connector/java/connector.java?command=QuickUpload&amp;type=Flash'
+					});
+</script>
+<script>
+	$(function() {
+		$('#tgkthoc').bootstrapMaterialDatePicker({
+			weekStart : 0,
+			time : false,
+			currentDate : new Date(),
+		});
+		$('#tgbdhoc').bootstrapMaterialDatePicker({
+			weekStart : 0,
+			time : false,
+			currentDate : new Date(),
+		}).on('change', function(e, date) {
+			$('#tgkthoc').bootstrapMaterialDatePicker('setMinDate', date);
+		});
+
+		$('#tgktdk').bootstrapMaterialDatePicker({
+			weekStart : 0,
+			currentDate : new Date(),
+		});
+		$('#tgbddk').bootstrapMaterialDatePicker({
+			weekStart : 0,
+			currentDate : new Date(),
+		}).on('change', function(e, date) {
+			$('#tgktdk').bootstrapMaterialDatePicker('setMinDate', date);
+		});
+
+		// Material Select Initialization
+		$('.mdb-select').material_select();
+		$('#myform :checkbox').change(function() {
+			var daduyet = $("#daduyet");
+			if (this.checked) {
+				daduyet.val(1);
+			} else {
+				daduyet.val(0);
+			}
+		});
+		//active label
+		$('label').each(function() {
+			$(this).addClass('active');
+		});
+		var h = $('#hinh').val();
+		document.getElementById("imgpreview").src = h;
+
+	});
+	/*Avatar start*/
+	function BrowseServer(startupPath, functionData) {
+		// You can use the "CKFinder" class to render CKFinder in a page:
+		var finder = new CKFinder();
+
+		// The path for the installation of CKFinder (default = "/ckfinder/").
+		finder.basePath = '../';
+
+		//Startup path in a form: "Type:/path/to/directory/"
+		finder.startupPath = startupPath;
+
+		// Name of a function which is called when a file is selected in CKFinder.
+		finder.selectActionFunction = SetFileField;
+
+		// Additional data to be passed to the selectActionFunction in a second argument.
+		// We'll use this feature to pass the Id of a field that will be updated.
+		finder.selectActionData = functionData;
+
+		// Name of a function which is called when a thumbnail is selected in CKFinder. Preview img
+		// finder.selectThumbnailActionFunction = ShowThumbnails;
+
+		// Launch CKFinder
+		finder.popup();
+	};
+
+	// This is a sample function which is called when a file is selected in CKFinder.
+	function SetFileField(fileUrl, data) {
+		document.getElementById(data["selectActionData"]).innerHTML = this
+				.getSelectedFile().name;
+		document.getElementById("imgpreview").src = fileUrl;
+		document.getElementById("hinh").value = fileUrl;
+	};
+
+	// This is a sample function which is called when a thumbnail is selected in CKFinder.
+	/* function ShowThumbnails( fileUrl, data )
+	{
+		// this = CKFinderAPI
+		// var sFileName = this.getSelectedFile().name;
+		document.getElementById("imgpreview").src=fileUrl;
+		// It is not required to return any value.
+		// When false is returned, CKFinder will not close automatically.
+		return false;
+	} */
+	/*Avatar end*/
+
+	$(document).ready(
+			function() {
+				// TG BD hoc
+				var $tgbdhoc = $('#tgbdhoc');
+				var $tgbdhocview = $('#tgbdhocview');
+
+				$tgbdhocview.bootstrapMaterialDatePicker(
+						{
+							weekStart : 0,
+							currentDate : moment($tgbdhoc.val(), "YYYY-MM-DD")
+									.format('DD-MM-YYYY'),
+							time : false,
+							format : 'DD-MM-YYYY'
+						}).on(
+						'change',
+						function(e, date) {
+							$tgbdhoc.val(moment(date, "DD-MM-YYYY").format(
+									'YYYY-MM-DD'));
+						});
+
+				// TG KT hoc
+				var $tgkthoc = $('#tgkthoc');
+				var $tgkthocview = $('#tgkthocview');
+
+				$tgkthocview.bootstrapMaterialDatePicker(
+						{
+							weekStart : 0,
+							currentDate : moment($tgkthoc.val(), "YYYY-MM-DD")
+									.format('DD-MM-YYYY'),
+							time : false,
+							format : 'DD-MM-YYYY'
+						}).on(
+						'change',
+						function(e, date) {
+							$tgkthoc.val(moment(date, "DD-MM-YYYY").format(
+									'YYYY-MM-DD'));
+						});
+
+				// TG BD DK
+				var $tgbddk = $('#tgbddk');
+				var $tgbddkview = $('#tgbddkview');
+
+				$tgbddkview.bootstrapMaterialDatePicker(
+						{
+							weekStart : 0,
+							currentDate : moment($tgbddk.val(),
+									"YYYY-MM-DD HH:mm").format(
+									'DD-MM-YYYY HH:mm'),
+							format : 'DD-MM-YYYY HH:mm'
+						}).on(
+						'change',
+						function(e, date) {
+							$tgbddk.val(moment(date, "DD-MM-YYYY HH:mm")
+									.format('YYYY-MM-DD HH:mm'));
+						});
+
+				//TG KT DK
+				var $tgktdk = $('#tgktdk');
+				var $tgktdkview = $('#tgktdkview');
+
+				$tgktdkview.bootstrapMaterialDatePicker(
+						{
+							weekStart : 0,
+							currentDate : moment($tgktdk.val(),
+									"YYYY-MM-DD HH:mm").format(
+									'DD-MM-YYYY HH:mm'),
+							format : 'DD-MM-YYYY HH:mm'
+						}).on(
+						'change',
+						function(e, date) {
+							$tgktdk.val(moment(date, "DD-MM-YYYY HH:mm")
+									.format('YYYY-MM-DD HH:mm'));
+						});
+			});
+</script>
+
+<script th:src="@{/js/cusvalidateform.js}"></script>

@@ -1,0 +1,88 @@
+<div class="modal-header">
+	<div class="col">
+		<a id="menu-toggle" href="#"
+			class="glyphicon glyphicon-align-justify btn-menu toggle">
+			<h4 class="d-inline modal-title font-bold" id="myModalLabel">
+				<i class="fa fa-bars" aria-hidden="true"></i> Course title
+			</h4>
+		</a>
+	</div>
+	<div id="chap">
+		<a
+			class="btn-responsive toolbarchap btn-floating btn-sm purple-gradient"><i
+			class="fa fa-chevron-left"></i></a> <a
+			class="btn-responsive btn-floating peach-gradient"
+			data-dismiss="modal"><i class="fa fa-reply" aria-hidden="true"></i></a>
+		<a
+			class="btn-responsive toolbarchap btn-floating btn-sm purple-gradient"><i
+			class="fa fa-chevron-right"></i></a>
+	</div>
+	<div id="chapmobile">
+		<a class="toolbarchap btn-sm purple-gradient"><i
+			class="fa fa-chevron-left"></i></a> <a class="btn-sm peach-gradient"
+			data-dismiss="modal"><i class="fa fa-reply" aria-hidden="true"></i></a>
+		<a class="toolbarchap btn-sm purple-gradient"><i
+			class="fa fa-chevron-right"></i></a>
+	</div>
+</div>
+
+<div class="modal-body">
+	<div id="wrapper">
+		<div id="sidebar-wrapper">
+			<div class="accordion" id="accordionEx"
+				role="tablist" aria-multiselectable="true">
+				<div th:each="chg,i : ${chuong}" class="card">
+					<div class="card-header" role="tab" th:id="|heading${i.count}|">
+						<a data-toggle="collapse" data-parent="#accordionEx"
+							th:href="|#collapse${i.count}|" aria-expanded="true"
+							aria-controls="collapseOne">
+							<h5 class="mb-0">
+								<span th:text="${chg.tenchuong}"></span><i
+									class="fa fa-angle-down rotate-icon"></i>
+							</h5>
+						</a>
+					</div>
+
+					<div th:id="|collapse${i.count}|" class="collapse show" role="tabpanel"
+					th:attr="aria-labelledby=|heading${i.count}|">
+						<div class="card-body">
+					<ul th:each="b,ia : ${chg.bais}" class="nav nav-pills flex-column">
+								<li class="nav-item"><a class="dbai nav-link active" th:href="@{/detaillesson/}+${b.mabai}"><span th:text="${b.tenbai}" ></span>
+										<span class="sr-only">(current)</span>
+								</a></li>
+							</ul> 
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+
+		<!-- Page content -->
+		<div id="page-content-wrapper">
+			<h1 class="text-center">Vui lòng chọn bài học !!!</h1>
+		</div>
+
+	</div>
+</div>
+<script>
+	/*Menu-toggle*/
+	$("#menu-toggle").click(function(e) {
+		e.preventDefault();
+		$("#wrapper").toggleClass("active");
+	});
+	$(".dbai").click(function(e){
+		e.preventDefault();
+		var url=$(this).attr('href');
+		$("#page-content-wrapper").load(
+				url,
+				function(responseTxt, statusTxt, xhr) {
+					if (statusTxt == "success") {
+						toastr["success"]("Load ok!");
+					}
+					if (statusTxt == "error")
+						toastr["error"]("Error: " + xhr.status + ": "
+								+ xhr.statusText);
+				});
+	});
+</script>	

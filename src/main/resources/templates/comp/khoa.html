@@ -1,0 +1,54 @@
+<meta charset="utf-8" />
+<div class="modal-content">
+	<!--Header-->
+	<div class="modal-header light-blue darken-3 white-text">
+		<h4 class="title">
+			<i class="fa fa-pencil"></i>
+			<th:block th:text="#{m.faculty}"></th:block>
+		</h4>
+		<button type="button" class="close waves-effect waves-light"
+			data-dismiss="modal" aria-label="Close">
+			<span aria-hidden="true" class="fa fa-remove"></span>
+		</button>
+	</div>
+	<!--Body-->
+	<div class="modal-body mb-0">
+		<form class="form-inline pull-right" action="khoa/save"
+			th:object="${khoa}" th:action="@{/khoa/save}" method="POST">
+			<div class="md-form form-sm">
+				<i class="fa fa-tag prefix"></i> <input type="text" id="makhoa"
+					th:field="*{makhoa}" class="form-control required name"
+					data-placement="left" data-trigger="manual"
+					th:attr="data-content=#{m.namevalid}" /> <label for="makhoa"
+					th:text="#{m.facultyid}" class="">Mã khoa</label>
+			</div>
+
+			<div class="md-form form-sm">
+				<i class="fa fa-tag prefix"></i> <input type="text" id="tenkhoa"
+					th:field="*{tenkhoa}" class="form-control required name"
+					data-placement="right" data-trigger="manual"
+					th:attr="data-content=#{m.namevalid}" /> <label for="tenkhoa"
+					th:text="#{m.facultyname}" class="">Tên khoa</label>
+			</div>
+			<div class="container">
+				<div class="text-center mt-1-half">
+					<button th:text="#{m.save}"
+						class="btn btn-info mb-2 waves-effect waves-light">
+						Save <i class="fa fa-send ml-1"></i>
+					</button>
+				</div>
+			</div>
+		</form>
+	</div>
+</div>
+<script>
+	$(function() { //active label
+		if ($('.form-inline input').val() != "") {
+			$('label').each(function() {
+				$(this).addClass('active');
+			});
+		}
+	});
+</script>
+
+<script th:src="@{/js/cusvalidateform.js}"></script>

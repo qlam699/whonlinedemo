@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:fragment="head">
+<meta charset="utf-8" />
+<meta name="viewport"
+	content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+<meta http-equiv="x-ua-compatible" content="ie=edge" />
+<title th:text="#{m.welcome}">Website học trực tuyến</title>
+<!-- Font Awesome -->
+<link rel="stylesheet" th:href="@{/css/font-awesome.min.css}" />
+
+<!-- Material Design Bootstrap -->
+<link rel="stylesheet" th:href="@{/css/compiled.min.css}" />
+<!-- DataTables CSS -->
+<!--<link href="https://blackrockdigital.github.io/startbootstrap-sb-admin-2/vendor/datatables-plugins/dataTables.bootstrap.css" rel="stylesheet">-->
+<link rel="stylesheet" th:href="@{/css/jquery.dataTables.min.css}" />
+<link rel="stylesheet" th:href="@{/css/buttons.dataTables.min.css}" />
+<!-- <link href="css/editor.dataTables.min.css" rel="stylesheet" /> -->
+
+<!-- DataTables Responsive CSS -->
+<link rel="stylesheet" th:href="@{/css/dataTables.responsive.css}" />
+<!-- Custom CSS -->
+<link rel="stylesheet" th:href="@{/css/sb-admin-2.css}" />
+<link rel="stylesheet" th:href="@{/css/icon.css}" />
+<link rel="stylesheet"
+	th:href="@{/css/bootstrap-material-datetimepicker.css}" />
+<link rel="stylesheet" type="text/css" media="screen"
+	th:href="@{/css/jquery-jvectormap-2.0.3.css}" />
+<link rel="stylesheet" th:href="@{/css/style.css}" />
+
+<style type="text/css">
+select {
+	display: none !important;
+}
+</style>
+</head>
+<body>
+	<header th:fragment="header" id="header">
+		<!--Navbar -->
+		<nav
+			class="navbar fixed-top navbar-expand-lg navbar-dark default-color">
+			<a th:text="#{m.admindashboard}" id="menu-toggle"
+				class="navbar-brand" href="#"><i class="fa fa-list-ul"
+				aria-hidden="true"></i> Admin Manager</a>
+			<button class="navbar-toggler" type="button" data-toggle="collapse"
+				data-target="#navbarSupportedContent-4"
+				aria-controls="navbarSupportedContent-4" aria-expanded="false"
+				aria-label="Toggle navigation">
+				<span class="navbar-toggler-icon"></span>
+			</button>
+			<div class="collapse navbar-collapse" id="navbarSupportedContent-4">
+				<ul class="navbar-nav ml-auto">
+					<li class="nav-item"
+						th:classappend="${#httpServletRequest.getRequestURI().startsWith('/courses') ? 'active':''}">
+						<a class="nav-link waves-effect waves-light" th:href="@{/courses}">
+							<i class="fa fa-graduation-cap"></i> <th:block
+								th:text="#{m.course}"></th:block>
+					</a>
+					</li>
+
+					<li class="nav-item"
+						th:classappend="${#httpServletRequest.getRequestURI().startsWith('/teachers') ? 'active':''}">
+						<a class="nav-link waves-effect waves-light"
+						th:href="@{/teachers}"> <i class="fa fa-user-circle"></i> <th:block
+								th:text="#{m.teacher}"></th:block>
+					</a>
+					</li>
+
+					<li class="nav-item"
+						th:classappend="${#httpServletRequest.getRequestURI().startsWith('/contact') ? 'active':''}">
+						<a class="nav-link waves-effect waves-light" th:href="@{/contact}">
+							<i class="fa fa-envelope"></i> <th:block th:text="#{m.contact}"></th:block>
+					</a>
+					</li>
+
+					<li class="nav-item"><a class="nav-link" data-toggle="modal"
+						data-target="#mymodal" th:href="@{/loginregister}"
+						sec:authorize="!isAuthenticated()"> <i class="fa fa-lock"></i>
+							<th:block th:text="#{m.login}"></th:block>
+					</a></li>
+
+					<li class="nav-item dropdown" sec:authorize="isAuthenticated()">
+						<a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink-4"
+						data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+							<i class="fa fa-user"></i> <span id="profile"
+							th:text="${#authentication.name}"> <th:block
+									th:text="#{m.profile}"></th:block>
+						</span>
+					</a>
+
+						<div class="dropdown-menu dropdown-menu-right dropdown-cyan"
+							aria-labelledby="navbarDropdownMenuLink-4">
+							<a class="dropdown-item" th:href="@{/}"> <i
+								class="fa fa-home"></i> Home
+							</a> <a class="dropdown-item" th:href="@{/myaccount}"> <th:block
+									th:text="#{m.myaccount}"></th:block></a> <a class="dropdown-item"
+								onClick="logout()"><th:block th:text="#{m.logout}"></th:block></a>
+						</div>
+					</li>
+				</ul>
+			</div>
+		</nav>
+		<!--/.Navbar -->
+	</header>
+
+	<!--Content-->
+	<main class="container-fluid" id="mainad"> <!--./ code here -->
+
+	<div class="modal-content">
+
+		<div class="modal-body" style="margin-top: 54px">
+			<div id="wrapper">
+
+				<div th:fragment="sidebar" id="sidebar-wrapper">
+					<ul class="nav nav-pills flex-column">
+						<li sec:authorize="hasRole('ROLE_ADMIN')" class="nav-item"><a
+							class="nav-link" th:href="@{/index}"
+							th:classappend="${#httpServletRequest.getRequestURI()=='/index' ? 'active':''}"><i
+								class="fa fa-mortar-board"></i> <th:block
+									th:text="#{m.overview}"></th:block> <span class="sr-only">(current)</span></a>
+						</li>
+
+						<li sec:authorize="hasRole('ROLE_ADMIN')" class="nav-item"><a
+							class="nav-link" th:href="@{/account}"
+							th:classappend="${#httpServletRequest.getRequestURI().startsWith('/account') ? 'active':''}"><i
+								class="fa fa-user-o"></i> <th:block
+									th:text="#{m.accountmanagement}"></th:block></a></li>
+
+						<li sec:authorize="hasRole('ROLE_STAFF')" class="nav-item"><a
+							class="nav-link" th:href="@{/adteachers}"
+							th:classappend="${#httpServletRequest.getRequestURI().startsWith('/adteachers') ? 'active':''}"><i
+								class="fa fa-user-o"></i> <th:block
+									th:text="#{m.teachermanagement}"></th:block></a></li>
+
+						<li sec:authorize="hasAnyRole('ROLE_STAFF', 'ROLE_TEACHER')"
+							class="nav-item"><a class="nav-link"
+							th:href="@{/adstudents}"
+							th:classappend="${#httpServletRequest.getRequestURI().startsWith('/adstudents') ? 'active':''}"><i
+								class="fa fa-user-o"></i> <th:block
+									th:text="#{m.studentmanagement}"></th:block></a></li>
+
+						<li sec:authorize="hasAnyRole('ROLE_STAFF', 'ROLE_TEACHER')"
+							class="nav-item"><a class="nav-link" th:href="@{/adcourse}"
+							th:classappend="${#httpServletRequest.getRequestURI().startsWith('/adcourse') ? 'active':''}"><i
+								class="fa fa-address-book-o"></i> <th:block
+									th:text="#{m.facultymanagement}"></th:block></a></li>
+
+						<li sec:authorize="hasRole('ROLE_TEACHER')" class="nav-item"><a
+							class="nav-link" th:href="@{/adlesson}"
+							th:classappend="${#httpServletRequest.getRequestURI().startsWith('/adlesson') ? 'active':''}"><i
+								class="fa fa-address-book-o"></i> <th:block
+									th:text="#{m.lessonmanagement}"></th:block></a></li>
+
+						<li sec:authorize="hasAnyRole('ROLE_STAFF', 'ROLE_TEACHER')"
+							class="nav-item"><a class="nav-link" th:href="@{/message}"
+							th:classappend="${#httpServletRequest.getRequestURI().startsWith('/message') ? 'active':''}"><i
+								class="fa fa-send-o"></i> <th:block
+									th:text="#{m.messagesmanagement}"></th:block></a></li>
+
+						<li sec:authorize="hasRole('ROLE_TEACHER')" class="nav-item"><a
+							class="nav-link" th:href="@{/discussion}"
+							th:classappend="${#httpServletRequest.getRequestURI().startsWith('/discussion') ? 'active':''}"><i
+								class="fa fa-users"></i> <th:block
+									th:text="#{m.discussionmanagement}"></th:block></a></li>
+					</ul>
+
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!--./ code here --> </main>
+	<!--/.Content-->
+
+	<footer th:fragment="footer">
+		<!-- SCRIPTS -->
+		<!-- JQuery -->
+		<script type="text/javascript" th:src="@{/js/jquery-3.1.1.min.js}"></script>
+
+		<!-- Bootstrap dropdown -->
+		<script type="text/javascript" th:src="@{/js/popper.min.js}"></script>
+		<script type="text/javascript" th:src="@{js/compiled.min.js}"></script>
+
+		<!-- DataTables JavaScript -->
+		<script th:src="@{/js/jquery.dataTables.min.js}"></script>
+		<script th:src="@{/js/dataTables.buttons.min.js}"></script>
+		<script th:src="@{/js/buttons.colVis.min.js}"></script>
+		<script th:src="@{/js/dataTables.select.min.js}"></script>
+
+		<!--<script th:src="@{/js/dataTables.editor.min.js}"></script> -->
+		<!--<script src="https://cdn.datatables.net/buttons/1.4.0/js/buttons.flash.min.js"></script>-->
+		<!--<script src="https://cdn.datatables.net/1.10.15/js/dataTables.bootstrap4.min.js"></script>-->
+
+		<script th:src="@{/js/dataTables.responsive.min.js}"></script>
+		<!--<script src="https://cdn.datatables.net/responsive/2.1.1/js/responsive.bootstrap4.min.js"></script>-->
+		<script th:src="@{/js/moment-with-locales.min.js}"></script>
+		<script th:src="@{/js/bootstrap-material-datetimepicker.js}"></script>
+		<script type="text/javascript"
+			th:src="@{/webjars/js-cookie/js.cookie.js}"></script>
+		<script th:src="@{/js/cus.js}"></script>
+		<script>
+			new WOW().init();
+		</script>
+		<script th:inline="javascript">
+		//<![CDATA[
+		//message alert
+		if ([[${success}]] !=null) {
+			toastr["success"]( [[#{ ''+${success}+'' }]] );
+		}
+		if ([[${error}]] != null && [[${error}]] != 'Not Found' && [[${error}]] != 'None' ) {
+			toastr["error"]( [[#{ ''+${error}+'' }]] );
+		}
+		//]]>
+		</script>
+
+		<!-- <script>
+			$(function() {
+				$('.min-chart#chart-sales').easyPieChart({
+					barColor : "#4caf50",
+					onStep : function(from, to, percent) {
+						$(this.el).find('.percent').text(Math.round(percent));
+					}
+				});
+			});
+		</script> -->
+
+		<script>
+			// Sidenav Initialization
+			$(".button-collapse").sideNav();
+
+			// Tooltips Initialization
+			$(function() {
+				$('[data-toggle="tooltip"]').tooltip()
+			})
+		</script>
+
+		<!-- JVectorMap -->
+
+		<!-- <script src="js/jquery-jvectormap-2.0.3.min.js"></script>
+		<script src="js/jquery-jvectormap-world-mill.js"></script> -->
+		<script>
+			$(function() {
+				$('table tbody').on('click', 'tr', function() {
+					$(this).toggleClass('selected');
+				});
+				//  $('#btnselectall').click(function() {
+
+				//             });
+				$('#btnrow').click(
+						function() {
+							alert(table.rows('.selected').data().length
+									+ ' row(s) selected');
+						});
+				/*end table*/
+				colors = {};
+
+				colors['ca'] = '#A4D886';
+				colors['ru'] = '#FCECA2';
+				colors['cn'] = '#F9573B';
+				colors['us'] = '#87CEEB';
+				colors['jp'] = '#34BD0E';
+				colors['au'] = '#BCC7FC';
+				colors['kz'] = '#D4624E';
+				colors['de'] = '#34BD0E';
+
+				/* 	$('#world-map').vectorMap({
+						colors : colors,
+						hoverOpacity : 0.7, // opacity for :hover
+						hoverColor : false
+					}); */
+
+			});
+		</script>
+	</footer>
+	<script th:src="@{/js/cusvalidateform.js}"></script>
+</body>
+</html>

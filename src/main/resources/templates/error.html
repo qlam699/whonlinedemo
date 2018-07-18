@@ -1,0 +1,27 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="homelayout :: head"></head>
+<body>
+	<div th:replace="homelayout :: header"></div>
+	<div th:replace="homelayout :: modal"></div>
+	<div th:replace="homelayout :: modalright"></div>
+	<!--Content-->
+	<main class="container text-center mt-3">
+		<div class="content-404">
+
+			<h1>
+				Chú ý! Chúng tôi không tìm thấy trang này
+			</h1>
+			<p>Lỗi này có thể bạn sai đường dẫn website hoặc không được quyền
+				truy cập.</p><hr/>
+			<h2>
+				<a href="/" class="btn btn-warning">Đưa tôi về trang chủ</a>
+			</h2>
+			<img th:src="@{/img/404.png}" class="img-responsive" alt="" width="40%"
+				style="margin: auto" />
+		</div>
+
+	</main>
+	<!--/.Content-->
+	<footer th:replace="homelayout :: footer"></footer>
+</body>
+</html>

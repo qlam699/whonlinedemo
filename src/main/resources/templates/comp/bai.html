@@ -1,0 +1,151 @@
+<meta charset="utf-8" />
+<!--Header-->
+<div class="modal-header">
+	<div class="col">
+		<a class="btn-small btn-responsive btn-floating peach-gradient"
+			data-dismiss="modal"><i class="fa fa-reply" aria-hidden="true"></i></a>
+		<h4 class="d-inline modal-title font-bold center" id="myModalLabel"
+			th:text="#{m.postanarticle}">Đăng bài học</h4>
+	</div>
+</div>
+<!--Body-->
+<div class="modal-body">
+	<div id="wrapper" style="padding: 0">
+		<div id="page-content-wrapper">
+			<!-- Section: Create Page -->
+			<section class="section mt-5 mb-5 container-fluid">
+				<!-- First row -->
+				<form class="row form" action="bai/save" th:object="${bai}"
+					th:action="@{/bai/save}" method="POST">
+					<!-- First col -->
+					<div class="col-lg-8">
+						<!-- First card -->
+						<div class="card mb-r post-title-panel">
+							<div class="card-body">
+								<div class="md-form mt-1 mb-0">
+									<input type="hidden" id="mabai" class="form-control"
+										th:field="*{mabai}" />
+									<div class="md-form mt-1 mb-0">
+										<input type="text" id="tenbai"
+											value="Lorem ipsum dolor sit amet delit" th:field="*{tenbai}"
+											class="form-control required name" data-placement="top"
+											data-trigger="manual" th:attr="data-content=#{m.namevalid}" />
+										<label for="tenbai" th:text="#{m.nameofthelesson}" class="">Tên
+											bài</label>
+									</div>
+								</div>
+							</div>
+						</div>
+						<!-- /.First card -->
+
+						<!-- Second card -->
+						<div class="card mb-r">
+							<textarea name="noidung" id="noidung" th:utext="*{noidung}"></textarea>
+						</div>
+						<!-- /.Second card -->
+
+
+					</div>
+					<!-- /.First col -->
+					<!-- Second col -->
+					<div class="col-lg-4">
+						<!--Card-->
+						<div class="card card-cascade narrower mb-r">
+							<!--Card image-->
+							<div class="view gradient-card-header blue-gradient">
+								<h4 class="mb-0">Publish</h4>
+							</div>
+							<!--/Card image-->
+
+							<!--Card content-->
+							<div class="card-body">
+								<input type="hidden" id="trangthai" name="trangthai"
+									th:field="*{trangthai}" th:value="*{trangthai}" value="false" />
+								<input type="hidden" id="machuong" name="machuong"
+									th:field="*{chuong.machuong}" /> <input type="hidden"
+									id="magt" name="magt" th:field="*{chuong.giaotrinh.magt}" />
+
+								<p><i class="fa fa-sticky-note mr-1 fa-lg" aria-hidden="true"></i>
+									<span th:text="#{m.nameofthecurriculum}"></span> <strong id="gt">  <th:block
+											th:text="${bai.chuong.giaotrinh.tengt}"></th:block>
+									</strong>
+								</p>
+								<p>
+									<i class="fa fa-bookmark mr-1 fa-lg" aria-hidden="true"></i> 
+									
+									<span th:text="#{m.nameofthechapter}"></span> <strong
+										id="ch"> <th:block th:text="${bai.chuong.tenchuong}"></th:block>
+									</strong>
+								</p>
+
+								<div class="text-right">
+									<input type="checkbox" id="cpublish"
+										th:checked="*{trangthai} ? 'checked'" /> <label
+										for="cpublish">Publish</label>
+									<button th:text="#{m.save}" type="submit"
+										class="btn btn-primary">Save</button>
+								</div>
+
+							</div>
+							<!--/.Card content-->
+
+						</div>
+						<!--/.Card-->
+
+
+					</div>
+					<!-- /.Second col -->
+				</form>
+				<!-- /.First row -->
+			</section>
+			<!-- /.Section: Create Page -->
+		</div>
+	</div>
+</div>
+<script src="ckeditor/ckeditor.js"></script>
+<script src="ckfinder/ckfinder.js"></script>
+<script>
+/*<![CDATA[*/
+	CKEDITOR
+			.replace(
+					'noidung',
+					{
+						filebrowserBrowseUrl : 'ckfinder/ckfinder.html',
+						filebrowserImageBrowseUrl : 'ckfinder/ckfinder.html?type=Images',
+						filebrowserFlashBrowseUrl : 'ckfinder/ckfinder.html?type=Flash',
+						filebrowserUploadUrl : 'ckfinder/core/connector/java/connector.java?command=QuickUpload&amp;type=Files',
+						filebrowserImageUploadUrl : 'ckfinder/core/connector/java/connector.java?command=QuickUpload&amp;type=Images',
+						filebrowserFlashUploadUrl : 'ckfinder/core/connector/java/connector.java?command=QuickUpload&amp;type=Flash'
+					});
+	if ($('.form input').val() != "") {
+		$('label').each(function() {
+			$(this).addClass('active');
+		});
+	}
+	var machuong = $('#machuong').val();
+	if (machuong == "")
+		$('#machuong').val(sessionStorage.machuong);
+	$('#lbmachuong').html(sessionStorage.machuong);
+	var magt = $('#magt').val();
+	if (magt == "")
+		$('#magt').val(sessionStorage.magt);
+	$('#lbmagt').html(sessionStorage.magt);
+	//trangthai
+	var tt = $("#trangthai");
+	$("#cpublish").change(function() {
+		if (this.checked) {
+			console.log("check");
+			tt.val(true);
+		} else {
+			console.log("uncheck");
+			tt.val(false);
+		}
+	});
+	//
+	$("#kh").html(sessionStorage.tenkh);
+	$("#gt").html(sessionStorage.tengt);
+	$("#ch").html(sessionStorage.tenchuong);
+	/*]]>*/
+</script>
+
+<script th:src="@{/js/cusvalidateform.js}"></script>

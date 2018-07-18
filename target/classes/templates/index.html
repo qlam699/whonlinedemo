@@ -1,0 +1,285 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="homelayout :: head"></head>
+
+<body>
+	<div th:replace="homelayout :: header"></div>
+	<div th:replace="homelayout :: modal"></div>
+	<div th:replace="homelayout :: modalright"></div>
+	<!--Content-->
+	<main class="container pt-2"> <!-- code here -->
+
+	<section id="categories mt-3 text-center">
+		<h3 class="font-bold mb-3" th:text="#{m.category}">Categories</h3>
+
+		<div class="row text-lg-left">
+			<div class="col-lg-2 col-md-3 col-xs-6" th:each="c,i : ${listcate}">
+				<a th:href="@{/courses/page/1?k=category_}+*{c.maloaikh}"
+					class="d-block mb-4 "> <img width="150"
+					class="img-fluid img-thumbnail" th:attr="avatar=${c.tenloaikh}" />
+					<span th:text="${c.tenloaikh}"></span>
+				</a>
+			</div>
+		</div>
+
+	</section>
+	<!--Carousel Wrapper course-->
+	<section id="multi-item-example"
+		class="carousel slide carousel-multi-item wow rotateInUpLeft"
+		data-ride="carousel">
+
+		<!--Controls-->
+		<div class="controls-top">
+			<a class="btn-floating default-color" href="#multi-item-example"
+				data-slide="prev"><i class="fa fa-chevron-left"></i></a>
+			<h3 class="d-inline" th:text="#{m.course}">Courses</h3>
+			<a class="btn-floating default-color" href="#multi-item-example"
+				data-slide="next"><i class="fa fa-chevron-right"></i></a>
+		</div>
+		<!--/.Controls-->
+
+		<!--Indicators-->
+		<ol class="carousel-indicators">
+			<li data-target="#multi-item-example" data-slide-to="0"
+				class="active default-color"></li>
+			<li data-target="#multi-item-example" data-slide-to="1"
+				class="default-color"></li>
+		</ol>
+		<!--/.Indicators-->
+
+		<!--Slides-->
+		<div class="carousel-inner" role="listbox">
+
+			<!--First slide-->
+			<div class="carousel-item active">
+				<div class="col-md-4 clearfix d-none d-md-block"
+					th:each="kh,i : ${listkh}">
+					<div class="card">
+						<a th:href="@{/detailcourse/}+*{kh.makh}"> <img
+							th:if="${kh.hinh==''||kh.hinh==null}"
+							th:attr="avatar=${kh.tenkh}" width="500" class="img-fluid" /> <img
+							th:unless="${kh.hinh==''||kh.hinh==null}" th:src="${kh.hinh}"
+							width="500" class="img-fluid" />
+						</a>
+						<div class="card-body">
+							<a th:href="@{/detailcourse/}+*{kh.makh}">
+								<h4 class="card-title" th:text="${kh.tenkh}">Card title</h4>
+							</a> <span class="my-rating-1"></span> <span class="live-rating"
+								th:text="${kh.sodiem}"></span>
+							<script th:inline="javascript">
+								$(".my-rating-1").starRating(
+										{
+											initialRating : [[${ kh.sodiem }]] ,
+											disableAfterRate : false,
+											onHover : function(currentIndex,
+													currentRating, $el) {
+												$('.live-rating').text(
+														currentIndex);
+											},
+											onLeave : function(currentIndex,
+													currentRating, $el) {
+												$('.live-rating').text(
+														currentRating);
+											},
+											readOnly: true,
+											starSize: 25
+										});
+							</script>
+
+							<div class="card-text" th:utext="${kh.mota}">Mota</div>
+							<p class="card-text">
+								<i class="fa fa-calendar"></i> <span th:text="${kh.tgbddk}"
+									th:remove="tag"></span>
+							</p>
+							<a th:href="@{/detailcourse/}+*{kh.makh}" class="btn btn-primary"
+								th:text="#{m.detail}">Detail</a>
+						</div>
+					</div>
+				</div>
+
+			</div>
+			<!--/.First slide-->
+			<div class="carousel-item">
+				<div class="col-md-4 clearfix d-none d-md-block"
+					th:each="kh,i : ${listkh2}">
+					<div class="card">
+						<a th:href="@{/detailcourse/}+*{kh.makh}"> <img
+							th:if="${kh.hinh==''||kh.hinh==null}"
+							th:attr="avatar=${kh.tenkh}" width="500" class="img-fluid" /> <img
+							th:unless="${kh.hinh==''||kh.hinh==null}" th:src="${kh.hinh}"
+							width="500" class="img-fluid" />
+						</a>
+						<div class="card-body">
+							<a th:href="@{/detailcourse/}+*{kh.makh}">
+								<h4 class="card-title" th:text="${kh.tenkh}">Card title</h4>
+							</a> <span class="my-rating-2"></span> <span class="live-rating"
+								th:text="${kh.sodiem}"></span>
+							<script th:inline="javascript">
+								$(".my-rating-2").starRating(
+										{
+											initialRating : [[${ kh.sodiem }]] ,
+											disableAfterRate : false,
+											onHover : function(currentIndex,
+													currentRating, $el) {
+												$('.live-rating').text(
+														currentIndex);
+											},
+											onLeave : function(currentIndex,
+													currentRating, $el) {
+												$('.live-rating').text(
+														currentRating);
+											},
+											readOnly: true,
+											starSize: 25
+										});
+							</script>
+
+							<p class="card-text" th:utext="${kh.mota}">Mota</p>
+							<p class="card-text">
+								<i class="fa fa-calendar"></i> <span th:text="${kh.tgbddk}"
+									th:remove="tag"></span>
+							</p>
+							<a th:href="@{/detailcourse/}+*{kh.makh}" class="btn btn-primary"
+								th:text="#{m.detail}">Detail</a>
+						</div>
+					</div>
+				</div>
+
+			</div>
+
+
+		</div>
+		<!--/.Slides-->
+
+	</section>
+	<!--/.Carousel Wrapper course--> <!--Carousel Wrapper-->
+	<section id="multi-item-example-3"
+		class="carousel testimonial-carousel slide carousel-multi-item wow rotateInUpLeft"
+		data-ride="carousel">
+
+		<!--Controls-->
+		<div class="controls-top">
+			<a class="btn-floating default-color" href="#multi-item-example-3"
+				data-slide="prev"><i class="fa fa-chevron-left"></i></a>
+			<h3 class="d-inline" th:text="#{m.teacher}">Teacher</h3>
+			<a class="btn-floating default-color" href="#multi-item-example-3"
+				data-slide="next"><i class="fa fa-chevron-right"></i></a>
+		</div>
+		<!--Controls-->
+
+		<!--Indicators-->
+		<ol class="carousel-indicators">
+			<li data-target="#multi-item-example-3" data-slide-to="0"
+				class="active default-color"></li>
+			<li data-target="#multi-item-example-3" data-slide-to="1"
+				class="default-color"></li>
+		</ol>
+		<!--Indicators-->
+
+		<!--Slides-->
+		<div class="carousel-inner" role="listbox">
+
+			<!--First slide-->
+			<div class="carousel-item active">
+				<!--Grid column-->
+				<div class="col-md-4" th:each="gv,i : ${listgv}">
+					<div class="testimonial">
+						<!--Avatar-->
+						<div class="avatar">
+							<a th:href="@{/detailteacher/}+*{gv.mand}"> <img
+								th:if="${gv.hinh==''||gv.hinh==null}" width="500"
+								th:attr="avatar=${gv.hovaten}"
+								class="rounded-circle img-fluid" /> <img
+								th:unless="${gv.hinh==''||gv.hinh==null}" width="500"
+								th:src="${gv.hinh}" class="rounded-circle img-fluid" />
+							</a>
+						</div>
+						<!--Content-->
+						<br />
+						<div class=" col-12 col-sm-10">
+							<a th:href="@{/detailteacher/}+*{gv.mand}">
+								<h4 th:text="${gv.hovaten}">A</h4>
+							</a>
+							<p th:text="${gv.email}">Email</p>
+							<p th:utext="${gv.mota}" class="hidden-md-down">Description</p>
+						</div>
+
+						<!--Review-->
+						<!-- <div class="grey-text">
+							<i class="fa fa-star"> </i> <i class="fa fa-star"> </i> <i
+								class="fa fa-star"> </i> <i class="fa fa-star"> </i> <i
+								class="fa fa-star-half-full"> </i>
+						</div> -->
+					</div>
+				</div>
+				<!--Grid column-->
+			</div>
+			<!--First slide-->
+
+			<!--Second slide-->
+			<div class="carousel-item">
+				<!--Grid column-->
+				<div class="col-md-4" th:each="gv,i : ${listgv2}">
+
+					<div class="testimonial">
+						<!--Avatar-->
+						<div class="avatar">
+							<a th:href="@{/detailteacher/}+*{gv.mand}"> <img
+								th:if="${gv.hinh==''||gv.hinh==null}" width="500"
+								th:attr="avatar=${gv.hovaten}"
+								class="rounded-circle img-fluid" /> <img
+								th:unless="${gv.hinh==''||gv.hinh==null}" width="500"
+								th:src="${gv.hinh}" class="rounded-circle img-fluid" />
+							</a>
+						</div>
+						<!--Content-->
+						<br />
+						<div class=" col-12 col-sm-10">
+							<a th:href="@{/detailteacher/}+*{gv.mand}">
+								<h4 th:text="${gv.hovaten}">A</h4>
+							</a>
+							<p th:text="${gv.email}">Email</p>
+							<p th:utext="${gv.mota}" class="hidden-md-down">Description</p>
+						</div>
+
+						<!--Review-->
+						<!-- <div class="grey-text">
+							<i class="fa fa-star"> </i> <i class="fa fa-star"> </i> <i
+								class="fa fa-star"> </i> <i class="fa fa-star"> </i> <i
+								class="fa fa-star-half-full"> </i>
+						</div> -->
+					</div>
+
+				</div>
+				<!--Grid column-->
+
+			</div>
+			<!--Second slide-->
+
+		</div>
+		<!--Slides-->
+
+	</section>
+	</main>
+
+	<footer th:replace="homelayout :: footer"></footer>
+	<script type='text/javascript'>
+		window._sbzq || function(e) {
+			e._sbzq = [];
+			var t = e._sbzq;
+			t.push([ "_setAccount", 74958 ]);
+			var n = e.location.protocol == "https:" ? "https:" : "http:";
+			var r = document.createElement("script");
+			r.type = "text/javascript";
+			r.async = true;
+			r.src = n + "//static.subiz.com/public/js/loader.js";
+			var i = document.getElementsByTagName("script")[0];
+			i.parentNode.insertBefore(r, i)
+		}(window);
+	</script>
+	<script>
+		$(document).ready(function() {
+			$('.jarallax').removeClass('welshort');
+		});
+	</script>
+</body>
+</html>

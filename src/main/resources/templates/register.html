@@ -1,0 +1,55 @@
+<!--Header-->
+<div class="modal-header">
+	<p class="heading lead" th:text="#{m.registermember}">Register a
+		member</p>
+	<button type="button" class="close" data-dismiss="modal"
+		aria-label="Close">
+		<span aria-hidden="true" class="white-text">&times;</span>
+	</button>
+</div>
+
+<!--Body-->
+<div class="modal-body white-color">
+	<form autocomplete="off" id="formreg" action="#"
+		th:action="@{/register}" th:object="${nguoidung}" method="post"
+		class="m-t" role="form" data-toggle="validator">
+
+		<div class="md-form form-sm">
+			<i class="fa fa-tag prefix"></i> <input type="text" id="hovaten"
+				name="hovaten" th:field="*{hovaten}" class="form-control required" />
+			<label for="hovaten" class="" th:text="#{m.fullname}">Name</label>
+		</div>
+
+		<div class="md-form form-sm">
+			<i class="fa fa-envelope prefix"></i> <input type="text" id="email"
+				name="email" th:field="*{email}" class="form-control required email"
+				data-placement="left" data-trigger="manual"
+				th:attr="data-content=#{m.emailvalid}" /> <label
+				th:text="#{m.youremail}" for="email">Your email</label>
+		</div>
+		<div class="md-form form-sm">
+			<i class="fa fa-envelope prefix"></i> <input type="password"
+				id="password" name="password" th:field="*{matkhau}"
+				class="form-control required password" data-placement="left"
+				data-trigger="manual" th:attr="data-content=#{m.passwordvalid}" />
+			<label for="password" th:text="#{m.password}">Your Password</label>
+		</div>
+		<div class="md-form form-sm">
+			<i class="fa fa-envelope prefix"></i> <input type="password"
+				id="password2" class="form-control required password"
+				data-placement="left" data-trigger="manual"
+				th:attr="data-content=#{m.passwordvalid}" /> <label for="password2"
+				th:text="#{m.repeatpassword}">Repeat Password</label>
+		</div>
+		<div class="text-center">
+			<button class="btn default-color" id="btnreg" type="button">
+				<th:block th:text="#{m.register}"></th:block>
+				<i class="fa fa-sign-in ml-1"></i>
+			</button>
+			<div th:replace="homecom::loading"></div>
+		</div>
+		<div id="error" class="alert alert-danger d-none" role="alert"></div>
+		<div id="ok" class="alert alert-success d-none" role="alert"></div>
+	</form>
+</div>
+<script th:src="@{/js/cusvalidateform.js}"></script>

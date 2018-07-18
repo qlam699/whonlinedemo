@@ -1,0 +1,81 @@
+<meta charset="utf-8" />
+<div class="modal-content">
+	<!--Header-->
+	<div class="modal-header light-blue darken-3 white-text">
+		<h4 class="title">
+			<i class="fa fa-pencil"></i>
+			<th:block th:text="#{m.discussion}"></th:block>
+		</h4>
+		<button type="button" class="close waves-effect waves-light"
+			data-dismiss="modal" aria-label="Close">
+			<span aria-hidden="true" class="fa fa-remove"></span>
+		</button>
+	</div>
+	<!--Body-->
+	<div class="modal-body mb-0">
+		<form th:object="${thaoluan}">
+			<div class="container">
+				<div class="md-form form-sm">
+					<i class="fa fa-tag prefix"></i> <input type="text" id="tieude"
+						th:field="*{tieude}"
+						class="form-control required name" data-placement="right"
+						data-trigger="manual" th:attr="data-content=#{m.namevalid}" /> <label
+						for="tieude" th:text="#{m.title}" readonly="readonly">Tiêu
+						đề</label>
+				</div>
+				<br />
+				<div class="md-form form-sm ">
+					<label class="pb-2">Nội dung</label>
+					<div th:utext="${thaoluan.noidung}"></div>
+				</div>
+			</div>
+
+		</form>
+	</div>
+</div>
+<script th:src="@{/js/cusvalidateform.js}"></script>
+<script>
+	$(function() { //active label
+		if ($('.form-inline input').val() != "") {
+			$('label').each(function() {
+				$(this).addClass('active');
+			});
+		}
+
+		var h = $('#hinh').val();
+		document.getElementById("imgpreview").src = h;
+	});
+	/*Avatar start*/
+	function BrowseServer(startupPath, functionData) {
+		// You can use the "CKFinder" class to render CKFinder in a page:
+		var finder = new CKFinder();
+
+		// The path for the installation of CKFinder (default = "/ckfinder/").
+		finder.basePath = '../';
+
+		//Startup path in a form: "Type:/path/to/directory/"
+		finder.startupPath = startupPath;
+
+		// Name of a function which is called when a file is selected in CKFinder.
+		finder.selectActionFunction = SetFileField;
+
+		// Additional data to be passed to the selectActionFunction in a second argument.
+		// We'll use this feature to pass the Id of a field that will be updated.
+		finder.selectActionData = functionData;
+
+		// Name of a function which is called when a thumbnail is selected in CKFinder. Preview img
+		// finder.selectThumbnailActionFunction = ShowThumbnails;
+
+		// Launch CKFinder
+		finder.popup();
+	}
+
+	// This is a sample function which is called when a file is selected in CKFinder.
+	function SetFileField(fileUrl, data) {
+		document.getElementById(data["selectActionData"]).innerHTML = this
+				.getSelectedFile().name;
+		document.getElementById("imgpreview").src = fileUrl;
+		document.getElementById("hinh").value = fileUrl;
+	}
+	/*Avatar end*/
+</script>

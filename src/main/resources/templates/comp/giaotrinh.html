@@ -1,0 +1,49 @@
+<meta charset="utf-8" />
+<div class="modal-content">
+	<!--Header-->
+	<div class="modal-header light-blue darken-3 white-text">
+		<h4 class="title">
+			<i class="fa fa-pencil"></i>
+			<th:block th:text="#{m.curriculum}"></th:block>
+		</h4>
+		<button type="button" class="close waves-effect waves-light"
+			data-dismiss="modal" aria-label="Close">
+			<span aria-hidden="true" class="fa fa-remove"></span>
+		</button>
+	</div>
+	<!--Body-->
+
+	<div class="modal-body mb-0">
+		<form action="giaotrinh/save"
+			th:object="${giaotrinh}" th:action="@{/giaotrinh/save}" method="POST">
+			<input type="hidden" id="magt" class="form-control"
+				th:field="*{magt}" />
+			<div class="md-form form-sm">
+				<i class="fa fa-tag prefix"></i> 
+				<input type="text" id="tengt"
+					th:field="*{tengt}" class="form-control required name" data-placement="right"
+					data-trigger="manual" th:attr="data-content=#{m.namevalid}" /> 
+				<label for="tengt" th:text="#{m.nameofthecurriculum}" class="">Tên giáo trình</label>
+			</div>
+			<div class="text-center mt-1-half">
+				<button th:text="#{m.save}" class="btn btn-info mb-2 waves-effect waves-light">
+					Save <i class="fa fa-send ml-1"></i>
+				</button>
+			</div>
+		</form>
+	</div>
+	<!--/Body-->
+</div>
+<script>
+	$(function() { //active label
+		if ($('.form-inline input').val() != "") {
+			$('label').each(function() {
+				$(this).addClass('active');
+			});
+		}
+		//Add then
+	
+	});
+</script>
+
+<script th:src="@{/js/cusvalidateform.js}"></script>

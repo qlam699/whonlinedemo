@@ -1,0 +1,540 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="homelayout :: head"></head>
+<body>
+	<div th:replace="homelayout :: header"></div>
+	<div th:replace="homelayout :: modal"></div>
+	<!--Content-->
+	<main class="container"> <!--./ code here --> <!--Section: Contact v.3-->
+	<section class="section mb-5 pt-5">
+		<h2>Stream Live Lesson</h2>
+		<section class="make-center">
+			<div sec:authorize="hasRole('ROLE_TEACHER')"
+				style="background: yellow; margin: 20px; border: 2px dotted red; font-size: 20px;">
+				You're using Chrome? <a
+					href="https://chrome.google.com/webstore/detail/screen-capturing/ajhifddimkapgcifgcodmmfdlknahffk"
+					id="install-button" target="_blank">Please install this plugin
+					on Store</a>
+			</div>
+			<div class="row">
+				<div class="col-md-5">
+					<input type="text" id="room-id" value="abcdef" autocorrect="off"
+						autocapitalize="off" />
+				</div>
+				<div class="col-md-7">
+					<!-- <button id="open-or-join-room" class="btn btn-default">Auto
+					Open Or Join Room</button> -->
+					<button sec:authorize="hasRole('ROLE_TEACHER')" id="open-room"
+						class="btn btn-default" disabled="disabled">Open Room</button>
+					<button sec:authorize="hasRole('ROLE_STUDENT')" id="join-room"
+						class="btn btn-default">Join Room</button>
+					<!-- <button id="open-screen" class="btn btn-default">Open
+						Screen</button> -->
+					<button sec:authorize="hasRole('ROLE_TEACHER')" id="btnstop"
+						class="btn btn-danger" disabled="disabled">Stop</button>
+						<h3 class="d-inline float-right"> <span class="badge badge-pill light-blue" ><span>Online:</span> <span id="countpart" >0</span></span></h3>
+				</div>
+				<div id="count"></div>
+			</div>
+
+
+			<div id="room-urls"
+				style="text-align: center; display: none; background: #F1EDED; margin: 15px -10px; border: 1px solid rgb(189, 189, 189); border-left: 0; border-right: 0;"></div>
+			<div class="row" style="position: relative">
+				<div class="col-md-7">
+					<div id="videos-container" width="100%"></div>
+					<video controls="controls" width="100%" id="pre"
+						style="display: none"></video>
+					<p id="streamend" style="display: none">Stream was Ended ! You
+						can review this lesson on Course</p>
+				</div>
+				<div class="col-md-5" id="chatbox" style="display: none">
+					<!--Form without header-->
+					<div class="card">
+						<div class="card-body row">
+							<div class="col-10">
+								<input type="text" id="input-text-chat"
+									placeholder="Enter Text Chat" disabled="disabled" />
+							</div>
+							<div class="col-2">
+								<button id="okchat" class="btn-primary fa fa-paper-plane"
+									style="width: 100%; height: 40px;" disabled="disabled"></button>
+							</div>
+
+
+						</div>
+					</div>
+					<!--/Form without header-->
+					<div class="chat-output mt-1"
+						style="max-height: 300px; width: 100%; position: relative; overflow-y: auto; overflow-x: hidden; overflow-wrap: break-word;"></div>
+				</div>
+			</div>
+			<script
+				src="https://rtcmulticonnection.herokuapp.com/dist/RTCMultiConnection.min.js"></script>
+			<script src="https://rtcmulticonnection.herokuapp.com/dev/adapter.js"></script>
+			<script
+				src="https://rtcmulticonnection.herokuapp.com/socket.io/socket.io.js"></script>
+			<script src="https://cdn.WebRTC-Experiment.com/RecordRTC.js"></script>
+			<!-- capture screen from any HTTPs domain! -->
+			<!--<script src="https://cdn.webrtc-experiment.com/Screen-Capturing.js"></script>-->
+			<script src="https://cdn.webrtc-experiment.com:443/getScreenId.js"></script>
+			<!-- custom layout for HTML5 audio/video elements -->
+			<link rel="stylesheet"
+				href="https://rtcmulticonnection.herokuapp.com/dev/getHTMLMediaElement.css" />
+			<script
+				src="https://rtcmulticonnection.herokuapp.com/dev/getHTMLMediaElement.js"></script>
+			<script th:inline="javascript">
+				//<![CDATA[
+					if ( [[ ${ #authorization.expression('hasRole(''TEACHER'')') } ]]  == true && adapter.browserDetails.browser === 'chrome') {
+					document.getElementById('room-id').disabled = true;
+					/* document.getElementById('open-room').disabled = true;
+					document.getElementById('join-room').disabled = true */;
+					
+					// https://github.com/muaz-khan/Chrome-Extensions/tree/master/Screen-Capturing.js#getchromeextensionstatus
+					getChromeExtensionStatus(function(status) {
+						if (status == 'installed-enabled') {
+							if (document.getElementById('install-button')) {
+								document.getElementById('install-button').parentNode.style.border="none";
+								document.getElementById('install-button').parentNode.style.background="lightgreen";
+								document.getElementById('install-button').parentNode.innerHTML = '<strong>Great!</strong> <a href="https://chrome.google.com/webstore/detail/screen-capturing/ajhifddimkapgcifgcodmmfdlknahffk" target="_blank">Google chrome extension</a> is installed.';
+							}
+							CHROME_MEDIA_SOURCE = 'desktop';
+
+							document.getElementById('room-id').disabled = false;
+							document.getElementById('open-room').disabled = false;
+							document.getElementById('btnstop').disabled = false;
+						} else {
+							document.getElementById('open-room').disabled = true;
+							document.getElementById('btnstop').disabled = true;
+							// document.getElementById('chrome-warning').style.display = 'block';
+						}
+					});
+				}
+					
+				window.enableAdapter = true; // enable adapter.js
+
+				// ......................................................
+				// .......................UI Code........................
+				// ......................................................
+				/* document.getElementById('open-or-join-room').onclick = function() {
+					disableInputButtons();
+					showRoomURL(document.getElementById('room-id').value);
+					connection.openOrJoin(
+							document.getElementById('room-id').value, function(
+									isRoomExist, roomid) {
+								if (!isRoomExist) {
+									showRoomURL(roomid);
+								} else {
+									connection.sdpConstraints.mandatory = {
+										OfferToReceiveAudio : true,
+										OfferToReceiveVideo : true
+									};
+								}
+							});
+					connection.addStream({
+						audio : 'two-way',
+						screen : true,
+
+					});
+				}; */
+				if( [[ ${ #authorization.expression('hasRole(''TEACHER'')') } ]]  == true  ){
+					document.getElementById('open-room').onclick = function() {
+					    disableInputButtons();
+					    var isPublicModerator = true;
+					    connection.open(document.getElementById('room-id').value,isPublicModerator,function(){
+					    document.getElementById('chatbox').style.display="block"; });
+					    
+					    showRoomURL(connection.sessionid);
+					    connection.addStream({
+							audio : 'two-way',
+							screen : true,
+	
+						});
+					};
+				}
+				
+				if( [[ ${ #authorization.expression('hasRole(''STUDENT'')') } ]]  == true  ){
+					document.getElementById('join-room').onclick = function() {
+					    disableInputButtons();
+					    connection.checkPresence(document.getElementById('room-id').value, function(isRoomExist, roomid) {
+					        if (isRoomExist === true) {
+					        	document.getElementById('chatbox').style.display="block";
+					            connection.join(roomid);
+					            connection.sdpConstraints.mandatory = {
+								        OfferToReceiveAudio: true,
+								        OfferToReceiveVideo: true
+								    };
+					        } else {
+					        	document.getElementById('streamend').style.display="block";
+					        	document.getElementById('streamend').style.color="red";
+					            document.getElementById('streamend').innerHTML="Join Fail. Room not exist! Please refresh and Try again!";
+					            return;
+					        }
+					    });
+					   // connection.join(document.getElementById('room-id').value);
+					};
+		
+				}
+				
+				document.getElementById('input-text-chat').onkeyup = function(e) {
+					if (e.keyCode != 13)
+						return;
+					// removing trailing/leading whitespace
+					this.value = this.value.replace(/^\s+|\s+$/g, '');
+					this.value = this.value.replace(/<[^>]*>?/g, '');
+					if (!this.value.length)
+						return;
+					var val = '<b>' + fullname + ':</b> ' + this.value;
+					var vallocal = '<b style="color:red">' + fullname + ':</b> ' + this.value;
+					connection.send(val);
+					appendDIV(vallocal);
+					this.value = '';
+				};
+				document.getElementById('okchat').onclick= function(){
+					e = $.Event('keyup');
+					e.keyCode= 13; // enter
+					$('#input-text-chat').trigger( e ); 
+				};
+						
+				var chatContainer = document.querySelector('.chat-output');
+
+				function appendDIV(event) {
+					var div = document.createElement('div');
+					div.innerHTML = event.data || event;
+					chatContainer.insertBefore(div, chatContainer.firstChild);
+					div.tabIndex = 0;
+					div.focus();
+
+					document.getElementById('input-text-chat').focus();
+				}
+				// ......................................................
+				// ..................RTCMultiConnection Code.............
+				// ......................................................
+
+				var connection = new RTCMultiConnection();
+				connection.maxParticipantsAllowed= 40;
+				// comment-out below line if you do not have your own socket.io server
+				connection.socketURL = 'https://rtcmulticonnection.herokuapp.com:443/'; //'https://rtcqlam-qlam.c9users.io/'; 
+
+				connection.socketMessageEvent = 'video-broadcast-demo';
+
+				connection.mediaConstraints = {
+					video : false,
+					audio : true
+				};
+
+				connection.session = {
+					data : true,
+					oneway : true
+				};
+
+				connection.sdpConstraints.mandatory = {
+					OfferToReceiveAudio : false,
+					OfferToReceiveVideo : false
+				};
+				var fullname=[[ ${ nd.hovaten } ]]  ;
+				var email=[[ ${ nd.email } ]] ;
+				var stt=0;
+				var makh = [[ ${#httpServletRequest.getRequestURI()} ]];
+				var mang=makh.split("/");
+				makh=mang[mang.length-1];
+				/**/
+				
+				// by default, socket.io server is assumed to be deployed on your own URL https://www.rtcmulticonnection.org/docs/addStream/#add-screen
+				/* document.getElementById('open-screen').onclick = function() {
+					connection.addStream({
+						video : true,
+						audio : true,
+						streamCallback : function(stream) {
+							document.getElementById('pre').srcObject = stream;
+							console.log('Screen is successfully captured: '
+									+ stream.getVideoTracks().length);
+						}
+					});
+				}; */
+				/* ==== */
+		var numberOfUsers = connection.getAllParticipants().length;
+				console.log(numberOfUsers);
+				connection.onmessage = appendDIV;
+				connection.onopen = function(e) {
+					console.log("e ne:"+e);
+					document.getElementById('countpart').innerHTML=connection.getAllParticipants().length;
+					if (connection.alreadyOpened){
+						return;
+					}
+					connection.alreadyOpened = true;
+					//recive data
+					
+				/* 	connection.getAllParticipants().forEach(function(participantId) {
+						document.getElementById('countpart').innerHTML=connection.getAllParticipants().length;
+					    var user = connection.peers[participantId];
+					    var hisFullName = user.extra.fullName;
+					    stt=user.extra.stt+1;
+					    var hisUID = user.userid;
+					    var hisNativePeer = user.peer;
+					    var hisIncomingStreams = user.peer.getRemoteStreams();
+					    var hisDataChannels = user.channels;
+					    console.log( user );
+					}); */
+					//    document.getElementById('share-file').disabled = false;
+					document.getElementById('input-text-chat').disabled = false;
+					//    document.getElementById('btn-addStream').disabled = false;
+				};
+				
+				connection.onclose = function(event) {
+					document.getElementById('countpart').innerHTML=connection.getAllParticipants().length;
+					console.log("event ne:"+event);
+				    var remoteUserId = event.userid;
+				    var remoteUserFullName = event.extra.fullName;
+					
+				};
+				// send data
+				connection.extra = {
+						stt:stt,
+					    fullname: fullname,
+					    email: email,
+					    urlroom: [[${#httpServletRequest.requestURI}]]
+					};
+				
+				connection.videosContainer = document
+						.getElementById('videos-container');
+
+				var recorder, mangStream = [];
+				var screenStream, cameraStream;
+				connection.onstream = function(event) {
+
+					var video = document.createElement('video');
+					video.controls = true;
+					if (event.type === 'local') {
+						video.muted = true;
+					}
+					video.srcObject = event.stream;
+
+					var width = connection.videosContainer.clientWidth;//parseInt(connection.videosContainer.clientWidth / 2) - 20;
+					var mediaElement = getHTMLMediaElement(video, {
+						title : event.userid,
+						buttons : [ 'full-screen' ],
+						width : width,
+						showOnMouseEnter : false
+					});
+
+					if (event.stream.isScreen == true) {
+						event.stream.width = window.screen.width;
+						event.stream.height = window.screen.height;
+						event.stream.fullcanvas = true;
+						connection.videosContainer.appendChild(mediaElement);
+					} else {
+						console.log("camera ne: " + event.stream);
+						event.stream.width = 200;
+						event.stream.height = 200;
+					}
+
+					//     connection.videosContainer.appendChild(mediaElement);
+					event.mediaElement.play();
+					setTimeout(function() {
+						mediaElement.media.play();
+					}, 5000);
+
+					mangStream.push(event.stream);
+					console.log(event.stream);
+					recorder = RecordRTC(mangStream, {
+						type : 'video',
+						mimeType : 'video/webm', // or video/webm\;codecs=h264 or video/webm\;codecs=vp9
+						previewStream : function(stream) {
+
+						}
+					});
+
+					// recorder.audio.startRecording();
+					recorder.startRecording();
+
+					mediaElement.id = event.streamid;
+					var btnStopRecording = document.getElementById('btnstop');
+					btnStopRecording.onclick = function() {
+						/* connection.getAllParticipants().forEach(function(participantId) {
+						    var user = connection.peers[participantId];
+						    var hisFullName = user.extra.fullName;
+						    var hisUID = user.userid;
+						    var hisNativePeer = user.peer;
+						    var hisIncomingStreams = user.peer.getRemoteStreams();
+						    var hisDataChannels = user.channels;
+						}); */
+						mangStream[0].stop();
+						if (mangStream[1])
+							mangStream[1].stop();
+
+						recorder.stopRecording(function(singleWebM) {
+							var blob = recorder.getBlob();
+							// or upload to server
+							document.getElementById('room-urls').innerHTML="Uploading to server ...";
+							var formData = new FormData();
+							var date = new Date();
+							var m = moment().format("DDMMYYYY_HHMMSS");
+							formData.append('uploadfile', blob);
+							formData.append('filename',[[${nd.mand}]] + "_" + makh +"_"+m+".webm");
+							formData.append('machuong',[[ ${param.machuong} ]]);
+							formData.append('magt',[[ ${param.magt} ]]);
+							
+							// end upload to server
+							$.ajax({
+								url : "/uploadFile",
+								type : "POST",
+								data : formData,
+								enctype : 'multipart/form-data',
+								processData : false,
+								contentType : false,
+								cache : false,
+								success : function() {
+									document.getElementById('room-urls').innerHTML="Upload success!";
+								},
+								error : function() {
+									document.getElementById('room-urls').innerHTML="Upload FAIL! Please save it in local and upload again to server.";
+								}
+							});
+
+							var video = document.getElementById("pre");
+							video.style.display='block';
+							video.width = 600;
+							//video.width=600;
+							video.src = singleWebM;
+
+						});
+					};
+
+					/**/
+					event.stream.oninactive = event.stream.onended = function() {
+						console.log('inactive');
+						btnStopRecording.onclick();
+					};
+				};
+
+				// Using getScreenId.js to capture screen from any domain
+				// You do NOT need to deploy Chrome Extension YOUR-Self!!
+				connection.getScreenConstraints = function(callback) {
+					getScreenConstraints(function(error, screen_constraints) {
+						if (!error) {
+
+							screen_constraints = connection
+									.modifyScreenConstraints(screen_constraints);
+							callback(error, screen_constraints);
+							return;
+						}
+						throw error;
+					});
+				};
+
+				connection.onstreamended = function(event) {
+					document.getElementById('streamend').style.display="block";
+					document.getElementById('chatbox').style.display="none";
+					var mediaElement = document.getElementById(event.streamid);
+					if (mediaElement) {
+						mediaElement.parentNode.removeChild(mediaElement);
+					}
+					connection.close();
+				};
+
+				function disableInputButtons() {
+					if( [[ ${ #authorization.expression('hasRole(''STUDENT'')') } ]]  == true  ){
+						document.getElementById('join-room').disabled = true;
+					}
+					if( [[ ${ #authorization.expression('hasRole(''TEACHER'')') } ]]  == true  ){
+						document.getElementById('open-room').disabled = true;
+					}
+					document.getElementById('room-id').disabled = true;
+					document.getElementById('input-text-chat').disabled = false;
+					document.getElementById('okchat').disabled = false;
+				}
+				// ......................................................
+				// ......................Handling Room-ID................
+				// ......................................................
+
+				function showRoomURL(roomid) {
+					var roomHashURL = '#' + roomid;
+					var roomQueryStringURL = '?roomid=' + roomid;
+
+					var html = '<h2>Unique URL for your room:</h2><br>';
+
+					html += 'Hash URL: <a href="' + roomHashURL + '" target="_blank">'
+							+ roomHashURL + '</a>';
+					html += '<br>';
+					html += 'QueryString URL: <a id="urlroom" href="' + roomQueryStringURL + '" target="_blank">'
+							+ roomQueryStringURL + '</a>';
+
+					var roomURLsDiv = document.getElementById('room-urls');
+					roomURLsDiv.innerHTML = html;
+
+					roomURLsDiv.style.display = 'block';
+				}
+
+				(function() {
+					var params = {}, r = /([^&=]+)=?([^&]*)/g;
+
+					function d(s) {
+						return decodeURIComponent(s.replace(/\+/g, ' '));
+					}
+					var match, search = window.location.search;
+					while (match = r.exec(search.substring(1)))
+						params[d(match[1])] = d(match[2]);
+					window.params = params;
+				})();
+
+				var roomid = '';
+				var makh=[[ ${makh.makh} ]];
+				if (localStorage.getItem(connection.socketMessageEvent)) {
+					roomid = makh+localStorage
+							.getItem(connection.socketMessageEvent);
+				} else {
+					roomid = makh+connection.token();
+				}
+				// showRoomURL(roomid);
+				document.getElementById('room-id').value = roomid;
+				document.getElementById('room-id').onkeyup = function() {
+					localStorage.setItem(connection.socketMessageEvent,
+							this.value);
+				};
+
+				var hashString = location.hash.replace('#', '');
+				if (hashString.length && hashString.indexOf('comment-') == 0) {
+					hashString = '';
+				}
+
+				var roomid = params.roomid;
+				if (!roomid && hashString.length) {
+					roomid = hashString;
+				}
+
+				if (roomid && roomid.length) {
+					document.getElementById('room-id').value = roomid;
+					localStorage.setItem(connection.socketMessageEvent, roomid);
+
+					// auto-join-room
+					(function reCheckRoomPresence() {
+						connection.checkPresence(roomid, function(isRoomExist) {
+							if (isRoomExist) {
+								document.getElementById('chatbox').style.display="block";
+								connection.sdpConstraints.mandatory = {
+									OfferToReceiveAudio : true,
+									OfferToReceiveVideo : true
+								};
+								connection.join(roomid);
+								return;
+							}
+							console.log("Join Fail!");
+							document.getElementById('room-id').disabled = false;
+							setTimeout(reCheckRoomPresence, 5000);
+						});
+					})();
+
+					disableInputButtons();
+				}
+				//]]>
+			</script>
+		</section>
+
+
+
+	</section>
+	<!--Section: Contact v.3--> <!--./ code here --> </main>
+	<!--/.Content-->
+	<footer th:replace="homelayout :: footer"></footer>
+</body>
+</html>

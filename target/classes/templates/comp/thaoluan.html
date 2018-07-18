@@ -1,0 +1,103 @@
+<meta charset="utf-8" />
+<div class="modal-content">
+	<!--Header-->
+	<div class="modal-header light-blue darken-3 white-text">
+		<h4 class="title">
+			<i class="fa fa-pencil"></i>
+			<th:block th:text="#{m.discussion}"></th:block>
+		</h4>
+		<button type="button" class="close waves-effect waves-light"
+			data-dismiss="modal" aria-label="Close">
+			<span aria-hidden="true" class="fa fa-remove"></span>
+		</button>
+	</div>
+	<!--Body-->
+	<div class="modal-body mb-0">
+		<form class="form-inline pull-right" action="thaoluan/save"
+			th:object="${thaoluan}" th:action="@{/thaoluan/a/save}" method="POST">
+			<!--Blue select-->
+
+			<div class="container">
+				<label for="tenloaikh" th:text="#{m.selectreceiver}" class="">Chọn
+					người nhận</label>
+				<div class="md-form form-sm">
+					<select th:field="*{thaoluanid.nguoidung.mand}" id="selectnd"
+						class="mdb-select colorful-select dropdown-primary"
+						searchable="Search here..">
+						<option class="form-control" th:each="nd,i : ${listnd}"
+							th:value="${nd.mand}" th:text="${nd.mand + ' ' + nd.hovaten}">Option
+							1</option>
+					</select>
+				</div>
+			</div>
+
+			<input type="hidden" id="tgdang" class="form-control"
+				th:field="*{thaoluanid.tgdang}" />
+
+			<div class="container">
+				<div class="md-form form-sm">
+					<i class="fa fa-tag prefix"></i> <input type="text" id="tieude"
+						th:field="*{tieude}" class="form-control required name"
+						data-placement="right" data-trigger="manual"
+						th:attr="data-content=#{m.namevalid}" /> <label for="tieude"
+						th:text="#{m.title}" class="">Tiêu đề</label>
+				</div>
+
+				<label for="tenloaikh" th:text="#{m.selectcourse}" class="">Chọn
+					khóa học</label>
+				<div class="md-form form-sm">
+					<select th:field="*{khoahoc.makh}" id="selectmakh"
+						class="mdb-select colorful-select dropdown-primary"
+						searchable="Search here..">
+						<option class="form-control" th:each="kh,i : ${listkh}"
+							th:value="${kh.makh}" th:text="${kh.tenkh}">Option 1</option>
+					</select>
+				</div>
+			</div>
+			<div class="container mt-3">
+				<div class="md-form form-sm ">
+					<label th:text="#{m.content}" class="pb-2">Nội dung</label>
+					<textarea type="text" id="noidung" name="noidung"
+						class="form-control" th:field="*{noidung}"></textarea>
+				</div>
+
+				<div class="text-center mt-1-half">
+					<button th:text="#{m.save}"
+						class="btn btn-info mb-2 waves-effect waves-light">
+						Save <i class="fa fa-send ml-1"></i>
+					</button>
+				</div>
+			</div>
+
+		</form>
+	</div>
+</div>
+<script>
+	$(function() { //active label
+		if ($('.form-inline input').val() != "") {
+			$('label').each(function() {
+				$(this).addClass('active');
+			});
+		}
+
+		// Material Select Initialization
+		$('.mdb-select').material_select();
+	});
+</script>
+<script th:src="@{/js/cusvalidateform.js}"></script>
+<script th:src="@{/ckeditor/ckeditor.js}"></script>
+<script th:src="@{/ckfinder/ckfinder.js}"></script>
+<script>
+	CKEDITOR
+			.replace(
+					'noidung',
+					{
+						filebrowserBrowseUrl : 'ckfinder/ckfinder.html',
+						filebrowserImageBrowseUrl : 'ckfinder/ckfinder.html?type=Images',
+						filebrowserFlashBrowseUrl : 'ckfinder/ckfinder.html?type=Flash',
+						filebrowserUploadUrl : 'ckfinder/core/connector/java/connector.java?command=QuickUpload&amp;type=Files',
+						filebrowserImageUploadUrl : 'ckfinder/core/connector/java/connector.java?command=QuickUpload&amp;type=Images',
+						filebrowserFlashUploadUrl : 'ckfinder/core/connector/java/connector.java?command=QuickUpload&amp;type=Flash'
+					});
+</script>
+<script th:src="@{/js/cusvalidateform.js}"></script>
