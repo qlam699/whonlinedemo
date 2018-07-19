@@ -17,7 +17,7 @@ Import database 'webelearning' vào mysql
 
 Config thông số trước khi chạy gồm: 
 File application.properties: 
-### MySQL username and password 
+
 spring.datasource.username= user mysql
 spring.datasource.password= pass mysql
 
