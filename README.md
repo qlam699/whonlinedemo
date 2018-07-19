@@ -19,6 +19,7 @@ Config thông số trước khi chạy gồm:
 File application.properties: 
 
 spring.datasource.username= user mysql
+
 spring.datasource.password= pass mysql
 
 Xong. Chạy dự án bằng cách Nhấn phải project Chọn: Run as > Spring Boot App
