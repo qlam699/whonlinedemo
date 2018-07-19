@@ -94,23 +94,15 @@
 			
 
 			<div class="container">
-			
 			<input type="hidden" id="hinh" class="form-control"
 				th:field="*{hinh}" />
-			<div th:if="${nd.hinh}" class="align-items-center  avatar">
-	
-				<img th:if="${nd.hinh==''||nd.hinh==null}"
-							th:src="@{/img/noimage.png}" width="70%"
-							class="img-fluid" /> <img
-							th:unless="${nd.hinh==''||nd.hinh==null}"
-							th:src="${nd.hinh}" width="100%" class="img-fluid" />
-							
-				<!-- <img id="imgpreview" th:if="${nd.hinh==''||nd.hinh==null}" width="300"
-									th:attr="avatar=${nd.hovaten}"
-									class="rounded-circle img-fluid"  />
-						<img id="imgpreview" th:unless="${nd.hinh==''||nd.hinh==null}" width="300"
+			<div class="align-items-center  avatar">
+				 <img id="imgpreview" th:if="${nd.hinh==''||nd.hinh==null}" width="300"
+									src="/img/noimage.png" 
+									class="ko rounded-circle img-fluid"  />
+				<img id="imgpreview" th:unless="${nd.hinh==''||nd.hinh==null}" width="300"
 									th:src="${nd.hinh}"
-									class="rounded-circle img-fluid" /> -->
+									class="rounded-circle img-fluid" /> 
 			</div>
 			<div class="card-body">
 				<!--Name-->
@@ -178,9 +170,9 @@
 		$('#cbdaduyet').change(function() {
 			var daduyet = $("#daduyet");
 			if (this.checked) {
-				daduyet.val(1);
+				daduyet.val(true);
 			} else {
-				daduyet.val(0);
+				daduyet.val(false);
 			}
 		});
 		$('#cbphai').change(function() {
@@ -192,7 +184,8 @@
 			}
 		});
 		var h = $('#hinh').val();
-		document.getElementById("imgpreview").src = h;
+		if(h!=null&&h!='')
+			document.getElementById("imgpreview").src = h;
 	});
 
 	/*Avatar start*/

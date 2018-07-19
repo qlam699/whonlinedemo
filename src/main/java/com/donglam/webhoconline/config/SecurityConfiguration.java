@@ -70,66 +70,65 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 	@Autowired
 	OAuth2ClientContext oauth2ClientContext;
 
-
-	// allow ckfinder 
+	// allow ckfinder
 	@Override
-    public void configure(WebSecurity web) throws Exception {
-        web.ignoring().antMatchers("/ckfinder/**").antMatchers(HttpMethod.OPTIONS, "/**");
-    }
-	
+	public void configure(WebSecurity web) throws Exception {
+		web.ignoring().antMatchers("/ckfinder/**").antMatchers(HttpMethod.OPTIONS, "/**");
+	}
+
 	@SuppressWarnings("unchecked")
 	@RequestMapping("/user")
-	public Principal user(Principal principal,HttpServletRequest request) { // only -> sso
+	public Principal user(Principal principal, HttpServletRequest request) { // only -> sso
 		System.out.println("Chay vao Principal");
 		if (principal != null && (principal instanceof OAuth2Authentication)) {
 			OAuth2Authentication oAuth2Authentication = null;
 			try {
-				oAuth2Authentication = (OAuth2Authentication) principal; 
+				oAuth2Authentication = (OAuth2Authentication) principal;
 			} catch (ClassCastException ee) {
 				System.out.println("Dang dang nhap voi user local cast " + principal.getName());
 				return null;
 			}
-		//	
+			//
 			Authentication authentication = oAuth2Authentication.getUserAuthentication();
 			Map<String, String> details = new LinkedHashMap<>();
 			details = (Map<String, String>) authentication.getDetails();
 			System.out.println("Login with social!");
-			
+
 			String id = details.get("id"); // id fb
 			String sub = details.get("sub"); // id gg
-			boolean isFB=details.get("id")!=null?true:false;
-			String ids=details.get("id")==null?details.get("sub"):details.get("id");
+			boolean isFB = details.get("id") != null ? true : false;
+			String ids = details.get("id") == null ? details.get("sub") : details.get("id");
 			// đã login
 			if (details != null) {
 				NguoiDung nd = new NguoiDung();
-				if (nds.findByConfirmationToken(ids) == null) { //neu chua dang ki thi					
+				if (nds.findByConfirmationToken(ids) == null) { // neu chua dang ki thi
 					nd.setKichhoat(true);
 					nd.setEmail(details.get("email"));
 					DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 					nd.setQuyen(qs.get(4));
 					nd.setNgaycap(df.format(new Date()));
-					if (isFB ) { // la facebook va chua ton tai
+					if (isFB) { // la facebook va chua ton tai
 						nd.setHovaten(details.get("name"));
 						nd.setLoaitaikhoan("facebook");
 						nd.setKhoabimat(id);
 						String h = "https://graph.facebook.com/" + id + "/picture?type=normal";
 						nd.setHinh(h);
-					} else  { // la google va chua ton tai
+					} else { // la google va chua ton tai
 						nd.setHovaten(details.get("family_name") + " " + details.get("given_name"));
 						nd.setKhoabimat(sub);
 						nd.setLoaitaikhoan("google");
 						nd.setHinh(details.get("picture"));
 					}
 					nds.saveOrUpdate(nd);
-				}else {
-					nd=nds.findByConfirmationToken(ids);
+				} else {
+					nd = nds.findByConfirmationToken(ids);
 				}
 				Set<GrantedAuthority> grantedAuthorities = new HashSet<>();
 				grantedAuthorities.add(new SimpleGrantedAuthority(nd.getQuyen().getTenquyen()));
-				
+
 				HttpSession session = request.getSession(true);
 				session.setAttribute("CKFinder_UserRole", nd.getQuyen().getTenquyen());
-				
+
 				UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(oAuth2Authentication,
 						oAuth2Authentication.getCredentials(), grantedAuthorities);
 				SecurityContextHolder.getContext().setAuthentication(auth);
@@ -138,64 +137,57 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 		}
 		return principal;
 	}
+
 	// @formatter:off
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
-	
-		http
-		.authorizeRequests()
-				.antMatchers("/", "/login**","logout", "/webjars/**", "/resources/**","/detailcourse/**").permitAll()
+
+		http.authorizeRequests()
+				.antMatchers("/", "/login**", "logout", "/webjars/**", "/resources/**", "/detailcourse/**").permitAll()
 				.antMatchers("/account").hasAnyRole("ADMIN")
-				/*.antMatchers("/courses/**").hasAnyRole("TEACHER","STAFF","STUDENT")*/
+				/* .antMatchers("/courses/**").hasAnyRole("TEACHER","STAFF","STUDENT") */
 				.antMatchers("/courses/page/*").permitAll()
-				/*.antMatchers("/teachers/**").hasAnyRole("TEACHER","STAFF","STUDENT")*/
-				.antMatchers("/myaccount").hasAnyRole("ADMIN","TEACHER","STAFF","STUDENT")
-/*				.antMatchers("/contact").hasAnyRole("ADMIN","TEACHER","STAFF","STUDENT")*/
-				.antMatchers("/forum/**").hasAnyRole("TEACHER","STUDENT")
-/*				.antMatchers("/detailteacher/**").hasAnyRole("ADMIN","TEACHER","STAFF","STUDENT")*/
-				.antMatchers("/adteachers").hasAnyRole("STAFF")
-				.antMatchers("/adstudent").hasAnyRole("STUDENT")
-				.antMatchers("/discussion").hasAnyRole("TEACHER","STAFF")
-				.antMatchers("/adstudents").hasAnyRole("TEACHER","STAFF")
-				.antMatchers("/adcourse").hasAnyRole("TEACHER","STAFF")
-				.antMatchers("/adlesson").hasAnyRole("TEACHER")
-				.antMatchers("/message").hasAnyRole("TEACHER","STAFF")
-				.antMatchers("/stream/**").hasAnyRole("TEACHER","STUDENT")
-				.antMatchers("/index/**").hasAnyRole("ADMIN")
-				.and()
-	            .formLogin()
-	                .loginPage("/login")
-	                .usernameParameter("email")
-	                .passwordParameter("password")
-	                .defaultSuccessUrl("/login?st=success")
-	                .failureUrl("/login?st=error")
-	                //.and().requiresChannel().anyRequest().requiresSecure()
-	                /*.antMatchers("/account").requiresSecure()
-					.antMatchers("/courses/**").requiresSecure()
-					.antMatchers("/teachers/**").requiresSecure()
-					.antMatchers("/myaccount").requiresSecure()
-					.antMatchers("/contact").requiresSecure()
-					.antMatchers("/forum/**").requiresSecure()
-					.antMatchers("/detailteacher/**").requiresSecure()
-					.antMatchers("/adteachers").requiresSecure()
-					.antMatchers("/adstudent").requiresSecure()
-					.antMatchers("/discussion").requiresSecure()
-					.antMatchers("/discussion").requiresSecure()
-					.antMatchers("/adstudents").requiresSecure()
-					.antMatchers("/adcourse").requiresSecure()
-					.antMatchers("/adlesson").requiresSecure()
-					.antMatchers("/message").requiresSecure()
-					.antMatchers("/stream/**").requiresSecure()*/
-	                .and().addFilterBefore(ssoFilter(), BasicAuthenticationFilter.class)
-	            .exceptionHandling()
-	                .accessDeniedPage("/error")
-	                
-	                
+				/* .antMatchers("/teachers/**").hasAnyRole("TEACHER","STAFF","STUDENT") */
+				.antMatchers("/myaccount").hasAnyRole("ADMIN", "TEACHER", "STAFF", "STUDENT")
+				/* .antMatchers("/contact").hasAnyRole("ADMIN","TEACHER","STAFF","STUDENT") */
+				.antMatchers("/forum/**").hasAnyRole("TEACHER", "STUDENT")
+				/*
+				 * .antMatchers("/detailteacher/**").hasAnyRole("ADMIN","TEACHER","STAFF",
+				 * "STUDENT")
+				 */
+				.antMatchers("/adteachers").hasAnyRole("STAFF").antMatchers("/adstudent").hasAnyRole("STUDENT")
+				.antMatchers("/discussion").hasAnyRole("TEACHER", "STAFF").antMatchers("/adstudents")
+				.hasAnyRole("TEACHER", "STAFF").antMatchers("/adcourse").hasAnyRole("TEACHER", "STAFF")
+				.antMatchers("/adlesson").hasAnyRole("TEACHER").antMatchers("/message").hasAnyRole("TEACHER", "STAFF")
+				.antMatchers("/stream/**").hasAnyRole("TEACHER", "STUDENT").antMatchers("/index/**").hasAnyRole("ADMIN")
+				.and().formLogin().loginPage("/login").usernameParameter("email").passwordParameter("password")
+				.defaultSuccessUrl("/login?st=success").failureUrl("/login?st=error")
+				// .and().requiresChannel().anyRequest().requiresSecure()
+				/*
+				 * .antMatchers("/account").requiresSecure()
+				 * .antMatchers("/courses/**").requiresSecure()
+				 * .antMatchers("/teachers/**").requiresSecure()
+				 * .antMatchers("/myaccount").requiresSecure()
+				 * .antMatchers("/contact").requiresSecure()
+				 * .antMatchers("/forum/**").requiresSecure()
+				 * .antMatchers("/detailteacher/**").requiresSecure()
+				 * .antMatchers("/adteachers").requiresSecure()
+				 * .antMatchers("/adstudent").requiresSecure()
+				 * .antMatchers("/discussion").requiresSecure()
+				 * .antMatchers("/discussion").requiresSecure()
+				 * .antMatchers("/adstudents").requiresSecure()
+				 * .antMatchers("/adcourse").requiresSecure()
+				 * .antMatchers("/adlesson").requiresSecure()
+				 * .antMatchers("/message").requiresSecure()
+				 * .antMatchers("/stream/**").requiresSecure()
+				 */
+				.and().addFilterBefore(ssoFilter(), BasicAuthenticationFilter.class).exceptionHandling()
+				.accessDeniedPage("/error")
+
 				// .anyRequest().authenticated()
-			.authenticationEntryPoint(new LoginUrlAuthenticationEntryPoint("/")).and()
-				.logout().logoutSuccessUrl("/").permitAll().and().csrf()
+				.authenticationEntryPoint(new LoginUrlAuthenticationEntryPoint("/")).and().logout()
+				.logoutSuccessUrl("/").permitAll().and().csrf()
 				.csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse());
-				
 
 		/*
 		 * http.authorizeRequests() .antMatchers("/").permitAll()
@@ -235,7 +227,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 		FilterRegistrationBean registration = new FilterRegistrationBean();
 		registration.setFilter(filter);
 		registration.setOrder(-100);
-	
+
 		return registration;
 	}
 

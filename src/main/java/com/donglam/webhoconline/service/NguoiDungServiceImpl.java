@@ -4,6 +4,9 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -39,11 +42,13 @@ public class NguoiDungServiceImpl extends GenericServiceImpl<NguoiDung, Integer>
 		nd.addAll(qs.get(4).getNguoidungs());
 		return nd;
 	}
+
 	@Override
 	public List<NguoiDung> getListStu() {
 		List<NguoiDung> nd = qs.get(4).getNguoidungs();
 		return nd;
 	}
+
 	@Override
 	public int getMaTea() {
 		return dao.getMaTea();
@@ -69,6 +74,9 @@ public class NguoiDungServiceImpl extends GenericServiceImpl<NguoiDung, Integer>
 		return dao.findByConfirmationToken(confirmationToken);
 	}
 
+	@Autowired
+	private HttpServletRequest request;
+
 	@Override
 	public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
 		System.out.println("Vao user detail");
@@ -84,6 +92,9 @@ public class NguoiDungServiceImpl extends GenericServiceImpl<NguoiDung, Integer>
 		System.out.println("dang nhap ok");
 		// user.getQuyen().getTenquyen()
 		grantedAuthorities.add(new SimpleGrantedAuthority(user.getQuyen().getTenquyen()));
+
+		HttpSession session = request.getSession(true);
+		session.setAttribute("CKFinder_UserRole", user.getQuyen().getTenquyen());
 
 		return new org.springframework.security.core.userdetails.User(user.getEmail(), user.getMatkhau(),
 				grantedAuthorities);

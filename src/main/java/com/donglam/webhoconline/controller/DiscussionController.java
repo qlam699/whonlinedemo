@@ -17,12 +17,14 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.donglam.webhoconline.model.GVKHId;
 import com.donglam.webhoconline.model.HVKHId;
 import com.donglam.webhoconline.model.KhoaHoc;
 import com.donglam.webhoconline.model.NguoiDung;
 import com.donglam.webhoconline.model.ThaoLuan;
 import com.donglam.webhoconline.model.ThaoLuanDto;
 import com.donglam.webhoconline.model.ThaoLuanId;
+import com.donglam.webhoconline.service.GVKHService;
 import com.donglam.webhoconline.service.HVKHService;
 import com.donglam.webhoconline.service.KhoaHocService;
 import com.donglam.webhoconline.service.NguoiDungService;
@@ -40,6 +42,8 @@ public class DiscussionController {
 	private NguoiDungService nds;
 	@Autowired
 	private HVKHService hvkhs;
+	@Autowired
+	private GVKHService gvkhs;
 	
 	NguoiDung nd = new NguoiDung();
 
@@ -61,7 +65,7 @@ public class DiscussionController {
 	public String forum(@PathVariable String id, Model model, Authentication auth) {
 		nd = Util.getUserLogin(nds, auth);
 
-		if (hvkhs.get(new HVKHId(nd, khs.get(id))) ==null )
+		if (hvkhs.get(new HVKHId(nd, khs.get(id))) ==null && gvkhs.get(new GVKHId(nd, khs.get(id))) ==null )
 			return "redirect:/";
 		
 		idmakh = id;

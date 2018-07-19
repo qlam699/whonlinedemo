@@ -27,10 +27,22 @@ Xong. Chạy dự án bằng cách Nhấn phải project Chọn: Run as > Spring
 Lưu ý: Khi dùng phát trực tiếp bị lỗi socket.io phải vào file streamlesson, detailcourse đổi server lại:
 tìm dòng 'connection.socketURL' . Server dự phòng đã được comment lại, hãy bỏ comment để dùng 1 server đó.
 ## Tài khoản
-### Admin
+admin
 quanglam.thieu@yahoo.com
+12313213
+
+staff
+truongdinh699@gmail.com
 123123123
-### Paypal thanh toan
+
+teacher
+14110100@student.hcmute.edu.vn
+123123123
+
+student, or login with FB,GG
+lehoxung699@gmail.com
+123123123
+### Paypal sandbox khi thanh toan
 a6201218lam-buyer@gmail.com 
 123123123
 

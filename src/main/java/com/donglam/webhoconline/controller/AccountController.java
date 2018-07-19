@@ -174,6 +174,7 @@ public class AccountController {
 			nd.setNgaycap(nddto.getNgaycap());
 			nd.setLoaitaikhoan(nddto.getLoaitaikhoan());
 			nd.setMatkhau(nddto.getMatkhau());
+			nd.setKichhoat(nddto.isKichhoat());
 
 		} else { // add
 			nd = new NguoiDung(nddto.getHovaten(), nddto.isPhai(), nddto.getNgaysinh(), nddto.getDiachi(),
@@ -181,7 +182,7 @@ public class AccountController {
 
 			DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 			nd.setNgaycap(df.format(new Date()));
-
+			nd.setKichhoat(nddto.isKichhoat());
 			nd.setLoaitaikhoan("local");
 			nd.setMatkhau(bCryptPasswordEncoder.encode("123123123"));
 		}

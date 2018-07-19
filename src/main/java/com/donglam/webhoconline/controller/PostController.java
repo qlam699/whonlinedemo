@@ -2,7 +2,9 @@ package com.donglam.webhoconline.controller;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import javax.validation.Valid;
 
@@ -21,6 +23,7 @@ import com.donglam.webhoconline.model.Bai;
 import com.donglam.webhoconline.model.BaiDto;
 import com.donglam.webhoconline.model.Chuong;
 import com.donglam.webhoconline.model.ChuongDto;
+import com.donglam.webhoconline.model.GVKH;
 import com.donglam.webhoconline.model.GiaoTrinh;
 import com.donglam.webhoconline.model.GiaoTrinhDto;
 import com.donglam.webhoconline.model.NguoiDung;
@@ -54,8 +57,12 @@ public class PostController {
 		if (nd.getMand() < 1)
 			nd = Util.getUserLogin(nds,auth);
 		//model.addAttribute("dsgt", nd.getGiaotrinhs());
+		List<GiaoTrinh> listgt=new ArrayList<>();
 		
-		model.addAttribute("dsgt", gts.getListGTGV(nd.getMand()));
+		for(GVKH gvkh: nd.getGvkhs()) {
+			listgt.add(gvkh.getKhoahoc().getGiaotrinh());
+		}
+		model.addAttribute("dsgt", listgt);
 		
 		return "adlesson";
 	}
@@ -288,6 +295,7 @@ public class PostController {
 				return "comp/bai";
 			}
 			try {
+				//String a= HtmlUtils.htmlEscape(dto.getNoidung());
 				bs.saveOrUpdate(
 						new Bai(dto.getMabai(), dto.getTenbai(), dto.getChuong(), HtmlUtils.htmlEscape(dto.getNoidung()), dto.isTrangthai()));
 
