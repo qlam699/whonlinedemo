@@ -470,7 +470,7 @@ public class CourseController {
 	@RequestMapping(value = "/uploadFile", method = RequestMethod.POST)
 	@ResponseBody
 	public ResponseEntity<?> uploadFile(@RequestParam("uploadfile") MultipartFile uploadfile,
-			HttpServletRequest request, @RequestParam("filename") String filename, RedirectAttributes redirect) {
+			HttpServletRequest request, @RequestParam("filename") String filename,@RequestParam("title") String title, RedirectAttributes redirect) {
 		try {
 			// Get the filename and build the local file path (be sure that the
 			// application have write permissions on such directory)
@@ -487,7 +487,7 @@ public class CourseController {
 			DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 			String nd = "Link video: <br/><video width='500px' controls='controls' src='" + Util.getBaseURl(request)
 					+ "/public/videos/" + filename + "' ></video>";
-			bs.saveOrUpdate(new Bai(idmabai, idmabai + df.format(new Date()), cs.get(machuong),
+			bs.saveOrUpdate(new Bai(idmabai, title, cs.get(machuong),
 					HtmlUtils.htmlEscape(nd), false));
 			gts.saveOrUpdate(
 					new GiaoTrinh(null, gt.getMagt(), gt.getTengt(), df.format(new Date()), null, gt.getNguoidung()));

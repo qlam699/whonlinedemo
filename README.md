@@ -33,6 +33,6 @@ quanglam.thieu@yahoo.com
 Lần đầu nên đăng nhập vào admin sau đó tạo các tài khoản cho nhân viên, giáo viên.
 Học viên có thể dùng qua Google, Facebook.
 ### Demo trên hosting
-
+https://who-qlam.c9users.io/
 
 

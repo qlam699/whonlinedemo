@@ -15,6 +15,13 @@
 					id="install-button" target="_blank">Please install this plugin
 					on Store</a>
 			</div>
+			<div class="row mb-2">
+			<div class="col-5">
+			<input type="text" id="title" value="Title Post Here" autocorrect="off"
+						autocapitalize="off" />
+			</div>
+				
+			</div>
 			<div class="row">
 				<div class="col-md-5">
 					<input type="text" id="room-id" value="abcdef" autocorrect="off"
@@ -33,7 +40,6 @@
 						class="btn btn-danger" disabled="disabled">Stop</button>
 						<h3 class="d-inline float-right"> <span class="badge badge-pill light-blue" ><span>Online:</span> <span id="countpart" >0</span></span></h3>
 				</div>
-				<div id="count"></div>
 			</div>
 
 
@@ -371,8 +377,9 @@
 							var m = moment().format("DDMMYYYY_HHMMSS");
 							formData.append('uploadfile', blob);
 							formData.append('filename',[[${nd.mand}]] + "_" + makh +"_"+m+".webm");
-							formData.append('machuong',[[ ${param.machuong} ]]);
-							formData.append('magt',[[ ${param.magt} ]]);
+							/* formData.append('machuong',[[ ${param.machuong} ]]);
+							formData.append('magt',[[ ${param.magt} ]]); */
+							formData.append('title',document.getElementById('title').value );
 							
 							// end upload to server
 							$.ajax({
