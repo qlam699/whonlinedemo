@@ -104,8 +104,8 @@
 			<folderRename>false</folderRename>
 			<folderDelete>false</folderDelete>
 			<fileView>true</fileView>
-			<fileUpload>false</fileUpload>
-			<fileRename>false</fileRename>
+			<fileUpload>true</fileUpload>
+			<fileRename>true</fileRename>
 			<fileDelete>false</fileDelete>
 		</accessControl>
 		<accessControl>
@@ -117,8 +117,8 @@
 			<folderRename>false</folderRename>
 			<folderDelete>false</folderDelete>
 			<fileView>true</fileView>
-			<fileUpload>false</fileUpload>
-			<fileRename>false</fileRename>
+			<fileUpload>true</fileUpload>
+			<fileRename>true</fileRename>
 			<fileDelete>false</fileDelete>
 		</accessControl>
 		<accessControl>

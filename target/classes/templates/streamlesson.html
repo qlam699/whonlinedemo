@@ -213,7 +213,7 @@
 				var connection = new RTCMultiConnection();
 				connection.maxParticipantsAllowed= 40;
 				// comment-out below line if you do not have your own socket.io server
-				connection.socketURL = 'https://rtcmulticonnection.herokuapp.com:443/'; //'https://rtcqlam-qlam.c9users.io/'; 
+				connection.socketURL = 'https://rtcqlam-qlam.c9users.io/'; //'https://rtcqlam2-qlam.c9users.io/'; //'https://rtcmulticonnection.herokuapp.com:443/'; 
 
 				connection.socketMessageEvent = 'video-broadcast-demo';
 
@@ -338,7 +338,7 @@
 					console.log(event.stream);
 					recorder = RecordRTC(mangStream, {
 						type : 'video',
-						mimeType : 'video/webm', // or video/webm\;codecs=h264 or video/webm\;codecs=vp9
+						mimeType : 'video/webm\;codecs=vp9', // or video/webm\;codecs=h264 or video/webm\;codecs=vp9
 						previewStream : function(stream) {
 
 						}

@@ -1,9 +1,9 @@
 Manifest-Version: 1.0
 Implementation-Title: webhoconline
 Implementation-Version: 0.0.1-SNAPSHOT
-Built-By: QLam
+Built-By: qlam
 Implementation-Vendor-Id: com.donglam
-Build-Jdk: 1.8.0_152
+Build-Jdk: 1.8.0_172
 Implementation-URL: http://projects.spring.io/spring-boot/webhoconline
  /
 Created-By: Maven Integration for Eclipse
