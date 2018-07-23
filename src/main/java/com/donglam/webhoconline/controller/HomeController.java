@@ -78,13 +78,23 @@ public class HomeController {
         }
 		return "home";
 	}
-
 	// modal login
+		@GetMapping("/term")
+		public String term() {
+			return "term";
+		}
+		
+	// modal login
+	@GetMapping("/help")
+	public String help() {
+		return "help";
+	}
+
 	@GetMapping("/loginregister")
 	public String login(Model model) {
 		return "loginregister";
 	}
-
+	
 	@GetMapping("/error")
 	public String logion(Model model) {
 		return "error";

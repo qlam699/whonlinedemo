@@ -17,7 +17,7 @@
 			</div>
 			<div class="row mb-2">
 			<div class="col-5">
-			<input type="text" id="title" value="Title Post Here" autocorrect="off"
+			<input sec:authorize="hasRole('ROLE_TEACHER')" type="text" id="title" value="Title Post Here" autocorrect="off"
 						autocapitalize="off" />
 			</div>
 				
@@ -219,7 +219,7 @@
 				var connection = new RTCMultiConnection();
 				connection.maxParticipantsAllowed= 40;
 				// comment-out below line if you do not have your own socket.io server
-				connection.socketURL = 'https://rtcqlam-qlam.c9users.io/'; //'https://rtcqlam2-qlam.c9users.io/'; //'https://rtcmulticonnection.herokuapp.com:443/'; 
+				connection.socketURL ='https://rtcmulticonnection.herokuapp.com:443/';  //'https://rtcqlam-qlam.c9users.io/'; //'https://rtcqlam2-qlam.c9users.io/'; //
 
 				connection.socketMessageEvent = 'video-broadcast-demo';
 

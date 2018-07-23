@@ -1,89 +1,82 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
+
 <head th:fragment="head">
-<meta charset="utf-8" />
-<meta name="viewport"
-	content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-<meta http-equiv="x-ua-compatible" content="ie=edge" />
-<title th:text="#{m.welcome}">Website học trực tuyến</title>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+	<meta http-equiv="x-ua-compatible" content="ie=edge" />
+	<title th:text="#{m.welcome}">Website học trực tuyến</title>
 
-<!-- Font Awesome -->
-<link rel="stylesheet" th:href="@{/css/font-awesome.min.css}" />
+	<!-- Font Awesome -->
+	<link rel="stylesheet" th:href="@{/css/font-awesome.min.css}" />
 
-<!-- Material Design Bootstrap -->
-<link rel="stylesheet" th:href="@{/css/compiled.min.css}" />
-<link rel="stylesheet" th:href="@{/css/icon.css}" />
-<link rel="stylesheet"
-	th:href="@{/css/bootstrap-material-datetimepicker.css}" />
-<link rel="stylesheet" th:href="@{/css/star-rating-svg.css}" />
-<link rel="stylesheet" th:href="@{/css/style.css}" />
-<!-- JQuery -->
-<script type="text/javascript" src="js/jquery-3.1.1.min.js"
-	th:src="@{/js/jquery-3.1.1.min.js}"></script>
-<script th:src="@{/js/jquery.star-rating-svg.js}"></script>
+	<!-- Material Design Bootstrap -->
+	<link rel="stylesheet" th:href="@{/css/compiled.min.css}" />
+	<link rel="stylesheet" th:href="@{/css/icon.css}" />
+	<link rel="stylesheet" th:href="@{/css/bootstrap-material-datetimepicker.css}" />
+	<link rel="stylesheet" th:href="@{/css/star-rating-svg.css}" />
+	<link rel="stylesheet" th:href="@{/css/style.css}" />
+	<!-- JQuery -->
+	<script type="text/javascript" src="js/jquery-3.1.1.min.js" th:src="@{/js/jquery-3.1.1.min.js}"></script>
+	<script th:src="@{/js/jquery.star-rating-svg.js}"></script>
 </head>
+
 <body>
 	<header id="header" th:fragment="header">
 		<!--Navbar -->
-		<nav
-			class="mb-1 navbar navbar-expand-lg navbar-dark fixed-top scrolling-navbar">
+		<nav class="mb-1 navbar navbar-expand-lg navbar-dark fixed-top scrolling-navbar">
 			<a class="navbar-brand" href="/">Study Online</a>
-			<button class="navbar-toggler" type="button" data-toggle="collapse"
-				data-target="#navbarSupportedContent-4"
-				aria-controls="navbarSupportedContent-4" aria-expanded="false"
-				aria-label="Toggle navigation">
+			<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent-4" aria-controls="navbarSupportedContent-4" aria-expanded="false" aria-label="Toggle navigation">
 				<span class="navbar-toggler-icon"></span>
 			</button>
 			<div class="collapse navbar-collapse" id="navbarSupportedContent-4">
 				<ul class="navbar-nav ml-auto">
-					<li class="nav-item" 
-						th:classappend="${#httpServletRequest.getRequestURI().startsWith('/courses') ? 'active':''}"><a
-						class="nav-link waves-effect waves-light" th:href="@{/courses}">
+					<li class="nav-item" th:classappend="${#httpServletRequest.getRequestURI().startsWith('/courses') ? 'active':''}"><a class="nav-link waves-effect waves-light" th:href="@{/courses}">
 							<i class="fa fa-graduation-cap"></i> <th:block
 								th:text="#{m.course}"></th:block>
 					</a></li>
 
-					<li class="nav-item" 
-						th:classappend="${#httpServletRequest.getRequestURI().startsWith('/teachers') ? 'active':''}"><a
-						class="nav-link waves-effect waves-light" th:href="@{/teachers}">
+					<li class="nav-item" th:classappend="${#httpServletRequest.getRequestURI().startsWith('/teachers') ? 'active':''}"><a class="nav-link waves-effect waves-light" th:href="@{/teachers}">
 						<i class="fa fa-user-circle"></i> <th:block th:text="#{m.teacher}"></th:block></a></li>
-					
-					<li class="nav-item" 
-						th:classappend="${#httpServletRequest.getRequestURI().startsWith('/contact') ? 'active':''}"><a
-						class="nav-link waves-effect waves-light" th:href="@{/contact}">
+
+					<li class="nav-item" th:classappend="${#httpServletRequest.getRequestURI().startsWith('/contact') ? 'active':''}"><a class="nav-link waves-effect waves-light" th:href="@{/contact}">
 						<i class="fa fa-envelope"></i> <th:block th:text="#{m.contact}"></th:block></a></li>
+						
+					<li class="nav-item" th:classappend="${#httpServletRequest.getRequestURI().startsWith('/term') ? 'active':''}"><a class="nav-link waves-effect waves-light" th:href="@{/term}">
+						<i class="fa fa-envelope"></i> <th:block th:text="#{m.term}"></th:block></a></li>
+						
+					<li class="nav-item" th:classappend="${#httpServletRequest.getRequestURI().startsWith('/help') ? 'active':''}"><a class="nav-link waves-effect waves-light" th:href="@{/help}">
+					<i class="fa fa-envelope"></i> <th:block th:text="#{m.help}"></th:block></a></li>
 
 					<li class="nav-item">
-						<a class="nav-link" data-toggle="modal"
-						data-target="#mymodal" th:href="@{/loginregister}" sec:authorize="!isAuthenticated()">
+						<a class="nav-link" data-toggle="modal" data-target="#mymodal" th:href="@{/loginregister}" sec:authorize="!isAuthenticated()">
 						<i class="fa fa-lock"></i> <th:block th:text="#{m.login}"></th:block>
 					</a></li>
-					
+
 					<li class="nav-item dropdown" sec:authorize="isAuthenticated()">
-						<a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink-4"
-							data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+						<a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink-4" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 							<i class="fa fa-user"></i> <span id="profile" th:text="${#authentication.name}">
 							<th:block th:text="#{m.profile}"></th:block></span> </a>
-						<div class="dropdown-menu dropdown-menu-right dropdown-cyan"
-							aria-labelledby="navbarDropdownMenuLink-4">
+						<div class="dropdown-menu dropdown-menu-right dropdown-cyan" aria-labelledby="navbarDropdownMenuLink-4">
 							<a sec:authorize="hasAnyRole('ROLE_STAFF','ROLE_TEACHER')" class="dropdown-item" th:href="@{/adstudents}"> 
-								<i class="fa fa-pencil"></i> Admin</a> 
+								<i class="fa fa-pencil"></i> Admin</a>
 							<a sec:authorize="hasRole('ROLE_ADMIN')" class="dropdown-item" th:href="@{/index}"> 
-							<i class="fa fa-pencil"></i> Admin</a> 
+							<i class="fa fa-pencil"></i> Admin</a>
 							<a class="dropdown-item" th:href="@{/myaccount}">
-								<th:block th:text="#{m.myaccount}"></th:block></a>
+								<th:block th:text="#{m.myaccount}"></th:block>
+							</a>
 							<a class="dropdown-item" onClick="logout()">
-								<th:block th:text="#{m.logout}"></th:block></a>
-						</div></li>
+								<th:block th:text="#{m.logout}"></th:block>
+							</a>
+						</div>
+					</li>
 				</ul>
 			</div>
 		</nav>
 		<!--/.Navbar -->
 
 		<!-- Intro Section -->
-		<div class="view jarallax welshort"
-			style="background-image: url(img/homefeature.jpg);"
-			th:style="'background:url(' + @{/img/homefeature.jpg} + ');'">
+		<div class="view jarallax welshort" style="background-image: url(img/homefeature.jpg);" th:style="'background:url(' + @{/img/homefeature.jpg} + ');'">
 			<div class="full-bg-img">
 				<div class="container flex-center">
 					<div class="row pt-5 mt-3">
@@ -95,11 +88,8 @@
 								</h1>
 
 								<div class="input-group" style="background: #fff;">
-									<input class="form-control" id="searchbox"
-										onkeypress="return runSearch(event)"
-										style="height: inherit; padding: 10px 10px; font-size: 18px; font-weight: bold !important; box-shadow: none;"
-										type="text" name="s" th:attr="placeholder=#{m.coursesearch}"
-										autocomplete="off" />  <span class="input-group-btn">
+									<input class="form-control" id="searchbox" onkeypress="return runSearch(event)" style="height: inherit; padding: 10px 10px; font-size: 18px; font-weight: bold !important; box-shadow: none;" type="text" name="s" th:attr="placeholder=#{m.coursesearch}"
+									 autocomplete="off" /> <span class="input-group-btn">
 										<button type="button" id="ep-course-search-btn"
 											class="btn teal accent-4" onclick="btnsearch()">
 											<i class="fa fa-search" aria-hidden="true"></i>
@@ -107,11 +97,7 @@
 									</span>
 								</div>
 
-								<a id="btnregister"
-									class="btn teal accent-4 btn-lg wow fadeInDown"
-									data-wow-delay="0.7s" data-toggle="modal"
-									th:href="@{/register}" data-target="#modalregister"
-									th:text="#{m.registermember}">Register</a>
+								<a id="btnregister" class="btn teal accent-4 btn-lg wow fadeInDown" data-wow-delay="0.7s" data-toggle="modal" th:href="@{/register}" data-target="#modalregister" th:text="#{m.registermember}">Register</a>
 
 							</div>
 						</div>
@@ -121,10 +107,7 @@
 		</div>
 	</header>
 	<!--Modal: Login / Register Form Demo-->
-	<div th:fragment="modal" class="modal fade" id="mymodal" tabindex="-1"
-		data-backdrop="static" data-keyboard="false" role="dialog"
-		style="overflow-y: scroll" aria-labelledby="myModalLabel"
-		aria-hidden="true">
+	<div th:fragment="modal" class="modal fade" id="mymodal" tabindex="-1" data-backdrop="static" data-keyboard="false" role="dialog" style="overflow-y: scroll" aria-labelledby="myModalLabel" aria-hidden="true">
 		<div class="modal-dialog cascading-modal" role="document">
 			<!--Content-->
 			<div class="modal-content">
@@ -137,13 +120,8 @@
 	</div>
 	<!--Modal: Login / Register Form Demo-->
 	<!-- Full Height Modal Right Success Demo-->
-	<div th:fragment="modalright" class="modal fade right"
-		id="modalregister" tabindex="-1" role="dialog"
-		aria-labelledby="myModalLabel" aria-hidden="true"
-		data-backdrop="false">
-		<div
-			class="modal-dialog modal-full-height modal-right modal-notify modal-success"
-			role="document">
+	<div th:fragment="modalright" class="modal fade right" id="modalregister" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" data-backdrop="false">
+		<div class="modal-dialog modal-full-height modal-right modal-notify modal-success" role="document">
 			<!--Content-->
 			<div class="modal-content"></div>
 			<!--/.Content-->
@@ -151,21 +129,16 @@
 	</div>
 	<!-- Full Height Modal Right Success Demo-->
 	<!--Footer-->
-	<footer th:fragment="footer"
-		class="page-footer center-on-small-only default-color">
+	<footer th:fragment="footer" class="page-footer center-on-small-only default-color">
 		<!--Footer Links-->
 		<div class="container-fluid">
 			<div class="row">
 
 				<!--First column-->
 				<div class="col-lg-3 col-md-6 ml-auto">
-					<h5 class="title font-bold mt-3 mb-4">About Study Online</h5>
-					<p>Material Design (codenamed Quantum Paper) is a design
-						language developed by Google.</p>
-
-					<p>Material Design for Bootstrap (MDB) is a powerful Material
-						Design UI KIT for most popular HTML, CSS, and JS framework -
-						Bootstrap.</p>
+					<h5 class="title font-bold mt-3 mb-4">Study Online</h5>
+					<p th:text="#{m.about}"></p>
+					
 				</div>
 				<!--/.First column-->
 
@@ -175,9 +148,7 @@
 				<div class="col-lg-2 col-md-6 ml-auto">
 					<h5 class="title font-bold mt-3 mb-4" th:text="#{lang.change}"></h5>
 					<div class="md-form form-sm">
-						<select id="locales"
-							class="mdb-select colorful-select dropdown-primary"
-							searchable="Search here..">
+						<select id="locales" class="mdb-select colorful-select dropdown-primary" searchable="Search here..">
 							<option th:text="#{lang.change}"></option>
 							<option value="vi" th:text="#{lang.vi}"></option>
 							<option value="us" th:text="#{lang.en}"></option>
@@ -204,8 +175,7 @@
 
 				<!--Fourth column-->
 				<div class="col-lg-2 col-md-6 ml-auto">
-					<h5 th:text="#{m.followmeon}" class="title font-bold mt-3 mb-4">Follow
-						me on</h5>
+					<h5 th:text="#{m.followmeon}" class="title font-bold mt-3 mb-4">Follow me on</h5>
 					<ul>
 						<li><a href="https://www.facebook.com/xmaster699">Facebook</a></li>
 						<li><a href="https://shareeverythings.com/">Website</a></li>
@@ -223,10 +193,10 @@
 
 
 		<!--Copyright-->
+		<p class="text-center"><small th:text="#{m.aboutweb}"></small></p>
 		<div class="footer-copyright">
 			<div class="container-fluid">
-				Study Online © <span th:text="${#dates.year(#dates.createNow())}"></span>
-				Copyright by <a href="/">Lâm Đông</a>
+			<p>	Study Online © <span th:text="${#dates.year(#dates.createNow())}"></span> Copyright by <a href="/">Lâm Đông</a></p>
 			</div>
 		</div>
 		<!--/.Copyright-->
@@ -235,8 +205,7 @@
 
 		<script type="text/javascript" th:src="@{/js/popper.min.js}"></script>
 		<script type="text/javascript" th:src="@{/js/compiled.min.js}"></script>
-		<script type="text/javascript"
-			th:src="@{/webjars/js-cookie/js.cookie.js}"></script>
+		<script type="text/javascript" th:src="@{/webjars/js-cookie/js.cookie.js}"></script>
 		<script th:src="@{/js/moment-with-locales.min.js}"></script>
 		<script type="text/javascript" th:src="@{/js/cus.js}"></script>
 		<script th:src="@{/js/cusvalidateform.js}"></script>
@@ -244,15 +213,15 @@
 			new WOW().init();
 		</script>
 		<script th:inline="javascript">
-		//<![CDATA[
-		//message alert
-		if ([[${success}]] !=null) {
-			toastr["success"]( [[#{ ''+${success}+'' }]] );
-		}
-		if ([[${error}]] != null && [[${error}]] != 'Not Found' && [[${error}]] != 'None' ) {
-			toastr["error"]( [[#{ ''+${error}+'' }]] );
-		}
-		//]]>
+			//<![CDATA[
+			//message alert
+			if ([[${ success }]] != null) {
+				toastr["success"]([[#{ '' + ${ success } + '' }]]);
+			}
+			if ([[${ error }]] != null && [[${ error }]] != 'Not Found' && [[${ error }]] != 'None') {
+				toastr["error"]([[#{ '' + ${ error } + '' }]]);
+			}
+			//]]>
 		</script>
 		<script>
 			$(document).ready(function() {
@@ -264,19 +233,35 @@
 				});
 
 			});
+
 			function btnsearch() {
 				var ss = $("#searchbox").val();
 				console.log(ss);
 				window.location.href = "/courses/page/1?k=" + ss;
 			}
+
 			function runSearch(e) {
 				if (e.keyCode == 13) { //enter
 					btnsearch();
 					return false;
 				}
-			}	
+			}
 		</script>
+		<!-- Global site tag (gtag.js) - Google Analytics -->
+		<script async="async" src="https://www.googletagmanager.com/gtag/js?id=UA-100491697-5"></script>
+		<script>
+		//<![CDATA[
+			window.dataLayer = window.dataLayer || [];
+
+			function gtag() { dataLayer.push(arguments); }
+			gtag('js', new Date());
+
+			gtag('config', 'UA-100491697-5');
+			//]]>
+		</script>
+
 	</footer>
 	<!--/.Footer-->
 </body>
+
 </html>

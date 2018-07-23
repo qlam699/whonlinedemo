@@ -1,0 +1,33 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="homelayout :: head"></head>
+<body>
+	<div th:replace="homelayout :: header"></div>
+	<div th:replace="homelayout :: modal"></div>
+	<div th:replace="homelayout :: modalright"></div>
+	<!--Content-->
+	<main class="container"> <!--./ code here --> <!--Section: Contact v.3-->
+	<section class="section mb-5 pt-5">
+
+		<!--Grid row-->
+		<div class="row">
+			<!--Grid column-->
+			<div class="col-md-12">
+				<!--Form with header-->
+				<h2 class="text-center" th:text="#{m.help}"></h2>
+				<div class="card p-2" th:utext="#{m.helpcontent}">
+			
+				</div>
+				<!--/Form with header-->
+
+			</div>
+			<!--Grid column-->
+
+		</div>
+		<!--Grid row-->
+
+	</section>
+	<!--Section: Contact v.3--> <!--./ code here --> </main>
+	<!--/.Content-->
+	<footer th:replace="homelayout :: footer"></footer>
+</body>
+</html>

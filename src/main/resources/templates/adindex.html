@@ -89,26 +89,38 @@
 						<!--Section: Intro-->
 						<div class="row">
 							<!-- First column -->
-							<div class="col-lg-6 col-md-12">
+							<div class="col-md-12">
 								<div class="card mb-r">
 									<div class="card-header white-text blue">Google analytic</div>
 									<div class="card-body">
-										<div class="row mb-1">
-											<div class="col-4">
-												<small>Pages/Visits</small>
-												<h4 th:text="${counter}">139 419</h4>
-											</div>
-											<div class="col-4">
-												<small>New visitors</small>
-												<h4>51.94%</h4>
-											</div>
-											<div class="col-4">
-												<small>Last week</small>
-												<h4>51 932</h4>
-											</div>
-										</div>
+									<script type="text/javascript">
+									function iframeLoaded_GwRYcApaii() {
+										var iFrameID = document.getElementById('iframe_GwRYcApaii');
+										if(iFrameID) {
+								
+											iFrameID.height = "";
+											iFrameID.contentWindow.postMessage("setheight","http://www.embeddedanalytics.com");
+											//iFrameID.height = iFrameID.contentWindow.document.body.scrollHeight + "px";
+								
+										}
+									}
+									function receiveMessage(event)
+									{
+										var iFrameID = document.getElementById('iframe_GwRYcApaii');
+										if (iFrameID) {
+											iFrameID.height = event.data+"px";
+										}
+									}
+								
+									window.addEventListener("message", receiveMessage, false);
+								
+								
+								
+								</script>
+								
+								<iframe id="iframe_GwRYcApaii" onload="iframeLoaded_GwRYcApaii()" marginwidth="0"   frameborder="0"  marginheight="0"  width="100%"  height="100%"  
+								src="http://www.embeddedanalytics.com/reports/displayreport?reportcode=GwRYcApaii&amp;chckcode=gaXFoJmrYdPaCVy4mH23tG" type="text/html"  scrolling="no" title="Embed Google Analytics Charts into your Website!"></iframe>
 
-										<a href="#" class="btn btn-primary">See more</a>
 									</div>
 								</div>
 							</div>

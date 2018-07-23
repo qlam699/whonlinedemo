@@ -70,12 +70,14 @@
 						<div class="course-categories col">
 							<label class="font-weight-bold" th:text="#{m.price}">Price</label>
 							<div class="value">
-								<span th:text="${kh.hocphi}+' USD'" class="cat-links"> </span>
+								<span th:unless="${kh.hocphi==0}" th:text="${kh.hocphi}+' USD'" class="cat-links"> </span>
+								<span th:if="${kh.hocphi==0}" th:text="#{m.free}" class="cat-links"></span>
 							</div>
+							<i th:if="${kh.hocphi==0}" th:text="#{m.infostudyfree}" class="cat-links"></i>
 						</div>
-
+				
 						<div class="course-categories">
-							<form sec:authorize="isAuthenticated()" th:unless="${dadk}"
+							<form sec:authorize="isAuthenticated()" th:unless="${dadk || khoahoc.hocphi==0}"
 								method="post" th:action="@{/pay}">
 								<input type="hidden" name="makh" th:value="${kh.makh}" />
 								<button class="btn btn-primary btnregcourse" type="submit">
@@ -83,9 +85,9 @@
 								</button>
 								<div th:replace="homecom::loading"></div>
 							</form>
-							<img sec:authorize="isAuthenticated()" th:unless="${dadk}"
+							<img sec:authorize="isAuthenticated()" th:unless="${dadk || khoahoc.hocphi==0}"
 								th:src="@{/img/paypallogo.jpg}" alt="Payment by Paypal" /> <a
-								sec:authorize="isAuthenticated()" th:if="${dadk}" type="button"
+								sec:authorize="isAuthenticated()" th:if="${dadk || khoahoc.hocphi==0}" type="button"
 								th:href="@{/forum/}+*{kh.makh}" class=" btn btn-primary center"><i
 								class="fa fa-comments"></i> <span th:text="#{m.forum}"></span></a><!--  <a
 								sec:authorize="isAuthenticated()" th:if="${dadk}" type="button"
@@ -166,7 +168,7 @@
 					<div class="tab-pane fade" id="panel2" role="tabpanel">
 						<br />
 						<h3 th:text="${khoahoc.giaotrinh.tengt}"></h3>
-						<a sec:authorize="isAuthenticated()" th:if="${dadk}"
+						<a sec:authorize="isAuthenticated()" th:if="${dadk || khoahoc.hocphi==0}"
 							class="btn btn-xs btn-success btnchap" data-toggle="modal"
 							th:text="#{m.detail}+' '+${khoahoc.giaotrinh.tengt}"
 							th:href="@{/detailpost}" data-target=".modal">sad</a>
@@ -265,7 +267,7 @@
 			var connection = new RTCMultiConnection();
 
 			// this line is VERY_important
-			connection.socketURL = 'https://rtcqlam-qlam.c9users.io/'; //'https://rtcqlam2-qlam.c9users.io/'; //'https://rtcmulticonnection.herokuapp.com:443/';
+			connection.socketURL = 'https://rtcmulticonnection.herokuapp.com:443/'; //'https://rtcqlam-qlam.c9users.io/'; //'https://rtcqlam2-qlam.c9users.io/'; 
 			var curmakh=[[ ${khoahoc.makh} ]];
 			
 			
