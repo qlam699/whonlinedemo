@@ -13,7 +13,7 @@ Clone git về
 Mở eclipse đã có plugin STS
 import project vào
 
-Import database 'webelearning' vào mysql
+Import database 'webelearning' file .sql trong thư mục gốc project vào mysql
 
 Config thông số trước khi chạy gồm: 
 File application.properties: 
