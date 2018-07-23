@@ -1,10 +1,10 @@
 CREATE DATABASE  IF NOT EXISTS `webelearning` /*!40100 DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci */;
 USE `webelearning`;
--- MySQL dump 10.13  Distrib 5.7.22, for Linux (x86_64)
+-- MySQL dump 10.13  Distrib 5.7.17, for Win64 (x86_64)
 --
 -- Host: localhost    Database: webelearning
 -- ------------------------------------------------------
--- Server version	5.7.22-0ubuntu18.04.1
+-- Server version	5.7.18-log
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -25,17 +25,17 @@ DROP TABLE IF EXISTS `bai`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `bai` (
-  `mabai` varchar(50) NOT NULL,
+  `mabai` varchar(50) CHARACTER SET latin1 NOT NULL,
   `tenbai` varchar(255) CHARACTER SET utf8 DEFAULT NULL,
-  `machuong` varchar(50) DEFAULT NULL,
-  `noidung` longtext,
+  `machuong` varchar(50) CHARACTER SET latin1 DEFAULT NULL,
+  `noidung` longtext CHARACTER SET utf8,
   `trangthai` tinyint(1) DEFAULT NULL,
   `isdeleted` tinyint(1) DEFAULT NULL,
   PRIMARY KEY (`mabai`),
   KEY `FK5lqxuhta95yy7031lyb5lmt7w` (`machuong`),
   CONSTRAINT `FK5lqxuhta95yy7031lyb5lmt7w` FOREIGN KEY (`machuong`) REFERENCES `chuong` (`machuong`),
   CONSTRAINT `bai_ibfk_1` FOREIGN KEY (`machuong`) REFERENCES `chuong` (`machuong`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -44,7 +44,7 @@ CREATE TABLE `bai` (
 
 LOCK TABLES `bai` WRITE;
 /*!40000 ALTER TABLE `bai` DISABLE KEYS */;
-INSERT INTO `bai` VALUES ('gt_1_ch_1_b_1','b1.1','gt_1_ch_1','aaa 1.1',1,0),('gt_1_ch_2_b_1','b2.1','gt_1_ch_2','aaa 2.1',1,0),('gt_1_ch_2_b_2','b2.2','gt_1_ch_2','aaa 3.1',1,0),('gt_2_ch_1_b_1','b1.1  Helloworld','gt_2_ch_1','\r\n<p><iframe allow=\"autoplay; encrypted-media\" allowfullscreen=\"\" frameborder=\"0\" height=\"480\" src=\"https://www.youtube.com/embed/FcPG1ZO8t5w\" width=\"850\"></iframe></p>\r\n\r\n<p>&nbsp;</p>\r\n',1,0),('gt_2_ch_1_b_2','b1.1  Biến và kiểu dữ liệu','gt_2_ch_1','&lt;p&gt;bbb 1.2&lt;/p&gt;\r\n\r\n&lt;p&gt;&lt;iframe allow=&quot;autoplay; encrypted-media&quot; allowfullscreen=&quot;&quot; frameborder=&quot;0&quot; height=&quot;480&quot; src=&quot;https://www.youtube.com/embed/UECrDhW1cu4&quot; width=&quot;850&quot;&gt;&lt;/iframe&gt;&lt;/p&gt;\r\n',1,0),('gt_2_ch_2_b_1','b2.1 Toán tử toán học trong Java','gt_2_ch_2','&lt;p&gt;bbb 2.1&lt;/p&gt;\r\n&lt;iframe width=&quot;850&quot; height=&quot;480&quot; src=&quot;https://www.youtube.com/embed/4Ti5to6EW_U&quot; frameborder=&quot;0&quot; allow=&quot;autoplay; encrypted-media&quot; allowfullscreen&gt;&lt;/iframe&gt;\r\n',1,0),('gt_2_ch_3_b_1',' 3. Thực hành toán tử điều kiện IF','gt_2_ch_3','<p>&nbsp;</p>\r\n\r\n<p>&nbsp;</p>\r\n<iframe width=\"850\" height=\"480\" src=\"https://www.youtube.com/embed/V7RihZmtTp0\" frameborder=\"0\" allow=\"autoplay; encrypted-media\" allowfullscreen></iframe>',1,0),('gt_3_ch_1_b1','b1.1','gt_3_ch_1','ccc 1.1',1,0),('gt_3_ch_1_b2','b1.2','gt_3_ch_1','ccc 1.2',1,0),('gt_3_ch_1_b3','b1.3','gt_3_ch_1','ccc 1.3',1,0),('gt_3_ch_2_b1','b2.1','gt_3_ch_2','ccc 2.1',1,0),('gt_6_ch_1_b_9','Bai 1 Stream','gt_6_ch_1','Link video: &lt;br/&gt;&lt;video id=&#39;videolocal&#39; class=&#39;video-js&#39; width=&#39;500px&#39; controls=&#39;controls&#39; &gt;&lt;source src=&#39;http://localhost:8080/public/videos/13_cntt_1_1_19072018_090784.webm&#39; type=&#39;video/webm&#39;&gt;&lt;/video&gt;',0,0);
+INSERT INTO `bai` VALUES ('gt_1_ch_1_b_1','b1.1','gt_1_ch_1','aaa 1.1',1,0),('gt_1_ch_2_b_1','b2.1','gt_1_ch_2','aaa 2.1',1,0),('gt_1_ch_2_b_2','b2.2','gt_1_ch_2','aaa 3.1',1,0),('gt_2_ch_1_b_1','b1.1  Helloworld','gt_2_ch_1','\r\n<p><iframe allow=\"autoplay; encrypted-media\" allowfullscreen=\"\" frameborder=\"0\" height=\"480\" src=\"https://www.youtube.com/embed/FcPG1ZO8t5w\" width=\"850\"></iframe></p>\r\n\r\n<p>&nbsp;</p>\r\n',1,0),('gt_2_ch_1_b_2','b1.1  Biến và kiểu dữ liệu','gt_2_ch_1','&lt;p&gt;bbb 1.2&lt;/p&gt;\r\n\r\n&lt;p&gt;&lt;iframe allow=&quot;autoplay; encrypted-media&quot; allowfullscreen=&quot;&quot; frameborder=&quot;0&quot; height=&quot;480&quot; src=&quot;https://www.youtube.com/embed/UECrDhW1cu4&quot; width=&quot;850&quot;&gt;&lt;/iframe&gt;&lt;/p&gt;\r\n',1,0),('gt_2_ch_2_b_1','b2.1 Toán tử toán học trong Java','gt_2_ch_2','&lt;p&gt;bbb 2.1&lt;/p&gt;\r\n&lt;iframe width=&quot;850&quot; height=&quot;480&quot; src=&quot;https://www.youtube.com/embed/4Ti5to6EW_U&quot; frameborder=&quot;0&quot; allow=&quot;autoplay; encrypted-media&quot; allowfullscreen&gt;&lt;/iframe&gt;\r\n',1,0),('gt_2_ch_3_b_1',' 3. Thực hành toán tử điều kiện IF','gt_2_ch_3','<p>&nbsp;</p>\r\n\r\n<p>&nbsp;</p>\r\n<iframe width=\"850\" height=\"480\" src=\"https://www.youtube.com/embed/V7RihZmtTp0\" frameborder=\"0\" allow=\"autoplay; encrypted-media\" allowfullscreen></iframe>',1,0),('gt_3_ch_1_b1','b1.1','gt_3_ch_1','ccc 1.1',1,0),('gt_3_ch_1_b2','b1.2','gt_3_ch_1','ccc 1.2',1,0),('gt_3_ch_1_b3','b1.3','gt_3_ch_1','ccc 1.3',1,0),('gt_3_ch_2_b1','b2.1','gt_3_ch_2','ccc 2.1',1,0),('gt_4_ch_1_b_1','Lesson 1','gt_4_ch_1','&lt;p&gt;&lt;strong&gt;Lesson 1&lt;/strong&gt;&lt;/p&gt;\r\n\r\n&lt;p&gt;Như ti&ecirc;u đề cuốn s&aacute;ch sẽ cung cấp cho c&aacute;c bạn những kiến thức sẽ c&oacute; trong đề thi&amp;nbsp;&lt;strong&gt;TOEIC part 1 v&agrave; 2&lt;/strong&gt;&amp;nbsp;( kỹ năng nghe hiểu). Người học sẽ hiểu được cấu tr&uacute;c đề thi của part 1 v&agrave; 2, c&aacute;c c&acirc;u hỏi thường c&oacute;, những bẫy sẽ đ&aacute;nh lừa th&iacute; sinh ở phần n&agrave;y v&agrave; đặc biệt cung cấp người học chiến thuật l&agrave;m b&agrave;i thi một c&aacute;ch nhanh ch&oacute;ng v&agrave; dễ d&agrave;ng nhất.&lt;/p&gt;\r\n\r\n&lt;p&gt;Part 1 v&agrave; 2 xoay quanh c&aacute;c chủ đề như mua sắm nh&agrave; h&agrave;ng, giao th&ocirc;ng, nơi l&agrave;m việc, thời gian rảnh rỗi&lt;/p&gt;\r\n',1,0),('gt_4_ch_1_b_2','Lesson 2','gt_4_ch_1','<h3>2. T<strong>omato Toeic compact part 3&amp;4</strong></h3>\r\n\r\n<p>Part 3&amp;4 vẫn sẽ nằm trong đề thi TOEIC kỹ năng nghe hiểu, tuy nhiên mức độ khó hơn so với part 1&amp;2 gây nhiều khó khăn hơn cho thí sinh. Tomato Toeic compact part 3&amp;4 sẽ đáp ứng cho bạn được kiến thức, kinh nghiệm làm bài thi và cả mẹo tránh bẫy một cách hiệu quả nhất. Kiến thức trong sách sát với đề thi cùng với bài luyện tập sẽ rèn luyện cho bạn kỹ năng làm bài thi part 3&amp; 4 tốt nhất.</p>\r\n',1,0),('gt_4_ch_2_b_1','Lesson 3','gt_4_ch_2','<h3><strong>3. Tomato Toeic compact part 5&amp;6</strong></h3>\r\n\r\n<p>Chuyển sang&nbsp;<strong>part 5 &amp; 6</strong>&nbsp;đề thi TOEIC bạn tức bạn chuyển đề reading TOEIC ( kỹ năng đọc hiểu). Cuốn sách Tomato TOEIC này cung cấp bạn 30 bài học chia theo từng chủ điểm cụ thể rõ ràng , quan trọng về ngữ pháp, từ vựng sẽ có trong part 5&amp; 6 để các bạn ôn luyện hệ thống kiến thức dễ dàng nhất. Đặc biệt ở part 5&amp; 6 bẫy vô vàn nhiều nhằm đánh lừa thí sinh không cảnh giác có thể bị mất điểm oan. Tuy nhiên, nhờ có cuốn sách này sẽ chỉ cho các bạn thấy được bẫy ở đâu? bạn cần giải quyết bẫy như thế nào một cách hiệu quả nhất!</p>\r\n',1,0),('gt_4_ch_2_b_2','Lesson 4','gt_4_ch_2','<h3><strong>4. Tomato Toeic compact part 7</strong></h3>\r\n\r\n<p>Là phần thi có bài đọc dài, nên nhiều bạn cảm thấy mình không có đủ thời gian để hoàn thành phần thi này.&nbsp;<strong>Tomato Toeic compact part 7</strong>&nbsp;chính là bí kíp để bạn không chỉ có được kiến thức cho phần thi này mà bạn còn có được kinh nghiệm cần thiết để hoàn thành các câu hỏi một cách nhanh nhất và chính xác. Cuốn sách này gồm có 21 bài học phân theo từng dạng bài tập sẽ có trong part 7 cùng 9 bài actuatest để bạn luyện tập.</p>\r\n',1,0),('gt_6_ch_1_b_9','Bai 1 Stream','gt_6_ch_1','Link video: &lt;br/&gt;&lt;video id=&#39;videolocal&#39; class=&#39;video-js&#39; width=&#39;500px&#39; controls=&#39;controls&#39; &gt;&lt;source src=&#39;http://localhost:8080/public/videos/13_cntt_1_1_19072018_090784.webm&#39; type=&#39;video/webm&#39;&gt;&lt;/video&gt;',0,0),('gt_6_ch_2_b_1','Syntax','gt_6_ch_2','<p>When we consider a Java program, it can be defined as a collection of objects that communicate via invoking each other&#39;s methods. Let us now briefly look into what do class, object, methods, and instance variables mean.</p>\r\n\r\n<ul>\r\n	<li>\r\n	<p><b>Object</b>&nbsp;&minus; Objects have states and behaviors. Example: A dog has states - color, name, breed as well as behavior such as wagging their tail, barking, eating. An object is an instance of a class.</p>\r\n	</li>\r\n	<li>\r\n	<p><b>Class</b>&nbsp;&minus; A class can be defined as a template/blueprint that describes the behavior/state that the object of its type supports.</p>\r\n	</li>\r\n	<li>\r\n	<p><b>Methods</b>&nbsp;&minus; A method is basically a behavior. A class can contain many methods. It is in methods where the logics are written, data is manipulated and all the actions are executed.</p>\r\n	</li>\r\n	<li>\r\n	<p><b>Instance Variables</b>&nbsp;&minus; Each object has its unique set of instance variables. An object&#39;s state is created by the values assigned to these instance variables.</p>\r\n	</li>\r\n</ul>\r\n',1,0);
 /*!40000 ALTER TABLE `bai` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -73,7 +73,7 @@ CREATE TABLE `chuong` (
 
 LOCK TABLES `chuong` WRITE;
 /*!40000 ALTER TABLE `chuong` DISABLE KEYS */;
-INSERT INTO `chuong` VALUES ('gt_1_ch_1','A','gt_1',0),('gt_1_ch_2','B','gt_1',0),('gt_2_ch_1','A','gt_2',0),('gt_2_ch_2','B','gt_2',0),('gt_2_ch_3','C','gt_2',0),('gt_3_ch_1','A','gt_3',0),('gt_3_ch_2','B','gt_3',0),('gt_5_ch_1','NodeJSC1','gt_5',0),('gt_6_ch_1','Ep1','gt_6',0);
+INSERT INTO `chuong` VALUES ('gt_1_ch_1','A','gt_1',0),('gt_1_ch_2','B','gt_1',0),('gt_2_ch_1','A','gt_2',0),('gt_2_ch_2','B','gt_2',0),('gt_2_ch_3','C','gt_2',0),('gt_3_ch_1','A','gt_3',0),('gt_3_ch_2','B','gt_3',0),('gt_4_ch_1','Part 1 - Basic Toiec','gt_4',0),('gt_4_ch_2','Part 2 - Advance Toiec','gt_4',0),('gt_5_ch_1','NodeJSC1','gt_5',0),('gt_6_ch_1','Ep1','gt_6',0),('gt_6_ch_2','Ep2','gt_6',0);
 /*!40000 ALTER TABLE `chuong` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -103,7 +103,7 @@ CREATE TABLE `giaotrinh` (
 
 LOCK TABLES `giaotrinh` WRITE;
 /*!40000 ALTER TABLE `giaotrinh` DISABLE KEYS */;
-INSERT INTO `giaotrinh` VALUES ('gt_1','Lập trình Java căn bản 1','2017-01-05 14:30:00',3,0),('gt_2','Lập trình Java nâng cao 1','2018-07-19 16:53:46',19,0),('gt_3','Lập trình C# căn bản 1','2017-05-05 09:00:00',3,0),('gt_4','Luyện thi toeic căn bản 1','2017-06-06 10:30:00',4,0),('gt_5','Nodejs','2018-07-17 21:52:53',11,0),('gt_6','Java basic','2018-07-19 11:29:41',13,0);
+INSERT INTO `giaotrinh` VALUES ('gt_1','Lập trình Java căn bản 1','2017-01-05 14:30:00',3,0),('gt_2','Lập trình Java nâng cao 1','2018-07-19 16:53:46',19,0),('gt_3','Lập trình C# căn bản 1','2017-05-05 09:00:00',3,0),('gt_4','Luyện thi toeic căn bản 1','2018-07-23 21:31:13',4,0),('gt_5','Nodejs','2018-07-17 21:52:53',11,0),('gt_6','Java basic','2018-07-23 21:32:04',13,0);
 /*!40000 ALTER TABLE `giaotrinh` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -165,7 +165,7 @@ CREATE TABLE `hvkh` (
 
 LOCK TABLES `hvkh` WRITE;
 /*!40000 ALTER TABLE `hvkh` DISABLE KEYS */;
-INSERT INTO `hvkh` VALUES (5,'cntt_1_1','2017-08-05 08:10:00',4.5,'Hay lam'),(5,'cntt_1_2','2017-08-03 12:10:00',0,''),(5,'cntt_2_1','2017-08-06 08:10:00',0,''),(6,'cntt_1_1','2017-08-04 07:10:00',5,'Hay lam'),(6,'cntt_2_1','2017-08-05 09:10:00',5,'Hay lam'),(7,'cntt_1_2','2017-08-06 08:10:00',4.5,'Hay lam'),(7,'cntt_2_1','2017-08-05 09:10:00',4.5,'Hay lam'),(8,'cntt_1_2','2017-08-06 09:10:00',4.5,'Hay lam'),(11,'cntt_1_1','2017-08-06 08:10:00',4.5,'Hay lam'),(12,'cntt_1_1','2018-06-14 15:59:50',4,'OK'),(20,'cntt_1_1','2018-07-19 14:54:58',4,'Tam'),(20,'cntt_1_2','2018-07-19 14:54:58',5,'Tot');
+INSERT INTO `hvkh` VALUES (5,'cntt_1_1','2017-08-05 08:10:00',4.5,'Hay lam'),(5,'cntt_1_2','2017-08-03 12:10:00',0,''),(5,'cntt_2_1','2017-08-06 08:10:00',0,''),(6,'cntt_1_1','2017-08-04 07:10:00',5,'Hay lam'),(6,'cntt_2_1','2017-08-05 09:10:00',5,'Hay lam'),(7,'cntt_1_2','2017-08-06 08:10:00',4.5,'Hay lam'),(7,'cntt_2_1','2017-08-05 09:10:00',4.5,'Hay lam'),(8,'cntt_1_2','2017-08-06 09:10:00',4.5,'Hay lam'),(10,'cntt_1_1','2018-07-23 20:59:15',4,''),(10,'cntt_1_3','2018-07-23 21:00:49',4,''),(11,'cntt_1_1','2017-08-06 08:10:00',4.5,'Hay lam'),(12,'cntt_1_1','2018-06-14 15:59:50',4,'OK'),(20,'cntt_1_1','2018-07-19 14:54:58',4,'Tam'),(20,'cntt_1_2','2018-07-19 14:54:58',5,'Tot');
 /*!40000 ALTER TABLE `hvkh` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -235,7 +235,7 @@ CREATE TABLE `khoahoc` (
 
 LOCK TABLES `khoahoc` WRITE;
 /*!40000 ALTER TABLE `khoahoc` DISABLE KEYS */;
-INSERT INTO `khoahoc` VALUES ('cntt_1_1','Lâp trinh Java can ban','cntt_1','2018-08-28','2018-12-08','2018-07-01 00:00:00','2018-08-20 00:00:00',30,1,35,'<p>Học Java cơ bản và nâng cao,tự học lập trình Java cơ bản hay nhất,</p>\r\n','',1,4.5,1,'gt_6',0),('cntt_1_2','Lâp trinh Java nâng cao','cntt_1','2018-08-29','2018-12-09','2018-07-01 00:00:00','2019-08-26 00:00:00',30,4,4,'<p>Tự học java cơ bản đến nâng cao, tài liệu học lập trình java dành cho người mới bắt đầu. </>p','',1,4.5,2,'gt_2',0),('cntt_1_3','Communication Basic','ngng_2','2018-07-31','2019-07-19','2018-07-19 00:00:00','2018-08-19 00:00:00',22,0,199,'<p>English is the international language and under stood all over the world. Here we upload how to better spoken english , IELTS Spoken English. Hope so this video improved your English conversation.</p>\r\n','',1,0,0,'gt_4',0),('cntt_2_1','Lập trình C# căn bản','cntt_2','2018-08-30','2018-12-10','2017-08-01 00:00:00','2019-08-26 00:00:00',30,3,25,'Tự học java cơ bản đến nâng cao, tài liệu học lập trình c sharp dành cho người mới bắt đầu. ','',1,4.8,2,'gt_3',0),('ngng_1_1','Pratice Toiec 1','ngng_1','2018-08-20','2018-12-20','2018-06-04 00:00:00','2018-11-14 00:00:00',20,0,31,'<p>Đạt điểm TOEIC 450-650+ Sau 2 tuần hoặc 1 tháng. Nhận bằng TOEIC tháng 7,8/2018. Cam kết 650. Cam kết 550. Cam kết đầu ra. Cam kết 450.</p>\r\n','',1,0,0,'gt_4',0),('ngng_1_2','EnglishGoo','ngng_1','2018-07-18','2018-10-31','2018-07-18 00:00:00','2018-08-26 00:00:00',20,0,100,'<p>Khóa học tiếng anh cho người bắt đầu </p>\r\n','',0,0,0,'gt_4',1);
+INSERT INTO `khoahoc` VALUES ('cntt_1_1','Lâp trinh Java can ban','cntt_1','2018-08-28','2018-12-08','2018-07-01 00:00:00','2018-08-20 00:00:00',30,2,35,'<p>Học Java cơ bản và nâng cao,tự học lập trình Java cơ bản hay nhất,</p>\r\n','',1,4.5,1,'gt_6',0),('cntt_1_2','Lâp trinh Java nâng cao','cntt_1','2018-08-29','2018-12-09','2018-07-01 00:00:00','2019-08-26 00:00:00',30,4,4,'<p>Tự học java cơ bản đến nâng cao, tài liệu học lập trình java dành cho người mới bắt đầu. </>p','',1,4.5,2,'gt_2',0),('cntt_1_3','Communication Basic','ngng_2','2018-07-31','2019-07-19','2018-07-19 00:00:00','2018-08-19 00:00:00',22,1,199,'<p>English is the international language and under stood all over the world. Here we upload how to better spoken english , IELTS Spoken English. Hope so this video improved your English conversation.</p>\r\n','',1,0,0,'gt_4',0),('cntt_2_1','Lập trình C# căn bản','cntt_2','2018-08-30','2018-12-10','2017-08-01 00:00:00','2019-08-26 00:00:00',30,3,25,'Tự học java cơ bản đến nâng cao, tài liệu học lập trình c sharp dành cho người mới bắt đầu. ','',1,4.8,2,'gt_3',0),('ngng_1_1','Pratice Toiec 1','ngng_1','2018-08-20','2018-12-20','2018-06-04 00:00:00','2018-11-14 00:00:00',20,0,31,'<p>Đạt điểm TOEIC 450-650+ Sau 2 tuần hoặc 1 tháng. Nhận bằng TOEIC tháng 7,8/2018. Cam kết 650. Cam kết 550. Cam kết đầu ra. Cam kết 450.</p>\r\n','',1,0,0,'gt_4',0),('ngng_1_2','EnglishGoo','ngng_1','2018-07-18','2018-10-31','2018-07-18 00:00:00','2018-08-26 00:00:00',20,0,100,'<p>Khóa học tiếng anh cho người bắt đầu </p>\r\n','',0,0,0,'gt_4',1);
 /*!40000 ALTER TABLE `khoahoc` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -378,8 +378,8 @@ CREATE TABLE `thaoluan` (
   `nguoidang` int(11) NOT NULL,
   `tgdang` datetime NOT NULL,
   `tieude` varchar(255) CHARACTER SET utf8 DEFAULT NULL,
-  `noidung` text,
-  `makh` varchar(50) DEFAULT NULL,
+  `noidung` text COLLATE utf8_unicode_ci,
+  `makh` varchar(50) CHARACTER SET latin1 DEFAULT NULL,
   `matl` int(11) DEFAULT NULL,
   PRIMARY KEY (`nguoidang`,`tgdang`),
   KEY `FK3mgd4qgaoc4w98trdg1syebmj` (`makh`),
@@ -387,7 +387,7 @@ CREATE TABLE `thaoluan` (
   CONSTRAINT `FK3mgd4qgaoc4w98trdg1syebmj` FOREIGN KEY (`makh`) REFERENCES `khoahoc` (`makh`),
   CONSTRAINT `thaoluan_ibfk_1` FOREIGN KEY (`makh`) REFERENCES `khoahoc` (`makh`),
   CONSTRAINT `thaoluan_ibfk_2` FOREIGN KEY (`nguoidang`) REFERENCES `nguoidung` (`mand`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -396,7 +396,7 @@ CREATE TABLE `thaoluan` (
 
 LOCK TABLES `thaoluan` WRITE;
 /*!40000 ALTER TABLE `thaoluan` DISABLE KEYS */;
-INSERT INTO `thaoluan` VALUES (3,'2017-09-15 14:10:00','','aaaaaaaaaaaaaaaaaa','cntt_1_1',1),(4,'2017-09-15 14:30:00','','aaaaaaaaaaaaaaaaaa','cntt_1_1',1),(6,'2017-09-15 08:35:00','','bbbbbbbbbbbbbbbbbb','cntt_2_1',3),(6,'2017-09-15 14:00:00','aaa','aaaaaaaaaaaaaaaaaa','cntt_1_1',1),(6,'2017-09-16 14:30:00','ccc','cccccccccccccccccc','cntt_1_2',2),(7,'2017-09-15 08:30:00','bbb','bbbbbbbbbbbbbbbbbb','cntt_2_1',3),(7,'2017-09-16 14:50:00','','cccccccccccccccccc','cntt_1_2',2),(8,'2017-09-15 09:10:00','','bbbbbbbbbbbbbbbbbb','cntt_2_1',3),(10,'2018-06-22 14:07:33','Cau hoi 2','<p>Cau hoi 2 la gi the?</p>\r\n','cntt_1_1',4),(10,'2018-06-30 12:18:21','','<p>123321321</p>\r\n','cntt_1_1',4),(10,'2018-06-30 12:19:53','','<p>hay lam</p>\r\n\r\n<p>&nbsp;</p>\r\n','cntt_1_1',1),(12,'2018-07-14 14:39:44','','<p>dsfdsf</p>\r\n','cntt_1_1',4);
+INSERT INTO `thaoluan` VALUES (3,'2017-09-15 14:10:00','','aaaaaaaaaaaaaaaaaa','cntt_1_1',1),(4,'2017-09-15 14:30:00','','aaaaaaaaaaaaaaaaaa','cntt_1_1',1),(6,'2017-09-15 08:35:00','','bbbbbbbbbbbbbbbbbb','cntt_2_1',3),(6,'2017-09-15 14:00:00','Cau hoi 1_1','Cau tl 1_1','cntt_1_1',1),(6,'2017-09-16 14:30:00','Cau hoi 1_2','Cau tl 1_2','cntt_1_2',2),(7,'2017-09-15 08:30:00','Cau hoi 2_1','Cau tl 2_1','cntt_2_1',3),(7,'2017-09-16 14:50:00','','cccccccccccccccccc','cntt_1_2',2),(8,'2017-09-15 09:10:00','','bbbbbbbbbbbbbbbbbb','cntt_2_1',3),(10,'2018-06-22 14:07:33','Cau hoi 2','<p>Cau hoi 2 la gi the?</p>\r\n','cntt_1_1',4),(10,'2018-06-30 12:18:21','','<p>Nhan xet</p>\r ','cntt_1_1',4),(10,'2018-06-30 12:19:53','','<p>hay lam</p>\r\n\r\n<p>&nbsp;</p>\r\n','cntt_1_1',1),(12,'2018-07-14 14:39:44','','<p>Thu comment</p>\r ','cntt_1_1',4);
 /*!40000 ALTER TABLE `thaoluan` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -411,9 +411,9 @@ CREATE TABLE `tinnhan` (
   `matn` int(11) NOT NULL AUTO_INCREMENT,
   `tieude` varchar(255) CHARACTER SET utf8 DEFAULT NULL,
   `tggui` datetime DEFAULT NULL,
-  `noidung` text,
+  `noidung` text COLLATE utf8_unicode_ci,
   PRIMARY KEY (`matn`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -435,4 +435,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-07-19 17:08:48
+-- Dump completed on 2018-07-23 21:38:16

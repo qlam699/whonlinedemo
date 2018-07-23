@@ -16,6 +16,7 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -97,14 +98,8 @@ public class AdminController {
 		model.addAttribute("manglkh",manglkh);
 		return "adindex";
 	}
-
-	// @Scheduled(cron = "*/10 * * ? * *")
-	public void scheduleTaskRead() {
-		// read(-2); // -1 is yesterday. return sum range date
-
-	}
-
-	// @Scheduled(cron = "*/5 * * ? * *")
+	
+	@Scheduled(cron = "0 0 23 * * ?")
 	public void scheduleTaskWrite() {
 		double sotien = 0;
 		for (KhoaHoc kh : khs.getList()) {

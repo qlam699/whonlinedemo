@@ -295,7 +295,6 @@ public class PostController {
 				return "comp/bai";
 			}
 			try {
-				//String a= HtmlUtils.htmlEscape(dto.getNoidung());
 				bs.saveOrUpdate(
 						new Bai(dto.getMabai(), dto.getTenbai(), dto.getChuong(), HtmlUtils.htmlEscape(dto.getNoidung()), dto.isTrangthai()));
 
